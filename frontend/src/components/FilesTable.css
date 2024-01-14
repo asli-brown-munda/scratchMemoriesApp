@@ -30,3 +30,9 @@
     padding-left: 10px;
     max-width: 300px;
   }
+
+  .path-link {
+    color: blue; /* Change the color to your preferred hyperlink color */
+    cursor: pointer;
+    text-decoration: underline;
+  }

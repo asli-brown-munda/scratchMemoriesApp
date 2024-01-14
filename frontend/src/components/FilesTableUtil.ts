@@ -31,3 +31,14 @@ export const getExtension = function (filename) {
     return undefined;
   }
 };
+
+export const preProcessTableData = function (data) {
+  var newArray = data.map((row) => {
+    let newRow = structuredClone(row);
+    newRow["size"] = niceBytes(row.size);
+    newRow["link"] = "https://download.com/" + row.id;
+    newRow["extension"] = getExtension(row.name);
+    return newRow;
+  });
+  return newArray;
+};

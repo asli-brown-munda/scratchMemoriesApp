@@ -25,7 +25,7 @@ export const fetchFiles = function (directory = "/") {
         updated_at: "2019-07-18 21:24:00",
       },
       {
-        id: "3",
+        id: "4",
         name: "random_list.txt",
         type: "file",
         size: 4096,

@@ -1,4 +1,4 @@
-import FilesTable from "./components/FilesTable.tsx";
+import FilesTable from "components/FileList/FilesTable.tsx";
 import "bootstrap/dist/css/bootstrap.css";
 import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -9,9 +9,7 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <div>
         <FilesTable />
-      </div>
     </ThemeProvider>
   );
 }

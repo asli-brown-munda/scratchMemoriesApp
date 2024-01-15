@@ -3,6 +3,10 @@ import { useTable, useSortBy } from "react-table";
 import { fetchFiles } from "./FileFetcher.ts";
 import { NameComponent, LinkComponent } from "./ColumnComponent.tsx";
 import React from "react";
+import MKButton from "components/MKButton/index.js";
+import MKBox from "components/MKBox/index.js";
+import Grid from "@mui/material/Grid";
+import Checkbox from "@mui/material/Checkbox";
 
 function FilesTable() {
   // Sets the path which in turn retrieves the data.
@@ -22,7 +26,7 @@ function FilesTable() {
   const handleCheckboxChange = (fileId) => {
     setSelectedFiles((prevSelectedFiles) => {
       const isFileSelected = prevSelectedFiles.includes(fileId);
-  
+
       if (isFileSelected) {
         return prevSelectedFiles.filter((id) => id !== fileId);
       } else {
@@ -30,7 +34,7 @@ function FilesTable() {
       }
     });
   };
-    const handleDownloadSelected = () => {
+  const handleDownloadSelected = () => {
     // Implement download logic for selected files
     // Iterate through selectedFiles and initiate download for each file
     selectedFiles.forEach((fileId) => {
@@ -55,10 +59,9 @@ function FilesTable() {
           const isFile = row.original.type !== "folder";
 
           return isFile ? (
-            <input
-              type="checkbox"
-              checked={selectedFiles.includes(cell.value)}
+            <Checkbox
               onChange={() => handleCheckboxChange(cell.value)}
+              checked={selectedFiles.includes(cell.value)}
             />
           ) : null;
         },
@@ -101,57 +104,76 @@ function FilesTable() {
       useSortBy,
     });
   return (
-    <>
+    <Grid>
       <div className="container">
-        <div>
-          <span className="path-link" onClick={() => handlePathClick("/")}>
-            root
-          </span>
-          {pathParts.map((part, index) => (
-            <React.Fragment key={index}>
-              {" / "}
-              <span
-                className="path-link"
-                onClick={() =>
-                  handlePathClick(`/${pathParts.slice(0, index + 1).join("/")}`)
-                }
-              >
-                {part}
-              </span>
-            </React.Fragment>
-          ))}
-        </div>
-        <button onClick={handleDownloadSelected}>Download Selected</button>
-        <table
-          className="table align-middle table-nowrap table-hover mb-0"
-          {...getTableProps()}
+        <MKBox
+          color="black"
+          variant="gradient"
+          borderRadius="lg"
+          shadow="lg"
+          opacity={1}
+          p={2}
         >
-          <thead className="table-light">
-            {headerGroups.map((headerGroup) => (
-              <tr {...headerGroup.getHeaderGroupProps()}>
-                {headerGroup.headers.map((column) => (
-                  <th {...column.getHeaderProps()}>
-                    {column.render("Header")}
-                  </th>
-                ))}
-              </tr>
+          <div>
+            <span className="path-link" onClick={() => handlePathClick("/")}>
+              root
+            </span>
+            {pathParts.map((part, index) => (
+              <React.Fragment key={index}>
+                {" / "}
+                <span
+                  className="path-link"
+                  onClick={() =>
+                    handlePathClick(
+                      `/${pathParts.slice(0, index + 1).join("/")}`
+                    )
+                  }
+                >
+                  {part}
+                </span>
+              </React.Fragment>
             ))}
-          </thead>
-          <tbody {...getTableBodyProps()}>
-            {rows.map((row) => {
-              prepareRow(row);
-              return (
-                <tr {...row.getRowProps()}>
-                  {row.cells.map((cell) => (
-                    <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+          </div>
+          <MKButton
+            variant="gradient"
+            color="info"
+            onClick={handleDownloadSelected}
+            size="small"
+          >
+            Download Selected
+          </MKButton>
+
+          <table
+            className="table align-middle table-nowrap table-hover mb-0"
+            {...getTableProps()}
+          >
+            <thead className="table-light">
+              {headerGroups.map((headerGroup) => (
+                <tr {...headerGroup.getHeaderGroupProps()}>
+                  {headerGroup.headers.map((column) => (
+                    <th {...column.getHeaderProps()}>
+                      {column.render("Header")}
+                    </th>
                   ))}
                 </tr>
-              );
-            })}
-          </tbody>
-        </table>
+              ))}
+            </thead>
+            <tbody {...getTableBodyProps()}>
+              {rows.map((row) => {
+                prepareRow(row);
+                return (
+                  <tr {...row.getRowProps()}>
+                    {row.cells.map((cell) => (
+                      <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+                    ))}
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </MKBox>
       </div>
-    </>
+    </Grid>
   );
 }
 

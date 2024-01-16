@@ -47,7 +47,9 @@ function MKAlert({ color, dismissible, children, ...rest }) {
           {children}
         </MKBox>
         {dismissible ? (
-          <MKAlertCloseIcon onClick={mount ? handleAlertStatus : null}>&times;</MKAlertCloseIcon>
+          <MKAlertCloseIcon onClick={mount ? handleAlertStatus : null}>
+            &times;
+          </MKAlertCloseIcon>
         ) : null}
       </MKAlertRoot>
     </Fade>

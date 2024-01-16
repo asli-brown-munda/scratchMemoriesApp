@@ -28,7 +28,10 @@ import MKPaginationItemRoot from "components/MKPagination/MKPaginationItemRoot";
 const Context = createContext();
 
 const MKPagination = forwardRef(
-  ({ item, variant, color, size, active, children, placement, ...rest }, ref) => {
+  (
+    { item, variant, color, size, active, children, placement, ...rest },
+    ref
+  ) => {
     const context = item ? useContext(Context) : null;
     const paginationSize = context ? context.size : null;
     const paginationProps = useMemo(() => ({ variant, color, size }), []);

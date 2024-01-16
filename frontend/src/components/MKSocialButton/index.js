@@ -21,18 +21,20 @@ import PropTypes from "prop-types";
 // Custom styles for MKSocialButton
 import MKSocialButtonRoot from "components/MKSocialButton/MKSocialButtonRoot";
 
-const MKSocialButton = forwardRef(({ color, size, iconOnly, circular, children, ...rest }, ref) => (
-  <MKSocialButtonRoot
-    {...rest}
-    ref={ref}
-    variant="contained"
-    color="primary"
-    size={size}
-    ownerState={{ color, size, iconOnly, circular }}
-  >
-    {children}
-  </MKSocialButtonRoot>
-));
+const MKSocialButton = forwardRef(
+  ({ color, size, iconOnly, circular, children, ...rest }, ref) => (
+    <MKSocialButtonRoot
+      {...rest}
+      ref={ref}
+      variant="contained"
+      color="primary"
+      size={size}
+      ownerState={{ color, size, iconOnly, circular }}
+    >
+      {children}
+    </MKSocialButtonRoot>
+  )
+);
 
 // Setting default values for the props of MKSocialButton
 MKSocialButton.defaultProps = {

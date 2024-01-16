@@ -33,7 +33,9 @@ export default styled(Button)(({ theme, ownerState }) => {
     const backgroundValue = palette[color] ? palette[color].main : white.main;
 
     // backgroundColor value when button is focused
-    const focusedBackgroundValue = palette[color] ? palette[color].focus : white.focus;
+    const focusedBackgroundValue = palette[color]
+      ? palette[color].focus
+      : white.focus;
 
     // boxShadow value
     const boxShadowValue = colored[color]
@@ -47,7 +49,12 @@ export default styled(Button)(({ theme, ownerState }) => {
 
     // boxShadow value when button is hovered
     const hoveredBoxShadowValue = colored[color]
-      ? `${boxShadow([0, 14], [26, -12], palette[color].main, 0.4)}, ${boxShadow(
+      ? `${boxShadow(
+          [0, 14],
+          [26, -12],
+          palette[color].main,
+          0.4
+        )}, ${boxShadow(
           [0, 4],
           [23, 0],
           palette[color].main,
@@ -102,7 +109,8 @@ export default styled(Button)(({ theme, ownerState }) => {
   // styles for the button with variant="outlined"
   const outliedStyles = () => {
     // background color value
-    const backgroundValue = color === "white" ? rgba(white.main, 0.1) : transparent.main;
+    const backgroundValue =
+      color === "white" ? rgba(white.main, 0.1) : transparent.main;
 
     // color value
     const colorValue = palette[color] ? palette[color].main : white.main;
@@ -113,7 +121,9 @@ export default styled(Button)(({ theme, ownerState }) => {
       : boxShadow([0, 0], [0, 3.2], white.main, 0.5);
 
     // border color value
-    let borderColorValue = palette[color] ? palette[color].main : rgba(white.main, 0.75);
+    let borderColorValue = palette[color]
+      ? palette[color].main
+      : rgba(white.main, 0.75);
 
     if (color === "white") {
       borderColorValue = rgba(white.main, 0.75);
@@ -167,7 +177,12 @@ export default styled(Button)(({ theme, ownerState }) => {
 
     // boxShadow value when button is hovered
     const hoveredBoxShadowValue = colored[color]
-      ? `${boxShadow([0, 14], [26, -12], palette[color].main, 0.4)}, ${boxShadow(
+      ? `${boxShadow(
+          [0, 14],
+          [26, -12],
+          palette[color].main,
+          0.4
+        )}, ${boxShadow(
           [0, 4],
           [23, 0],
           palette[color].main,
@@ -211,7 +226,9 @@ export default styled(Button)(({ theme, ownerState }) => {
     const colorValue = palette[color] ? palette[color].main : white.main;
 
     // color value when button is focused
-    const focusedColorValue = palette[color] ? palette[color].focus : white.focus;
+    const focusedColorValue = palette[color]
+      ? palette[color].focus
+      : white.focus;
 
     return {
       color: colorValue,

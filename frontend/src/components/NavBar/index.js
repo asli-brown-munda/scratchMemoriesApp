@@ -18,19 +18,19 @@ const Navbar = function ({ routes }) {
               component={Link}
               href="#"
               variant="button"
-              color="white"
+              color="info"
               fontWeight="regular"
               py={0.8125}
               mr={2}
             >
-              <Icon size ={"large"}>home</Icon> Memories
+              <Icon size={"large"}>home</Icon> Memories
             </MKTypography>
             <MKButton
               variant="outlined"
-              color="white"
+              color="info"
               sx={{ display: { xs: "block", lg: "none" }, ml: "auto" }}
             >
-              <MKBox component="i" color="white" className="fas fa-bars" />
+              <MKBox component="i" color="info" className="fas fa-bars" />
             </MKButton>
             <MKBox
               component="ul"
@@ -42,21 +42,22 @@ const Navbar = function ({ routes }) {
             >
               {routes.map((route) => {
                 if (route.showOnHomeScreen !== false) {
-                  return  <>
-                    <MKBox component="li">
-                      <MKTypography
-                        component={Link}
-                        href={route.route}
-                        variant="button"
-                        color="white"
-                        fontWeight="regular"
-                        p={1}
-                        
-                      >
-                        {route.name}
-                      </MKTypography>
-                    </MKBox>
-                  </>;
+                  return (
+                    <>
+                      <MKBox component="li">
+                        <MKTypography
+                          component={Link}
+                          href={route.route}
+                          variant="button"
+                          color="info"
+                          fontWeight="regular"
+                          p={1}
+                        >
+                          {route.name}
+                        </MKTypography>
+                      </MKBox>
+                    </>
+                  );
                 } else {
                   return <></>;
                 }
@@ -79,7 +80,7 @@ const Navbar = function ({ routes }) {
                 >
                   <MKBox
                     component="i"
-                    color="white"
+                    color="info"
                     className="fab fa-twitter"
                   />
                 </MKTypography>
@@ -94,7 +95,7 @@ const Navbar = function ({ routes }) {
                 >
                   <MKBox
                     component="i"
-                    color="white"
+                    color="info"
                     className="fab fa-facebook"
                   />
                 </MKTypography>
@@ -109,7 +110,7 @@ const Navbar = function ({ routes }) {
                 >
                   <MKBox
                     component="i"
-                    color="white"
+                    color="info"
                     className="fab fa-instagram"
                   />
                 </MKTypography>

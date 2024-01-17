@@ -11,7 +11,9 @@ import MKTypography from "components/MKTypography";
 // Images
 import bgImage from "assets/images/bg2.jpg";
 import Navbar from "components/NavBar/index";
-import FilledInfoCard from "components/Cards/RotatingCard/index";
+import RotatingCard from "components/Cards/RotatingCard/index";
+import RotatingCardFront from "components/Cards/RotatingCard/RotatingCardFront.js";
+import RotatingCardBack from "components/Cards/RotatingCard/RotatingCardBack.js";
 import routes from "routes";
 
 function Home() {
@@ -19,20 +21,7 @@ function Home() {
     <>
       <MKBox component="header" position="relative">
         <Navbar routes={routes} />
-        <MKBox
-          display="flex"
-          alignItems="center"
-          minHeight="100vh"
-          sx={{
-            backgroundImage: ({ palette: { gradients }, functions: { linearGradient, rgba } }) =>
-              `${linearGradient(
-                rgba(gradients.dark.main, 0.5),
-                rgba(gradients.dark.state, 0.5)
-              )}, url(${bgImage})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-          }}
-        >
+        <MKBox display="flex" alignItems="center" minHeight="40vh">
           <Container>
             <Grid
               container
@@ -45,7 +34,7 @@ function Home() {
             >
               <MKTypography
                 variant="h1"
-                color="white"
+                color="info"
                 mb={3}
                 sx={({ breakpoints, typography: { size } }) => ({
                   [breakpoints.down("md")]: {
@@ -57,7 +46,7 @@ function Home() {
               </MKTypography>
               <MKTypography
                 variant="body1"
-                color="white"
+                color="info"
                 opacity={0.8}
                 pr={6}
                 mr={6}
@@ -66,24 +55,96 @@ function Home() {
                 shun people for being nice.
               </MKTypography>
               <Stack direction="row" spacing={1} mt={3}>
-                <MKButton color="white">Get Started</MKButton>
-                <MKButton variant="text" color="white">
+                <MKButton color="info">Get Started</MKButton>
+                <MKButton variant="text" color="info">
                   Read more
                 </MKButton>
               </Stack>
             </Grid>
           </Container>
         </MKBox>
-        <FilledInfoCard
-          icon="public"
-          title="Get Started"
-          description="Check the possible ways of working with our product and the necessary files for building your own project."
-          action={{
-            type: "internal",
-            route: "/somewhere",
-            label: "Let's start",
-          }}
-        />{" "}
+        <Grid container spacing={8} flexDirection="row" justifyContent="center">
+          <Grid  item flexDirection="row" xl={"2"}> 
+            <RotatingCard>
+              <RotatingCardFront
+                image="https://bit.ly/3G5JXJZ"
+                icon="touch_app"
+                title={
+                  <>
+                    Feel the
+                    <br />
+                    Material Kit
+                  </>
+                }
+                description="All the MUI components that you need in a development have been re-design with the new look."
+              />
+              <RotatingCardBack
+                image="https://bit.ly/32ZoTGx"
+                title="Discover More"
+                description="You will save a lot of time going from prototyping to full-functional code because all elements are implemented."
+                action={{
+                  type: "internal",
+                  route: "/",
+                  label: "start with header",
+                }}
+              />
+            </RotatingCard>
+          </Grid>
+
+          <Grid  item flexDirection="row" xl={"2"}> 
+            <RotatingCard>
+              <RotatingCardFront
+                image="https://bit.ly/3G5JXJZ"
+                icon="touch_app"
+                title={
+                  <>
+                    Feel the
+                    <br />
+                    Material Kit
+                  </>
+                }
+                description="All the MUI components that you need in a development have been re-design with the new look."
+              />
+              <RotatingCardBack
+                image="https://bit.ly/32ZoTGx"
+                title="Discover More"
+                description="You will save a lot of time going from prototyping to full-functional code because all elements are implemented."
+                action={{
+                  type: "internal",
+                  route: "/",
+                  label: "start with header",
+                }}
+              />
+            </RotatingCard>
+          </Grid>
+
+          <Grid  item flexDirection="row" xl={"2"}> 
+            <RotatingCard>
+              <RotatingCardFront
+                image="https://bit.ly/3G5JXJZ"
+                icon="touch_app"
+                title={
+                  <>
+                    Feel the
+                    <br />
+                    Material Kit
+                  </>
+                }
+                description="All the MUI components that you need in a development have been re-design with the new look."
+              />
+              <RotatingCardBack
+                image="https://bit.ly/32ZoTGx"
+                title="Discover More"
+                description="You will save a lot of time going from prototyping to full-functional code because all elements are implemented."
+                action={{
+                  type: "internal",
+                  route: "/",
+                  label: "start with header",
+                }}
+              />
+            </RotatingCard>
+          </Grid>
+        </Grid>
       </MKBox>
     </>
   );

@@ -1,20 +1,29 @@
-import FilesTable from "components/FileList/FilesTable.tsx";
 import "bootstrap/dist/css/bootstrap.css";
 import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 import theme from "assets/theme";
 import routes from "routes";
+import { loadSlim } from "@tsparticles/slim";
+import { initParticlesEngine } from "@tsparticles/react";
 
 function App() {
   const { pathname } = useLocation();
+  const [init, setInit] = useState(false);
 
-  // Setting page scroll to 0 when changing the route
-  // useEffect(() => {
-  //   document.documentElement.scrollTop = 0;
-  //   document.scrollingElement.scrollTop = 0;
-  // }, [pathname]);
+  useEffect(() => {
+  initParticlesEngine(async (engine) => {
+    await loadSlim(engine);
+  }).then(() => {
+    setInit(true);
+  });
+  }, []);
+
+  const particlesLoaded = (container) => {
+    console.log(container);
+  };
 
   const getRoutes = (allRoutes) =>
     allRoutes.map((route) => {

@@ -41,7 +41,7 @@ Coded by www.creative-tim.com
 // @mui icons
 import UserDashboard from "pages/UserDashboard/index";
 import Home from "pages/Home/index";
-import BackgroundParticles from "components/Background/index"
+import Pricing from "pages/Pricing/index"
 
 const routes = [
   {
@@ -61,7 +61,7 @@ const routes = [
     name: "Pricing",
     route: "pricing",
     key: "route",
-    component: <BackgroundParticles />
+    component: <Pricing />
   },
 ];
 

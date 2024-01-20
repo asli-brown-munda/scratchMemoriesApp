@@ -15,26 +15,16 @@ import RotatingCardFront from "components/Cards/RotatingCard/RotatingCardFront.j
 import RotatingCardBack from "components/Cards/RotatingCard/RotatingCardBack.js";
 import routes from "routes";
 import bgImage from "assets/images/Down3.jpg";
+import BackgroundParticles from "components/Background/index";
 
 function Home() {
   return (
     <>
       <MKBox component="header" position="relative">
-        <MKBox display="flex" alignItems="center">
+        <MKBox display="flex" alignItems="center" minHeight="40vh">
           <Navbar routes={routes} />
-        </MKBox>
-        <MKBox
-          display="flex"
-          alignItems="center"
-          minHeight="40vh"
-          sx={{
-            backgroundImage: `url(${bgImage})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            display: "grid",
-            placeItems: "center",
-          }}
-        >
+
+          <BackgroundParticles />
           <Container>
             <Grid
               container

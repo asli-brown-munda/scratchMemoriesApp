@@ -1,0 +1,16 @@
+[
+    {
+        "title": "Starter Plan",
+        "description": ["100 GB Storage", "200 GB Download", "Client Side Encryption", "Durable Storage"],
+        "original_price": 15,
+        "price": 10,
+        "currency": "$"
+    },
+    {
+        "title": "Personal Plan",
+        "description": ["2 TB Storage", "4 TB Download",  "Client Side Encryption", "Durable Storage"],
+        "original_price": 90,
+        "price": 80,
+        "currency": "$"
+    }
+]

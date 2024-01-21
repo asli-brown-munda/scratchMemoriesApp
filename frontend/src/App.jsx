@@ -1,7 +1,7 @@
 import "bootstrap/dist/css/bootstrap.css";
 import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
-import { Routes, Route, useLocation } from "react-router-dom";
+import { Routes, Route, useLocation, Navigate } from "react-router-dom";
 
 import theme from "assets/theme";
 import routes from "routes";
@@ -11,10 +11,6 @@ function App() {
 
   const getRoutes = (allRoutes) =>
     allRoutes.map((route) => {
-      if (route.collapse) {
-        return getRoutes(route.collapse);
-      }
-
       if (route.route) {
         return (
           <Route
@@ -34,6 +30,8 @@ function App() {
       <CssBaseline />
       <Routes>
         {getRoutes(routes)}
+        <Route path="/" element={<Navigate to="/home" />} />
+
         {/* <Route path="*" element={<Navigate to="/presentation" />} /> */}
       </Routes>
     </ThemeProvider>

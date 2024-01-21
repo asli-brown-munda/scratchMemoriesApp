@@ -30,15 +30,24 @@ function RotatingCardFront({ color, image, icon, title, description }) {
       justifyContent="center"
       alignContent="center"
       borderRadius="lg"
-      coloredShadow={color}
+      coloredShadow={"color"}
       width="100%"
       position="relative"
       zIndex={2}
       sx={{
-        backgroundImage: ({ palette: { gradients }, functions: { linearGradient, rgba } }) =>
+        backgroundImage: ({
+          palette: { gradients },
+          functions: { linearGradient, rgba },
+        }) =>
           `${linearGradient(
-            rgba(gradients[color] ? gradients[color].main : gradients.info.main, 0.85),
-            rgba(gradients[color] ? gradients[color].main : gradients.info.main, 0.85)
+            rgba(
+              gradients[color] ? gradients[color].main : gradients.info.main,
+              0.85
+            ),
+            rgba(
+              gradients[color] ? gradients[color].main : gradients.info.main,
+              0.85
+            )
           )}, url(${image})`,
         backgroundSize: "cover",
         backfaceVisibility: "hidden",
@@ -53,7 +62,7 @@ function RotatingCardFront({ color, image, icon, title, description }) {
         <MKTypography variant="h3" color="white" gutterBottom>
           {title}
         </MKTypography>
-        <MKTypography variant="body2" color="white" opacity={0.8}>
+        <MKTypography variant="body2" color="white" fontSize={20}>
           {description}
         </MKTypography>
       </MKBox>

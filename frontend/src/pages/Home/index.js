@@ -14,17 +14,16 @@ import RotatingCard from "components/Cards/RotatingCard/index";
 import RotatingCardFront from "components/Cards/RotatingCard/RotatingCardFront.js";
 import RotatingCardBack from "components/Cards/RotatingCard/RotatingCardBack.js";
 import routes from "routes";
-import bgImage from "assets/images/Down3.jpg";
 import BackgroundParticles from "components/Background/index";
 
 function Home() {
   return (
     <>
+      <BackgroundParticles />
+      <Navbar routes={routes} />
+
       <MKBox component="header" position="relative">
         <MKBox display="flex" alignItems="center" minHeight="40vh">
-          <Navbar routes={routes} />
-
-          <BackgroundParticles />
           <Container>
             <Grid
               container
@@ -55,16 +54,13 @@ function Home() {
                 mr={6}
                 fontSize={25}
               >
-                Guarding your cherished memories in our secure vault, so you can
-                relive them anytime without the fear of losing or anyone
-                peeking. Safeguarding your treasured memories with our reliable
-                long-term storage solutions—because every special moment
-                deserves a forever home, worry-free and secure
+                A cheaper, durable and secure storage for your precious
+                memories.
               </MKTypography>
               <Stack direction="row" spacing={1} mt={3}>
-                <MKButton color="white">Get Started</MKButton>
+                <MKButton color="white" href="/sign_in">Login</MKButton>
                 <MKButton variant="text" color="white">
-                  Read more
+                  About us
                 </MKButton>
               </Stack>
             </Grid>
@@ -80,83 +76,58 @@ function Home() {
             backgroundColor: "white",
           }}
         >
-          <Grid item flexDirection="row" xl={"2"}>
+          <Grid item flexDirection="row" xl={2}>
             <RotatingCard>
               <RotatingCardFront
-                image="https://bit.ly/3G5JXJZ"
-                icon="touch_app"
-                color="#063846"
-                title={
-                  <>
-                    Feel the
-                    <br />
-                    Material Kit
-                  </>
-                }
-                description="All the MUI components that you need in a development have been re-design with the new look."
+                icon="security"
+                title={<>Security</>}
+                description="All Data uploaded is secured at your computer, ensuring no one else can access your data."
               />
               <RotatingCardBack
-                image="https://bit.ly/32ZoTGx"
-                title="Discover More"
-                description="You will save a lot of time going from prototyping to full-functional code because all elements are implemented."
+                title="Details"
+                description="No one should have access to your data else than you. For this we use encryption: XXXX."
                 action={{
                   type: "internal",
-                  route: "/",
-                  label: "start with header",
+                  route: "/sign_in",
+                  label: "Sign In",
+                }}
+              />
+            </RotatingCard>
+          </Grid>
+          <Grid item flexDirection="row" xl={2}>
+            <RotatingCard>
+              <RotatingCardFront
+                icon="content_copy"
+                title={<>Durability</>}
+                backgroundColor="info"
+                description="All Data uploaded is copied XXXX number of times, so be worry-free about your data."
+              />
+              <RotatingCardBack
+                title="Details"
+                description="Making XXXX numer of copies allows us to retrieve data even with a high fault rate."
+                action={{
+                  type: "internal",
+                  route: "/sign_in",
+                  label: "Sign In",
                 }}
               />
             </RotatingCard>
           </Grid>
 
-          <Grid item flexDirection="row" xl={"2"}>
+          <Grid item flexDirection="row" xl={2}>
             <RotatingCard>
               <RotatingCardFront
-                image="https://bit.ly/3G5JXJZ"
-                icon="touch_app"
-                title={
-                  <>
-                    Feel the
-                    <br />
-                    Material Kit
-                  </>
-                }
-                description="All the MUI components that you need in a development have been re-design with the new look."
+                icon="payments"
+                title={<>Savings</>}
+                description="Why pay more for your precious data that you might not check frequently when you have us?"
               />
               <RotatingCardBack
-                image="https://bit.ly/32ZoTGx"
-                title="Discover More"
-                description="You will save a lot of time going from prototyping to full-functional code because all elements are implemented."
+                title="Details"
+                description="Stop paying extra for the Precious Data that you visit only once in a while. Pay for what you use."
                 action={{
                   type: "internal",
-                  route: "/",
-                  label: "start with header",
-                }}
-              />
-            </RotatingCard>
-          </Grid>
-
-          <Grid item flexDirection="row" xl={"2"}>
-            <RotatingCard>
-              <RotatingCardFront
-                image="https://bit.ly/3G5JXJZ"
-                icon="touch_app"
-                title={
-                  <>
-                    Feel the
-                    <br />
-                    Material Kit
-                  </>
-                }
-                description="All the MUI components that you need in a development have been re-design with the new look."
-              />
-              <RotatingCardBack
-                image="https://bit.ly/32ZoTGx"
-                title="Discover More"
-                description="You will save a lot of time going from prototyping to full-functional code because all elements are implemented."
-                action={{
-                  type: "internal",
-                  route: "/",
-                  label: "start with header",
+                  route: "/sign_in",
+                  label: "Sign In",
                 }}
               />
             </RotatingCard>

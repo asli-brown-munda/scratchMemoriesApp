@@ -42,26 +42,43 @@ Coded by www.creative-tim.com
 import UserDashboard from "pages/UserDashboard/index";
 import Home from "pages/Home/index";
 import Pricing from "pages/Pricing/index"
+import SignInBasic from "pages/SignIn/index";
 
 const routes = [
   {
     name: "Dashboard",
     component: <UserDashboard />,
-    route: "dashboard",
     key: "dashboard",
+    route: "dashboard",
     showOnHomeScreen: false
   },
   {
     name: "Home",
     component: <Home />,
-    route: "home",
     key: "home",
+    route: "home",
+    showOnHomeScreen: true
   },
   {
     name: "Pricing",
-    route: "pricing",
+    component: <Pricing />,
     key: "route",
-    component: <Pricing />
+    route: "pricing",
+    showOnHomeScreen: true
+  },
+  {
+    name: "Sign In",
+    component: <SignInBasic />,
+    key: "sign_in",
+    route: "sign_in",
+    showOnHomeScreen: true
+  },
+  {
+    name: "About Us",
+    route: "about_us",
+    key: "about_us",
+    component: <Pricing />,
+    showOnHomeScreen: true
   },
 ];
 

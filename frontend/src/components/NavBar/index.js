@@ -1,124 +1,29 @@
-import Container from "@mui/material/Container";
-import Grid from "@mui/material/Grid";
-import Link from "@mui/material/Link";
-import Icon from "@mui/material/Icon";
-
-// Material Kit 2 React components
-import MKBox from "components/MKBox";
-import MKButton from "components/MKButton";
-import MKTypography from "components/MKTypography";
+import BootstrapContainer from "react-bootstrap/Container";
+import Nav from "react-bootstrap/Nav";
+import BootstrapNavbar from "react-bootstrap/Navbar";
 
 const Navbar = function ({ routes }) {
   return (
     <>
-      <MKBox component="nav" position="absolute" top="0.5rem" width="100%">
-        <Container>
-          <Grid container flexDirection="row" alignItems="center">
-            <MKTypography
-              component={Link}
-              href="#"
-              variant="button"
-              color="info"
-              fontWeight="regular"
-              py={0.8125}
-              mr={2}
-            >
-              <Icon size={"large"}>home</Icon> Memories
-            </MKTypography>
-            <MKButton
-              variant="outlined"
-              color="info"
-              sx={{ display: { xs: "block", lg: "none" }, ml: "auto" }}
-            >
-              <MKBox component="i" color="info" className="fas fa-bars" />
-            </MKButton>
-            <MKBox
-              component="ul"
-              display={{ xs: "none", lg: "flex" }}
-              p={0}
-              my={0}
-              mx="auto"
-              sx={{ listStyle: "none" }}
-            >
-              {routes.map((route) => {
-                if (route.showOnHomeScreen !== false) {
-                  return (
-                    <>
-                      <MKBox component="li">
-                        <MKTypography
-                          component={Link}
-                          href={route.route}
-                          variant="button"
-                          color="info"
-                          fontWeight="regular"
-                          p={1}
-                        >
-                          {route.name}
-                        </MKTypography>
-                      </MKBox>
-                    </>
-                  );
-                } else {
-                  return <></>;
-                }
-              })}
-            </MKBox>
-            <MKBox
-              component="ul"
-              display={{ xs: "none", lg: "flex" }}
-              p={0}
-              m={0}
-              sx={{ listStyle: "none" }}
-            >
-              <MKBox component="li">
-                <MKTypography
-                  component={Link}
-                  href="#"
-                  variant="button"
-                  p={1}
-                  onClick={(e) => e.preventDefault()}
-                >
-                  <MKBox
-                    component="i"
-                    color="info"
-                    className="fab fa-twitter"
-                  />
-                </MKTypography>
-              </MKBox>
-              <MKBox component="li">
-                <MKTypography
-                  component={Link}
-                  href="#"
-                  variant="button"
-                  p={1}
-                  onClick={(e) => e.preventDefault()}
-                >
-                  <MKBox
-                    component="i"
-                    color="info"
-                    className="fab fa-facebook"
-                  />
-                </MKTypography>
-              </MKBox>
-              <MKBox component="li">
-                <MKTypography
-                  component={Link}
-                  href="#"
-                  variant="button"
-                  p={1}
-                  onClick={(e) => e.preventDefault()}
-                >
-                  <MKBox
-                    component="i"
-                    color="info"
-                    className="fab fa-instagram"
-                  />
-                </MKTypography>
-              </MKBox>
-            </MKBox>
-          </Grid>
-        </Container>
-      </MKBox>
+      <BootstrapNavbar bg="#0D47A1" data-bs-theme="dark" shadow="1px">
+        <BootstrapContainer>
+          <Nav className="me-auto">
+            {routes.map((route) => {
+              if (route.showOnHomeScreen !== false) {
+                return (
+                  <>
+                    <Nav.Link href={route.route} fontWeight="regular">
+                      {route.name}
+                    </Nav.Link>
+                  </>
+                );
+              } else {
+                return <></>;
+              }
+            })}
+          </Nav>
+        </BootstrapContainer>
+      </BootstrapNavbar>
     </>
   );
 };

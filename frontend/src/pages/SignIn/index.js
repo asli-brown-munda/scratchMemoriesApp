@@ -37,12 +37,10 @@ import MKButton from "components/MKButton";
 
 // Material Kit 2 React example components
 import Navbar from "components/NavBar/index";
+import BackgroundParticles from "components/Background/index";
 
 // Material Kit 2 React page layout routes
 import routes from "routes";
-
-// Images
-import bgImage from "assets/images/bg-sign-in-basic.jpeg";
 
 function SignInBasic() {
   const [rememberMe, setRememberMe] = useState(false);
@@ -51,28 +49,24 @@ function SignInBasic() {
 
   return (
     <>
-      <Navbar
-        routes={routes}/>
+      <BackgroundParticles />
+      <Navbar routes={routes} />
+
       <MKBox
-        position="absolute"
-        top={0}
-        left={0}
-        zIndex={1}
+        px={1}
         width="100%"
-        minHeight="100vh"
-        sx={{
-          backgroundImage: ({ functions: { linearGradient, rgba }, palette: { gradients } }) =>
-            `${linearGradient(
-              rgba(gradients.dark.main, 0.6),
-              rgba(gradients.dark.state, 0.6)
-            )}, url(${bgImage})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
-        }}
-      />
-      <MKBox px={1} width="100%" height="100vh" mx="auto" position="relative" zIndex={2}>
-        <Grid container spacing={1} justifyContent="center" alignItems="center" height="100%">
+        height="100vh"
+        mx="auto"
+        position="relative"
+        zIndex={2}
+      >
+        <Grid
+          container
+          spacing={1}
+          justifyContent="center"
+          alignItems="center"
+          height="100%"
+        >
           <Grid item xs={11} sm={9} md={5} lg={4} xl={3}>
             <Card>
               <MKBox
@@ -86,22 +80,47 @@ function SignInBasic() {
                 mb={1}
                 textAlign="center"
               >
-                <MKTypography variant="h4" fontWeight="medium" color="white" mt={1}>
+                <MKTypography
+                  variant="h4"
+                  fontWeight="medium"
+                  color="white"
+                  mt={1}
+                >
                   Sign in
                 </MKTypography>
-                <Grid container spacing={3} justifyContent="center" sx={{ mt: 1, mb: 2 }}>
+                <Grid
+                  container
+                  spacing={3}
+                  justifyContent="center"
+                  sx={{ mt: 1, mb: 2 }}
+                >
                   <Grid item xs={2}>
-                    <MKTypography component={MuiLink} href="#" variant="body1" color="white">
+                    <MKTypography
+                      component={MuiLink}
+                      href="#"
+                      variant="body1"
+                      color="white"
+                    >
                       <FacebookIcon color="inherit" />
                     </MKTypography>
                   </Grid>
                   <Grid item xs={2}>
-                    <MKTypography component={MuiLink} href="#" variant="body1" color="white">
+                    <MKTypography
+                      component={MuiLink}
+                      href="#"
+                      variant="body1"
+                      color="white"
+                    >
                       <GitHubIcon color="inherit" />
                     </MKTypography>
                   </Grid>
                   <Grid item xs={2}>
-                    <MKTypography component={MuiLink} href="#" variant="body1" color="white">
+                    <MKTypography
+                      component={MuiLink}
+                      href="#"
+                      variant="body1"
+                      color="white"
+                    >
                       <GoogleIcon color="inherit" />
                     </MKTypography>
                   </Grid>
@@ -116,7 +135,10 @@ function SignInBasic() {
                     <MKInput type="password" label="Password" fullWidth />
                   </MKBox>
                   <MKBox display="flex" alignItems="center" ml={-1}>
-                    <Switch checked={rememberMe} onChange={handleSetRememberMe} />
+                    <Switch
+                      checked={rememberMe}
+                      onChange={handleSetRememberMe}
+                    />
                     <MKTypography
                       variant="button"
                       fontWeight="regular"

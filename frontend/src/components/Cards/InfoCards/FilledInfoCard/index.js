@@ -25,6 +25,7 @@ import MuiLink from "@mui/material/Link";
 
 // Material Kit 2 React components
 import MKBox from "components/MKBox";
+import MKButton from "components/MKButton";
 import MKTypography from "components/MKTypography";
 
 function FilledInfoCard({ variant, color, icon, title, description, action }) {
@@ -75,20 +76,15 @@ function FilledInfoCard({ variant, color, icon, title, description, action }) {
         <MKTypography
           display="block"
           variant="5"
-          color={variant === "contained" || color === "light" ? "dark" : "white"}
+          color={
+            variant === "contained" || color === "light" ? "dark" : "white"
+          }
           fontWeight="bold"
           mb={1}
         >
           {title}
         </MKTypography>
-        <MKTypography
-          display="block"
-          variant="body2"
-          color={variant === "contained" || color === "light" ? "text" : "white"}
-          mb={2}
-        >
-          {description}
-        </MKTypography>
+        {description}
         {action && action.type === "external" ? (
           <MKTypography
             component={MuiLink}
@@ -100,20 +96,14 @@ function FilledInfoCard({ variant, color, icon, title, description, action }) {
             color={variant === "contained" ? color : "white"}
             sx={buttonStyles}
           >
-            {action.label} <Icon sx={{ fontWeight: "bold" }}>arrow_forward</Icon>
+            {action.label}{" "}
+            <Icon sx={{ fontWeight: "bold" }}>arrow_forward</Icon>
           </MKTypography>
         ) : null}
         {action && action.type === "internal" ? (
-          <MKTypography
-            component={Link}
-            to={action.route}
-            variant="body2"
-            fontWeight="regular"
-            color={variant === "contained" ? color : "white"}
-            sx={buttonStyles}
-          >
-            {action.label} <Icon sx={{ fontWeight: "bold" }}>arrow_forward</Icon>
-          </MKTypography>
+          <MKButton color="white" href={action.route} color="info">
+            {action.label}
+          </MKButton>
         ) : null}
       </MKBox>
     </MKBox>

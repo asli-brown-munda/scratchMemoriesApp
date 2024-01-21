@@ -43,6 +43,7 @@ import UserDashboard from "pages/UserDashboard/index";
 import Home from "pages/Home/index";
 import Pricing from "pages/Pricing/index"
 import SignInBasic from "pages/SignIn/index";
+import Team from "pages/About Us/index";
 
 const routes = [
   {
@@ -75,9 +76,9 @@ const routes = [
   },
   {
     name: "About Us",
+    component: <Team />,
     route: "about_us",
     key: "about_us",
-    component: <Pricing />,
     showOnHomeScreen: true
   },
 ];

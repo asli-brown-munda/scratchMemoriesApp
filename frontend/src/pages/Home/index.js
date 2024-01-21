@@ -119,7 +119,7 @@ function Home() {
               <RotatingCardFront
                 icon="payments"
                 title={<>Savings</>}
-                description="Why pay more for your precious data that you might not check frequently when you have us?"
+                description="Why pay more for precious data that you might not check frequently when you have us?"
               />
               <RotatingCardBack
                 title="Details"

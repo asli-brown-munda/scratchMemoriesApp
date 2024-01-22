@@ -12,8 +12,11 @@ Coded by www.creative-tim.com
 
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
-import MKBox from "components/MKBox";
 import BackgroundParticles from "components/Background/index";
+import Container from "@mui/material/Container";
+import Grid from "@mui/material/Grid";
+import MKBox from "components/MKBox";
+import MKTypography from "components/MKTypography";
 
 import Navbar from "components/NavBar/index";
 import routes from "routes";
@@ -22,11 +25,39 @@ function AboutUs() {
   return (
     <>
       <BackgroundParticles />
+      <Navbar routes={routes} />
 
-      <MKBox component="header" position="relative">
-        <Navbar routes={routes} />
+      <MKBox
+        component="section"
+        position="relative"
+        py={6}
+        px={{ xs: 2, lg: 0 }}
+        mx={-2}
+      >
+        <Container>
+          <Grid
+            container
+            spacing={8}
+            flexDirection="row"
+            pb={2}
+            sx={{
+              backgroundColor: "white",
+            }}
+          >
+            <Grid item flexDirection="row">
+              <MKTypography variant="h3" color="white">
+                Memories
+              </MKTypography>
+
+              <MKTypography variant="body2" color="white">
+                We want to make Cloud Storage accessible to everyone, so you can
+                stop worrying about using external drives or expensive
+                alternatives!
+              </MKTypography>
+            </Grid>
+          </Grid>
+        </Container>
         <Team />
-
       </MKBox>
     </>
   );

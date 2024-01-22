@@ -13,15 +13,8 @@ import akshay from "assets/images/akshay.jpeg";
 
 const Team = function () {
   return (
-    <MKBox
-      component="section"
-      position="relative"
-      py={6}
-      px={{ xs: 2, lg: 0 }}
-      mx={-2}
-    >
       <Container>
-        <Grid container>
+        <Grid container pt={2}>
           <Grid item xs={12} md={8} sx={{ mb: 6 }}>
             <MKTypography variant="h3" color="white">
               The Team
@@ -40,7 +33,7 @@ const Team = function () {
                 image={shubhsha}
                 name="Shubham Sharma"
                 position={{ color: "info", label: "Co-Founder" }}
-                description="Artist is a term applied to a person who engages in an activity deemed to be an art."
+                description="Passionate about developing convenient personal storage solutions. Experienced Engineer who worked at big tech companies: Google, Microsoft & Amazon."
               />
             </MKBox>
           </Grid>
@@ -50,13 +43,12 @@ const Team = function () {
                 image={akshay}
                 name="Akshay Arora"
                 position={{ color: "info", label: "Co-Founder" }}
-                description="Artist is a term applied to a person who engages in an activity deemed to be an art."
+                description="Experienced Software Engineer who has worked at big companies: Uber & Amazon. Keeping a mystry about me."
               />
             </MKBox>
           </Grid>
         </Grid>
       </Container>
-    </MKBox>
   );
 };
 

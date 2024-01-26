@@ -1,0 +1,6 @@
+Flask==3.0.1
+google_auth_oauthlib==1.2.0
+pip==20.0.2
+protobuf==4.25.2
+Requests==2.31.0
+urllib3==1.26.15

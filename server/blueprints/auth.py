@@ -9,7 +9,14 @@ from pip._vendor import cachecontrol
 import google.auth.transport.requests
 import os
 
+from dao.inmemory import save_user, get_user
 from flask import session, abort, redirect, request, Blueprint
+from flask_login import (
+    LoginManager,
+    login_required,
+    login_user,
+    logout_user,
+)
 from models.User import User
 
 ### BEGIN Constants ###
@@ -22,6 +29,7 @@ client_secrets_file = os.path.join(
 ### END Constants ###
 
 ### BEGIN init ###
+login_manager = LoginManager()  # Login Manager Init.
 flow = Flow.from_client_secrets_file(
     client_secrets_file=client_secrets_file,
     scopes=[
@@ -59,21 +67,37 @@ def callback():
     )
 
     gmail_user = User(
+        id=id_info.get("email"),
         name=id_info.get("name"),
         picture_url=id_info.get("picture"),
         locale=id_info.get("locale"),
         email_id=id_info.get("email"),
     )
-    session["user"] = gmail_user.to_json()
+    save_user(gmail_user)
+    login_user(gmail_user)
     return redirect("/protected_area")
 
 
 @auth_bp.route("/logout")
+@login_required
 def logout():
-    session.clear()
+    logout_user()
     return redirect("/")
 
 
 @auth_bp.route("/")
 def index():
     return "Hello World <a href='/login'><button>Login</button></a>"
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    return get_user(user_id)
+
+
+@auth_bp.record_once
+def on_load(state):
+    # This function is called when the blueprint is loaded
+    # It allows us to access the application object
+    app = state.app
+    login_manager.init_app(app)

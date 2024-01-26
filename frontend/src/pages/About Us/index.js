@@ -21,6 +21,7 @@ import MKTypography from "components/MKTypography";
 import Navbar from "components/NavBar/index";
 import routes from "routes";
 import Team from "components/Team";
+
 function AboutUs() {
   return (
     <>

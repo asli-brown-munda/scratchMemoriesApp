@@ -29,6 +29,7 @@
     "react-file-icon": "^1.4.0",
     "react-fileicons": "^2.2.13",
     "react-flatpickr": "3.10.13",
+    "react-google-button": "^0.7.2",
     "react-router-dom": "6.10.0",
     "react-scripts": "5.0.1",
     "react-syntax-highlighter": "15.5.0",

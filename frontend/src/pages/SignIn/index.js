@@ -32,8 +32,7 @@ import GoogleIcon from "@mui/icons-material/Google";
 // Material Kit 2 React components
 import MKBox from "components/MKBox";
 import MKTypography from "components/MKTypography";
-import MKInput from "components/MKInput";
-import MKButton from "components/MKButton";
+import GoogleButton from 'react-google-button'
 
 // Material Kit 2 React example components
 import Navbar from "components/NavBar/index";
@@ -88,88 +87,24 @@ function SignInBasic() {
                 >
                   Sign in
                 </MKTypography>
+              </MKBox>
+              <MKBox pb={3} px={3} sx={{ justifyContent: "center" }}>
                 <Grid
                   container
-                  spacing={3}
-                  justifyContent="center"
-                  sx={{ mt: 1, mb: 2 }}
+                  spacing={1}
+                  flexDirection="column"
+                  alignContent="center"
                 >
-                  <Grid item xs={2}>
+                  <Grid item >
                     <MKTypography
                       component={MuiLink}
-                      href="#"
+                      href="/login"
                       variant="body1"
-                      color="white"
                     >
-                      <FacebookIcon color="inherit" />
-                    </MKTypography>
-                  </Grid>
-                  <Grid item xs={2}>
-                    <MKTypography
-                      component={MuiLink}
-                      href="#"
-                      variant="body1"
-                      color="white"
-                    >
-                      <GitHubIcon color="inherit" />
-                    </MKTypography>
-                  </Grid>
-                  <Grid item xs={2}>
-                    <MKTypography
-                      component={MuiLink}
-                      href="#"
-                      variant="body1"
-                      color="white"
-                    >
-                      <GoogleIcon color="inherit" />
+                      <GoogleButton/ >
                     </MKTypography>
                   </Grid>
                 </Grid>
-              </MKBox>
-              <MKBox pt={4} pb={3} px={3}>
-                <MKBox component="form" role="form">
-                  <MKBox mb={2}>
-                    <MKInput type="email" label="Email" fullWidth />
-                  </MKBox>
-                  <MKBox mb={2}>
-                    <MKInput type="password" label="Password" fullWidth />
-                  </MKBox>
-                  <MKBox display="flex" alignItems="center" ml={-1}>
-                    <Switch
-                      checked={rememberMe}
-                      onChange={handleSetRememberMe}
-                    />
-                    <MKTypography
-                      variant="button"
-                      fontWeight="regular"
-                      color="text"
-                      onClick={handleSetRememberMe}
-                      sx={{ cursor: "pointer", userSelect: "none", ml: -1 }}
-                    >
-                      &nbsp;&nbsp;Remember me
-                    </MKTypography>
-                  </MKBox>
-                  <MKBox mt={4} mb={1}>
-                    <MKButton variant="gradient" color="info" fullWidth>
-                      sign in
-                    </MKButton>
-                  </MKBox>
-                  <MKBox mt={3} mb={1} textAlign="center">
-                    <MKTypography variant="button" color="text">
-                      Don&apos;t have an account?{" "}
-                      <MKTypography
-                        component={Link}
-                        to="/authentication/sign-up/cover"
-                        variant="button"
-                        color="info"
-                        fontWeight="medium"
-                        textGradient
-                      >
-                        Sign up
-                      </MKTypography>
-                    </MKTypography>
-                  </MKBox>
-                </MKBox>
               </MKBox>
             </Card>
           </Grid>

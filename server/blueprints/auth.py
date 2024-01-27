@@ -1,16 +1,13 @@
 import os
 import pathlib
-import json
 
-import requests
 from google.oauth2 import id_token
 from google_auth_oauthlib.flow import Flow
-from pip._vendor import cachecontrol
 import google.auth.transport.requests
 import os
 
 from dao.inmemory import save_user, get_user
-from flask import session, abort, redirect, request, Blueprint
+from flask import request, Blueprint, make_response, jsonify
 from flask_login import (
     LoginManager,
     login_required,
@@ -44,50 +41,35 @@ flow = Flow.from_client_secrets_file(
 auth_bp = Blueprint("auth", __name__)
 
 
-@auth_bp.route("/login")
-def login():
-    authorization_url, state = flow.authorization_url()
-    session["state"] = state
-    return redirect(authorization_url)
+@auth_bp.route("/login/google", methods=["POST"])
+def login_gmail_user():
+    try:
+        token = request.json.get("token")
+        token_request = google.auth.transport.requests.Request()
 
+        id_info = id_token.verify_oauth2_token(
+            id_token=token, request=token_request, audience=GOOGLE_CLIENT_ID
+        )
 
-@auth_bp.route("/callback")
-def callback():
-    flow.fetch_token(authorization_response=request.url)
-    if not session["state"] == request.args["state"]:
-        abort(500)  # State does not match!
+        gmail_user = User(
+            id=id_info.get("email"),
+            name=id_info.get("name"),
+            picture_url=id_info.get("picture"),
+            locale=id_info.get("locale"),
+            email_id=id_info.get("email"),
+        )
 
-    credentials = flow.credentials
-    request_session = requests.session()
-    cached_session = cachecontrol.CacheControl(request_session)
-    token_request = google.auth.transport.requests.Request(session=cached_session)
+        save_user(gmail_user)
+        login_user(gmail_user)
+        return make_response({"success": True}, 200)
+    except Exception as ex:
+        print(ex)
 
-    id_info = id_token.verify_oauth2_token(
-        id_token=credentials._id_token, request=token_request, audience=GOOGLE_CLIENT_ID
-    )
-
-    gmail_user = User(
-        id=id_info.get("email"),
-        name=id_info.get("name"),
-        picture_url=id_info.get("picture"),
-        locale=id_info.get("locale"),
-        email_id=id_info.get("email"),
-    )
-    save_user(gmail_user)
-    login_user(gmail_user)
-    return redirect("/protected_area")
-
-
-@auth_bp.route("/logout")
+@auth_bp.route("/logout", methods=["POST"])
 @login_required
 def logout():
     logout_user()
-    return redirect("/")
-
-
-@auth_bp.route("/")
-def index():
-    return "Hello World <a href='/login'><button>Login</button></a>"
+    return make_response({"success": True}, 200)
 
 
 @login_manager.user_loader

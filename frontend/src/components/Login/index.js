@@ -6,10 +6,14 @@ import axios from "axios";
 // Material Kit 2 React components
 import MKBox from "components/MKBox";
 import MKTypography from "components/MKTypography";
+import { useContext } from "react";
+
 import { GoogleLogin } from "@react-oauth/google";
 import { BACKEND_URL } from "config/app_config";
+import { UserContext } from "context/UserContext";
 
 const Login = function () {
+  const { user, setUser } = useContext(UserContext);
   // TODO: Update the login behavior.
   const google_login = (response) =>
     axios
@@ -17,10 +21,9 @@ const Login = function () {
         token: response["credential"],
       })
       .then((response) => {
-        console.log(response);
-        axios.post(BACKEND_URL + "/protected_area").then((r) => console.log(r));
+        console.log("Logged In User: ", response);
+        setUser(response);
       });
-      
   return (
     <MKBox
       px={1}

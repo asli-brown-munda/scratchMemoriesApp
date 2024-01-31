@@ -61,9 +61,12 @@ def login_gmail_user():
 
         save_user(gmail_user)
         login_user(gmail_user)
-        return make_response({"success": True}, 200)
+
+        userString = gmail_user.toJSON()
+        return make_response(userString, 200)
     except Exception as ex:
         print(ex)
+        return make_response("", 501)
 
 @auth_bp.route("/logout", methods=["POST"])
 @login_required

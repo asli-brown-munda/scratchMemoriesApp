@@ -31,20 +31,14 @@ class User(UserMixin):
         self.email_id = email_id
         self.id = id
 
-    def to_json(self) -> str:
-        """Serialize the User object to a JSON-formatted string."""
-        serialized_data = {
-            key[1:] if key.startswith("_") else key: value
-            for key, value in self.__dict__.items()
-        }
-        return json.dumps(serialized_data)
+    def toJSON(self):
+        return json.dumps(self, default=lambda o: o.__dict__, sort_keys=True, indent=4)
 
     @classmethod
     def from_json(cls, json_str: str) -> "User":
         """Deserialize a JSON-formatted string to a User object."""
         data = json.loads(json_str)
         return cls(**data)
-
 
     def get_id(self):
         """Return the id of the user."""

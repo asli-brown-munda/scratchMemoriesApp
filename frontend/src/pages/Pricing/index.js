@@ -9,8 +9,12 @@ import Grid from "@mui/material/Grid";
 import MKBox from "components/MKBox";
 import MKTypography from "components/MKTypography";
 import plans from "config/plans.json";
+import { UserContext } from "context/UserContext";
+import { useContext } from "react";
 
 function Pricing() {
+  const { user } = useContext(UserContext);
+  console.log("User Value on Pricing Page is: ", user);
   return (
     <>
       <BackgroundParticles />
@@ -56,7 +60,7 @@ function Pricing() {
 function DescriptionGenerator(points, price, originalPrice) {
   return (
     <>
-      <MKTypography display="block" mb={2}>
+      <MKTypography display="block" mb={2} component={"span"}>
         <ul>
           {points.map((point) => (
             <>

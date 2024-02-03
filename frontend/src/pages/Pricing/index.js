@@ -7,19 +7,24 @@ import routes from "routes";
 import FilledInfoCard from "components/Cards/InfoCards/FilledInfoCard";
 import Grid from "@mui/material/Grid";
 import MKBox from "components/MKBox";
+import MKButton from "components/MKButton";
 import MKTypography from "components/MKTypography";
 import plans from "config/plans.json";
 import { UserContext } from "context/UserContext";
 import { useContext } from "react";
+import axios from "axios";
+import { BACKEND_URL } from "config/app_config";
+import { useNavigate } from 'react-router-dom';
 
 function Pricing() {
-  const { user } = useContext(UserContext);
-  console.log("User Value on Pricing Page is: ", user);
+  const { user, setUser } = useContext(UserContext);
+  const navigate = useNavigate();
+
   return (
     <>
       <BackgroundParticles />
       <MKBox component="header" position="relative">
-        <Navbar routes={routes} />
+        {user == null ? <Navbar routes={routes} /> : null}
 
         <Grid
           container
@@ -43,11 +48,7 @@ function Pricing() {
                 )}
                 color="info"
                 variant="contained"
-                action={{
-                  type: "internal",
-                  route: "/sign_in",
-                  label: "Sign In",
-                }}
+                action={ActionButton(user, setUser, plan, navigate)}
               />
             </Grid>
           ))}
@@ -58,6 +59,16 @@ function Pricing() {
 }
 
 function DescriptionGenerator(points, price, originalPrice) {
+  const priceElement =
+    originalPrice > 0 ? (
+      <>
+        Early Bird Price: <del>{originalPrice}</del> {price}$
+      </>
+    ) : (
+      <>
+        <br></br>
+      </>
+    );
   return (
     <>
       <MKTypography display="block" mb={2} component={"span"}>
@@ -68,10 +79,48 @@ function DescriptionGenerator(points, price, originalPrice) {
             </>
           ))}
         </ul>
-        Early Bird Price: <del>{originalPrice}</del> {price}$.
+        {priceElement}
       </MKTypography>
     </>
   );
+}
+
+function ActionButton(user, setUser, plan, navigate) {
+  const makePurchase = () =>
+    axios
+      .post(BACKEND_URL + "/purhcase", {
+        planCode: plan["code"],
+      })
+      .then((response) => {
+        console.log("Purchase Success: ", response);
+        setUser(response.data);
+        navigate("/dashboard");
+      })
+      .catch((error) => {
+        console.error("Purchase Error: ", error);
+      });
+  if (user == null) {
+    return (
+      <MKButton color="info" href="/sign_in">
+        Sign In
+      </MKButton>
+    );
+  } else {
+
+    if (plan["price"] > 0 && user.plan == 'STARTER_PLAN') {
+      return (
+        <MKButton color="info" onClick={makePurchase}>
+          Purchase
+        </MKButton>
+      );
+    } else {
+      return (
+        <MKButton color="info" href="/dashboard">
+          Continue to Dashboard
+        </MKButton>
+      );
+    }
+  }
 }
 
 export default Pricing;

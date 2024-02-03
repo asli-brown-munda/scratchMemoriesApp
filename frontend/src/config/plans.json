@@ -1,12 +1,22 @@
 [
     {
+        "title": "Free Plan",
+        "code": "FREE_PLAN",
+        "description": ["5 GB Storage", "10 GB Download", "Client Side Encryption", "Durable Storage"],
+        "original_price": 0,
+        "price": 0,
+        "currency": "$"
+    },
+    {
         "title": "Starter Plan",
+        "code": "STARTER_PLAN",
         "description": ["100 GB Storage", "200 GB Download", "Client Side Encryption", "Durable Storage"],
         "original_price": 15,
         "price": 10,
         "currency": "$"
     },
     {
+        "code": "PERSONAL_PLAN",
         "title": "Personal Plan",
         "description": ["2 TB Storage", "4 TB Download",  "Client Side Encryption", "Durable Storage"],
         "original_price": 90,

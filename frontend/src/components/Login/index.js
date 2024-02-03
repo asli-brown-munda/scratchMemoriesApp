@@ -12,7 +12,10 @@ import { GoogleLogin } from "@react-oauth/google";
 import { BACKEND_URL } from "config/app_config";
 import { UserContext } from "context/UserContext";
 
+import { useNavigate } from "react-router-dom";
+
 const Login = function () {
+  const navigate = useNavigate();
   const { user, setUser } = useContext(UserContext);
   // TODO: Update the login behavior.
   const google_login = (response) =>
@@ -22,7 +25,8 @@ const Login = function () {
       })
       .then((response) => {
         console.log("Logged In User: ", response);
-        setUser(response);
+        setUser(response.data);
+        navigate("/pricing");
       });
   return (
     <MKBox

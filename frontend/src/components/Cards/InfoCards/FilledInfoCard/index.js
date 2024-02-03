@@ -85,26 +85,7 @@ function FilledInfoCard({ variant, color, icon, title, description, action }) {
           {title}
         </MKTypography>
         {description}
-        {action && action.type === "external" ? (
-          <MKTypography
-            component={MuiLink}
-            href={action.route}
-            target="_blank"
-            rel="noreferrer"
-            variant="body2"
-            fontWeight="regular"
-            color={variant === "contained" ? color : "white"}
-            sx={buttonStyles}
-          >
-            {action.label}{" "}
-            <Icon sx={{ fontWeight: "bold" }}>arrow_forward</Icon>
-          </MKTypography>
-        ) : null}
-        {action && action.type === "internal" ? (
-          <MKButton color="white" href={action.route} color="info">
-            {action.label}
-          </MKButton>
-        ) : null}
+        {action}
       </MKBox>
     </MKBox>
   );
@@ -133,14 +114,7 @@ FilledInfoCard.propTypes = {
   icon: PropTypes.node.isRequired,
   title: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
-  action: PropTypes.oneOfType([
-    PropTypes.bool,
-    PropTypes.shape({
-      type: PropTypes.oneOf(["external", "internal"]).isRequired,
-      route: PropTypes.string.isRequired,
-      label: PropTypes.string.isRequired,
-    }),
-  ]),
+  action: PropTypes.node.isRequired,
 };
 
 export default FilledInfoCard;

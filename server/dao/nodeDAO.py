@@ -17,8 +17,21 @@ class NodeHierarchy:
             response = self.table.query(KeyConditionExpression=Key("user_id#parent_id").eq(userId + "#" + folder))
         except ClientError as err:
             logger.error(
-                "Couldn't query for files released in %s. why: %s: %s",
-                year,
+                "Couldn't query for files. why: %s: %s",
+                err.response["Error"]["Code"],
+                err.response["Error"]["Message"],
+            )
+            raise
+        else:
+            return response["Items"]
+
+    def getNode(self, file_id):
+        try:
+            response = self.table.query(IndexName = "child_id-index", 
+                KeyConditionExpression=Key("child_id").eq(file_id))
+        except ClientError as err:
+            logger.error(
+                "Couldn't query for file. why: %s: %s",
                 err.response["Error"]["Code"],
                 err.response["Error"]["Message"],
             )

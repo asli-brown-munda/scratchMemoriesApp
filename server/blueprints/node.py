@@ -4,7 +4,7 @@ from models.Node import Node
 from flask_injector import FlaskInjector, inject, singleton
 from dao.nodeDAO import NodeHierarchy
 
-node_bp = Blueprint('file', __name__)
+node_bp = Blueprint('node', __name__)
 
 @node_bp.route("/list/<folder>")
 @inject

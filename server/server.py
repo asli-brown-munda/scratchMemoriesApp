@@ -4,10 +4,13 @@ from blueprints.auth import auth_bp
 from blueprints.purchase import purchase_bp
 from blueprints.test_protected_api import protected_area_bp
 from blueprints.node import node_bp
+from blueprints.fileDownloadUpload import file_bp
 from flask_injector import FlaskInjector, inject, singleton
 from flask_cors import CORS
 from dao.nodeDAO import NodeHierarchy
 import boto3
+from dao.s3Accessor import S3Accessor
+from botocore.client import Config
 
 # TODO: Flag Based Check.
 # os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
@@ -22,6 +25,7 @@ app.register_blueprint(auth_bp)
 app.register_blueprint(protected_area_bp)
 app.register_blueprint(purchase_bp)
 app.register_blueprint(node_bp)
+app.register_blueprint(file_bp)
 
 
 
@@ -30,6 +34,11 @@ def configure(binder):
     binder.bind(
         NodeHierarchy,
         to=NodeHierarchy(boto3.resource("dynamodb", region_name="ap-south-1")),
+        scope=singleton,
+    )
+    binder.bind(
+        S3Accessor,
+        to=S3Accessor(boto3.client("s3", region_name="ap-south-1", config=Config(signature_version='s3v4'))),
         scope=singleton,
     )
 

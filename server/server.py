@@ -12,9 +12,6 @@ import boto3
 from dao.s3Accessor import S3Accessor
 from botocore.client import Config
 
-# TODO: Flag Based Check.
-# os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
-
 app = Flask("Memories")
 CORS(app, supports_credentials=True)
 
@@ -26,7 +23,6 @@ app.register_blueprint(protected_area_bp)
 app.register_blueprint(purchase_bp)
 app.register_blueprint(node_bp)
 app.register_blueprint(file_bp)
-
 
 
 ##Move to config file

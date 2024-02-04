@@ -11,8 +11,9 @@ import Checkbox from "@mui/material/Checkbox";
 function FilesTable() {
   // Sets the path which in turn retrieves the data.
   const [currentPath, setCurrentPath] = React.useState(() => "/");
-  const [data, setData] = React.useState(() => []);
+  const [data, setData] = React.useState(() => fetchFiles("/"));
   const [selectedFiles, setSelectedFiles] = React.useState([]);
+  const [selectAllChecked, setSelectAllChecked] = React.useState(false);
 
   React.useEffect(() => {
     setData(fetchFiles(currentPath));
@@ -33,12 +34,27 @@ function FilesTable() {
     setCurrentPath(clickedPath);
     setData(fetchFiles(clickedPath));
     setSelectedFiles([]);
+    setSelectAllChecked(false);
   };
+  const handleSelectAllChange = () => {
+    setSelectAllChecked((prevSelectAllChecked) => !prevSelectAllChecked);
+    setSelectedFiles((prevSelectedFiles) => {
+      if (!selectAllChecked) {
+        return data.map((file) => file.id);
+      } else {
+        return [];
+      }
+    })};
 
   const columns = React.useMemo(
     () => [
       {
-        Header: "Select",
+        Header: (
+          <Checkbox
+            onChange={handleSelectAllChange}
+            checked={selectAllChecked}
+          />
+        ),
         accessor: "id",
         Cell: ({ cell, row }) => {
           const isFile = row.original.type !== "folder";
@@ -128,7 +144,7 @@ function FilesTable() {
   );
 }
 
-function CurrentPathElement(currentPath, handlePathClick, data, selectedFiles, setSelectedFiles) {
+function CurrentPathElement(currentPath, handlePathClick, data, selectedFiles) {
   const pathParts = currentPath.split("/").filter(Boolean);
   const handleDownloadSelected = () => {
     // Implement download logic for selected files
@@ -142,9 +158,6 @@ function CurrentPathElement(currentPath, handlePathClick, data, selectedFiles, s
         console.log(downloadLink);
       }
     })
-    
-    // Clear selected files after download
-    setSelectedFiles([]);
   };
 
   return (

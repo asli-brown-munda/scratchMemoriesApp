@@ -107,7 +107,7 @@ function ActionButton(user, setUser, plan, navigate) {
     );
   } else {
 
-    if (plan["price"] > 0 && user.plan == 'FREE_PLAN') {
+    if (plan["price"] > 0 && user.plan === 'FREE_PLAN') {
       return (
         <MKButton color="info" onClick={makePurchase}>
           Purchase

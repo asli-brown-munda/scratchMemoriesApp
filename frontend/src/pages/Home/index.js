@@ -55,7 +55,7 @@ function Home() {
                 fontSize={25}
               >
                 A cheaper, durable and secure storage for your precious
-                memories.
+                data.
               </MKTypography>
               <Stack direction="row" spacing={1} mt={3}>
                 <MKButton color="white" href="/sign_in">Login</MKButton>

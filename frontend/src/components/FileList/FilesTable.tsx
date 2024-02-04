@@ -10,7 +10,7 @@ import Checkbox from "@mui/material/Checkbox";
 
 function FilesTable() {
   // Sets the path which in turn retrieves the data.
-  const [currentPath, setCurrentPath] = React.useState(() => "/src");
+  const [currentPath, setCurrentPath] = React.useState(() => "/");
   const [data, setData] = React.useState(() => []);
   const [selectedFiles, setSelectedFiles] = React.useState([]);
 
@@ -18,11 +18,6 @@ function FilesTable() {
     setData(fetchFiles(currentPath));
   }, [currentPath]);
 
-  const handlePathClick = (clickedPath) => {
-    setCurrentPath(clickedPath);
-    setData(fetchFiles(clickedPath));
-    setSelectedFiles([]);
-  };
   const handleCheckboxChange = (fileId) => {
     setSelectedFiles((prevSelectedFiles) => {
       const isFileSelected = prevSelectedFiles.includes(fileId);
@@ -34,19 +29,9 @@ function FilesTable() {
       }
     });
   };
-  const handleDownloadSelected = () => {
-    // Implement download logic for selected files
-    // Iterate through selectedFiles and initiate download for each file
-    selectedFiles.forEach((fileId) => {
-      const file = data.find((file) => file.id === fileId);
-      if (file && file.link && file.type !== "folder") {
-        const downloadLink = document.createElement("a");
-        downloadLink.href = file.link;
-        downloadLink.download = file.name;
-        downloadLink.click();
-      }
-    });
-    // Clear selected files after download
+  const handlePathClick = (clickedPath) => {
+    setCurrentPath(clickedPath);
+    setData(fetchFiles(clickedPath));
     setSelectedFiles([]);
   };
 
@@ -94,7 +79,6 @@ function FilesTable() {
     ],
     [currentPath, selectedFiles]
   );
-  const pathParts = currentPath.split("/").filter(Boolean);
 
   // Actual Table Gets Populated here.
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
@@ -104,17 +88,71 @@ function FilesTable() {
       useSortBy,
     });
   return (
-    <Grid>
-      <div className="container">
-        <MKBox
-          color="black"
-          variant="gradient"
-          borderRadius="lg"
-          shadow="lg"
-          opacity={1}
-          p={2}
-        >
-          <div>
+    <MKBox
+      color="black"
+      variant="gradient"
+      borderRadius="lg"
+      shadow="lg"
+      opacity={1}
+      p={2}
+    >
+      {CurrentPathElement(currentPath, handlePathClick, data, selectedFiles, setSelectedFiles)}
+
+      <table
+        className="table align-middle table-nowrap table-hover mb-0"
+        {...getTableProps()}
+      >
+        <thead className="table-light">
+          {headerGroups.map((headerGroup) => (
+            <tr {...headerGroup.getHeaderGroupProps()}>
+              {headerGroup.headers.map((column) => (
+                <th {...column.getHeaderProps()}>{column.render("Header")}</th>
+              ))}
+            </tr>
+          ))}
+        </thead>
+        <tbody {...getTableBodyProps()}>
+          {rows.map((row) => {
+            prepareRow(row);
+            return (
+              <tr {...row.getRowProps()}>
+                {row.cells.map((cell) => (
+                  <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+                ))}
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </MKBox>
+  );
+}
+
+function CurrentPathElement(currentPath, handlePathClick, data, selectedFiles, setSelectedFiles) {
+  const pathParts = currentPath.split("/").filter(Boolean);
+  const handleDownloadSelected = () => {
+    // Implement download logic for selected files
+    // Iterate through selectedFiles and initiate download for each file
+    selectedFiles.forEach((fileId) => {
+      const file = data.find((file) => file.id === fileId);
+      if (file && file.link && file.type !== "folder") {
+        const downloadLink = document.createElement("a");
+        downloadLink.href = file.link;
+        downloadLink.download = file.name;
+        console.log(downloadLink);
+      }
+    })
+    
+    // Clear selected files after download
+    setSelectedFiles([]);
+  };
+
+  return (
+    <>
+      <MKBox>
+        <Grid container>
+          <Grid item md={10} marginLeft={2}>
+            Current Path:
             <span className="path-link" onClick={() => handlePathClick("/")}>
               root
             </span>
@@ -133,47 +171,21 @@ function FilesTable() {
                 </span>
               </React.Fragment>
             ))}
-          </div>
-          <MKButton
-            variant="gradient"
-            color="info"
-            onClick={handleDownloadSelected}
-            size="small"
-          >
-            Download Selected
-          </MKButton>
-
-          <table
-            className="table align-middle table-nowrap table-hover mb-0"
-            {...getTableProps()}
-          >
-            <thead className="table-light">
-              {headerGroups.map((headerGroup) => (
-                <tr {...headerGroup.getHeaderGroupProps()}>
-                  {headerGroup.headers.map((column) => (
-                    <th {...column.getHeaderProps()}>
-                      {column.render("Header")}
-                    </th>
-                  ))}
-                </tr>
-              ))}
-            </thead>
-            <tbody {...getTableBodyProps()}>
-              {rows.map((row) => {
-                prepareRow(row);
-                return (
-                  <tr {...row.getRowProps()}>
-                    {row.cells.map((cell) => (
-                      <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
-                    ))}
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </MKBox>
-      </div>
-    </Grid>
+          </Grid>
+          <Grid item>
+            <MKButton
+              variant="gradient"
+              color="info"
+              onClick={handleDownloadSelected}
+              size="small"
+            >
+              Download Selected
+            </MKButton>
+          </Grid>
+        </Grid>
+        <br></br>
+      </MKBox>
+    </>
   );
 }
 

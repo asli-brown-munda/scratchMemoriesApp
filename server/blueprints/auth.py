@@ -61,7 +61,9 @@ def login_gmail_user():
                 picture_url=id_info.get("picture"),
                 locale=id_info.get("locale"),
                 email_id=id_info.get("email"),
-                plan=PlanEnum.FREE_PLAN.name
+                plan=PlanEnum.FREE_PLAN.name,
+                storage_used=0,
+                download_used=0
             )
             save_user(gmail_user)
             final_user = gmail_user

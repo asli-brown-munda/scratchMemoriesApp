@@ -10,11 +10,11 @@ import MKButton from "components/MKButton";
 import axios from "axios";
 import { BACKEND_URL } from "config/app_config";
 import { useNavigate } from "react-router-dom";
+import MKTypography from "components/MKTypography";
 
 function LoggedInUserNavbar() {
   const { user, setUser } = useContext(UserContext);
   const navigate = useNavigate();
-
   const logoutUser = () => {
     axios
       .post(BACKEND_URL + "/logout", {})
@@ -34,8 +34,22 @@ function LoggedInUserNavbar() {
     <AppBar color="info" position="static">
       <Toolbar>
         <Grid container justifyContent="right">
-          <Grid item pr={2}>
-            <MKButton sx={{ color: "#1a73e8" }} onClick={logoutUser}>
+          <Grid item pr={4} pt={0.75}>
+            <MKTypography color="white">
+              Storage Usage: {user.storage_used / 1000} GB
+            </MKTypography>
+          </Grid>
+          <Grid item pr={4} pt={0.75}>
+            <MKTypography color="white">
+              Download Usage: {user.download_used / 1000} GB
+            </MKTypography>
+          </Grid>
+          <Grid item pr={2} pt={0.75}>
+            <MKButton
+              sx={{ color: "#1a73e8" }}
+              onClick={logoutUser}
+              size="small"
+            >
               Logout
             </MKButton>
           </Grid>

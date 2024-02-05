@@ -12,7 +12,9 @@ class Plan:
         "description": ["5 GB Storage", "10 GB Download", "Client Side Encryption", "Durable Storage"],
         "original_price": 0,
         "price": 0,
-        "currency": "$"
+        "currency": "$",
+        "storage_quota_megabytes": 5000,
+        "download_quota_megabytes": 10000
     }
 
     STARTER_PLAN_DETAILS = {
@@ -21,7 +23,9 @@ class Plan:
         "description": ["100 GB Storage", "200 GB Download", "Client Side Encryption", "Durable Storage"],
         "original_price": 15,
         "price": 10,
-        "currency": "$"
+        "currency": "$",
+        "storage_quota_megabytes": 100000,
+        "download_quota_megabytes": 200000
     }
 
     PERSONAL_PLAN_DETAILS = {
@@ -30,7 +34,9 @@ class Plan:
         "description": ["2 TB Storage", "4 TB Download",  "Client Side Encryption", "Durable Storage"],
         "original_price": 90,
         "price": 80,
-        "currency": "$"
+        "currency": "$",
+        "storage_quota_megabytes": 2000000,
+        "download_quota_megabytes": 4000000
     }
 
     def __init__(self, plan_code):
@@ -40,7 +46,8 @@ class Plan:
         self.original_price = 0
         self.price = 0
         self.currency = ""
-
+        self.storage_quota_megabytes = 0
+        self.download_quota_megabytes = 0
         self.__set_plan_details()
 
     def __set_plan_details(self):

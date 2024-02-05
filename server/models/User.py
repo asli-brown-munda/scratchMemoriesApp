@@ -2,6 +2,7 @@ import json
 from flask_login import UserMixin
 import jsonpickle
 
+
 class User(UserMixin):
     """Class representing a user.
 
@@ -14,7 +15,15 @@ class User(UserMixin):
     """
 
     def __init__(
-        self, id: str, name: str, picture_url: str, locale: str, email_id: str, plan: str
+        self,
+        id: str,
+        name: str,
+        picture_url: str,
+        locale: str,
+        email_id: str,
+        plan: str,
+        storage_used: int,
+        download_used: int,
     ):
         """Initialize a User object.
 
@@ -31,6 +40,8 @@ class User(UserMixin):
         self.email_id = email_id
         self.id = id
         self.plan = plan
+        self.storage_used = storage_used
+        self.download_used = download_used
 
     def toJSON(self):
         return jsonpickle.encode(self, unpicklable=False)

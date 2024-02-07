@@ -1,5 +1,6 @@
 import "bootstrap/dist/css/bootstrap.css";
 import { ThemeProvider } from "@mui/material/styles";
+import { PrimeReactProvider, PrimeReactContext } from "primereact/api";
 import CssBaseline from "@mui/material/CssBaseline";
 import { useEffect, useState } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
@@ -34,18 +35,19 @@ function App() {
 
       return null;
     });
-
   return (
     <ThemeProvider theme={theme}>
-      <GoogleOAuthProvider clientId={GOOGLE_OAUTH_CLIENT_ID}>
-        <UserContext.Provider value={{ user, setUser }}>
-          <CssBaseline />
-          <Routes>
-            {getRoutes(routes)}
-            <Route path="/" element={<Navigate to="/home" />} />
-          </Routes>
-        </UserContext.Provider>
-      </GoogleOAuthProvider>
+      <PrimeReactProvider>
+        <GoogleOAuthProvider clientId={GOOGLE_OAUTH_CLIENT_ID}>
+          <UserContext.Provider value={{ user, setUser }}>
+            <CssBaseline />
+            <Routes>
+              {getRoutes(routes)}
+              <Route path="/" element={<Navigate to="/home" />} />
+            </Routes>
+          </UserContext.Provider>
+        </GoogleOAuthProvider>
+      </PrimeReactProvider>
     </ThemeProvider>
   );
 }
@@ -60,11 +62,13 @@ function PerformUserManagement(user, setUser) {
     // Check session validity using your authentication mechanism
     axios
       .post(BACKEND_URL + "/protected_area")
-      .then((response) => console.log("Session Still exists for the user", response.data))
+      .then((response) =>
+        console.log("Session Still exists for the user", response.data)
+      )
       .catch((error) => {
         localStorage.removeItem("user");
         setUser(null);
-        console.log("")
+        console.log("");
       });
   }, []);
 }

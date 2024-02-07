@@ -7,6 +7,10 @@ import MKButton from "components/MKButton/index.js";
 import MKBox from "components/MKBox/index.js";
 import Grid from "@mui/material/Grid";
 import Checkbox from "@mui/material/Checkbox";
+import { FileUpload } from "primereact/fileupload";
+import "primereact/resources/themes/lara-light-indigo/theme.css";
+import "primereact/resources/primereact.min.css";
+import { useRef } from "react";
 
 function FilesTable() {
   // Sets the path which in turn retrieves the data.
@@ -44,7 +48,8 @@ function FilesTable() {
       } else {
         return [];
       }
-    })};
+    });
+  };
 
   const columns = React.useMemo(
     () => [
@@ -112,7 +117,13 @@ function FilesTable() {
       opacity={1}
       p={2}
     >
-      {CurrentPathElement(currentPath, handlePathClick, data, selectedFiles, setSelectedFiles)}
+      {CurrentPathElement(
+        currentPath,
+        handlePathClick,
+        data,
+        selectedFiles,
+        setSelectedFiles
+      )}
 
       <table
         className="table align-middle table-nowrap table-hover mb-0"
@@ -157,7 +168,32 @@ function CurrentPathElement(currentPath, handlePathClick, data, selectedFiles) {
         downloadLink.download = file.name;
         console.log(downloadLink);
       }
-    })
+    });
+  };
+
+  const fileUploadRef = useRef(null);
+
+  const customBase64Uploader = async (event) => {
+    console.log(event);
+    // convert file to base64 encoded
+    for (let i = 0; i < event.files.length; ++i) {
+      const file = event.files[i]; // Use 'i' to iterate through all files
+
+      // Read the file as a blob
+      let blob = await fetch(file.objectURL).then((r) => r.blob());
+
+      // Create a FileReader instance
+      const reader = new FileReader();
+
+      // Read the blob as a data URL
+      reader.readAsDataURL(blob);
+
+      // Read the file data and compute the hash
+      reader.onloadend = function () {
+        const base64data = reader.result;        
+        console.log(`File ${i + 1} Hash: ${base64data}`); // Log the hash
+      };
+    }
   };
 
   return (
@@ -197,6 +233,17 @@ function CurrentPathElement(currentPath, handlePathClick, data, selectedFiles) {
           </Grid>
         </Grid>
         <br></br>
+      </MKBox>
+      <MKBox>
+        <FileUpload
+          ref={fileUploadRef}
+          name="Uploader"
+          accept="*"
+          maxFileSize={1000000}
+          customUpload
+          uploadHandler={customBase64Uploader}
+          multiple
+        />
       </MKBox>
     </>
   );

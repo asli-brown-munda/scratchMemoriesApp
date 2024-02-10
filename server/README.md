@@ -81,6 +81,26 @@ http://localhost:5000/confirm_upload_status
 }
 
 
+## Create folder
+
+API to create a folder given name of the folder and parent folder id
+
+### Request
+
+curl -H 'Content-Type: application/json' \
+-d '{"parent_id":"c2af9d83-5f94-484b-be18-f9ee25861243", "name": "folder1"}' \
+ -X POST \
+http://localhost:5000/create_folder
+
+
+
+### Response
+
+{
+  "id": "d00d3a90-fb7d-44cc-9015-3d5cc06c2169"
+}
+
+
 
 
 

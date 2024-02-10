@@ -4,6 +4,7 @@ from flask_injector import FlaskInjector, inject, singleton
 from dao.s3Accessor import S3Accessor
 from dao.nodeDAO import NodeHierarchy
 import uuid
+import time
 
 
 
@@ -26,18 +27,17 @@ def initiate_upload(s3Accessor: S3Accessor, nodeHierarchy: NodeHierarchy):
 	user_id = "user11344" ## TODO: pull it from auth
 	parent_node_id = request.json.get("parent_node_id")
 	node_name = request.json.get("node_name")
-	node_type = request.json.get("node_type")
 	item = nodeHierarchy.getNode(parent_node_id)
 	parent_name = item['name']
-	bucket = user_id if (node_type == 'file') else ""
+	bucket = user_id 
 	node_id = str(uuid.uuid4())
-	key = (str(node_id) + '#' + str(node_name)) if (node_type == 'file') else ""
+	key = str(node_id) + '#' + str(node_name)
 	nodeHierarchy.createNode(user_id, Node(
 			id = str(node_id),
 			name = node_name,
 			parent_id = parent_node_id,
 			parent_name = parent_name,
-			type = node_type,
+			type = 'file',
 			metadata = {'size': 0, 'bucket': bucket, 'key': key},
 			created_at = round(time.time()*1000)
 		))

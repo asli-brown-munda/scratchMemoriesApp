@@ -6,3 +6,4 @@ Flask_Injector==0.15.0
 Flask_Login==0.6.3
 google_auth_oauthlib==1.2.0
 protobuf==3.6.1
+python-dotenv==1.0.1

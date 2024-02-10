@@ -11,6 +11,11 @@ class S3Accessor:
     def __init__(self, s3_client):
         self._s3_client = s3_client
 
+    def get_file_size(self, bucket, key):
+        response = self._s3_client.head_object(Bucket= bucket, Key= key)
+        file_size = response['ContentLength']
+        return file_size
+
     def generate_presigned_url_upload(self, bucket, key):
         client_action = "put_object"
         url = self.generate_presigned_url(

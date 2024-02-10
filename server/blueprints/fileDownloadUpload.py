@@ -48,12 +48,15 @@ def initiate_upload(s3Accessor: S3Accessor, nodeHierarchy: NodeHierarchy):
 @inject
 def confirm_upload_status(s3Accessor: S3Accessor, nodeHierarchy: NodeHierarchy):
 	##authorize user
+	user_id = "user11344" ## TODO: pull it from auth
 	id = request.json.get("id")
 	item = nodeHierarchy.getNode(id)
 	if(item['created_at'] > 0):
-		raise Exception("filestatus is already confirmed")
+		raise Exception("filestatus is already confirmed")	
+	key = str(id) + '#' + item['name']
+	bucket = user_id
 	created_at = round(time.time()*1000)
-	size = 1000434 ##pull file size from S3 headers
+	size = s3Accessor.get_file_size(bucket, key)
 	nodeHierarchy.updateNode(id, created_at, size)
 	return {'status': 'Ok'}
 

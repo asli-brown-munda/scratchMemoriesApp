@@ -2,7 +2,7 @@ import json
 
 
 class Node:
-	def __init__(self, id: str, name: str, parent_name: str, parent_id: str, size: int, type: str):
+	def __init__(self, id: str, name: str, parent_name: str, parent_id: str, size: int, type: str, bucket: str, key: str):
 		"""Initialize a Node object.
 
 		Args:
@@ -19,6 +19,8 @@ class Node:
 		self._parent_id = parent_id
 		self._size = size
 		self._type = type
+		self._bucket = bucket
+		self._key = key
 
 	def to_json(self) -> str:
 	    """Serialize the Node object to a JSON-formatted string."""

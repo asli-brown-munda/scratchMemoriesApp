@@ -3,6 +3,7 @@ import boto3
 from boto3.dynamodb.conditions import Key
 from botocore.exceptions import ClientError
 import logging
+from models.Node import Node
 
 logger = logging.getLogger(__name__)
 
@@ -39,6 +40,23 @@ class NodeHierarchy:
         else:
             return response["Items"]
 
+    def createNode(self, user_id, node):
+        try:
+            response = self.table.put_item(Item={
+            'child_id': node._id,
+            'child_name': node._name,
+            'parent_name': node._parent_name,
+            'user_id#parent_id': user_id + "#" + node._parent_id,
+            'meta_data': {'bucket': node._bucket, 'key': node._key},
+            'type': node._type
+        })
+        except ClientError as err:
+            logger.error(
+                "Couldn't query for file. why: %s: %s",
+                err.response["Error"]["Code"],
+                err.response["Error"]["Message"],
+            )
+            raise
 
 
 if __name__ == "__main__":

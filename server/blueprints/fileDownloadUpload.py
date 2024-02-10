@@ -39,18 +39,22 @@ def initiate_upload(s3Accessor: S3Accessor, nodeHierarchy: NodeHierarchy):
 			parent_name = parent_name,
 			type = 'file',
 			metadata = {'size': 0, 'bucket': bucket, 'key': key},
-			created_at = round(time.time()*1000)
+			created_at = 0
 		))
 	return {'id': node_id, 'upload_url':s3Accessor.generate_presigned_url_upload(bucket, key)}
 
 
-# @file_bp.route("/initiate_upload")
-# @inject
-# def update_upload_status(s3Accessor: S3Accessor, nodeHierarchy: NodeHierarchy, id):
-# 	##authorize user
-# 	items = nodeHierarchy.getNode(id)
-# 	if(len(items) != 1):
-# 		raise Exception("no file found!!")
-# 	bucket = items[0]['meta_data']['bucket']
-# 	key = items[0]['meta_data']['key']
-# 	return s3Accessor.generate_presigned_url_download(bucket, key)
+@file_bp.route("/confirm_upload_status", methods=["POST"])
+@inject
+def confirm_upload_status(s3Accessor: S3Accessor, nodeHierarchy: NodeHierarchy):
+	##authorize user
+	id = request.json.get("id")
+	item = nodeHierarchy.getNode(id)
+	if(item['created_at'] > 0):
+		raise Exception("filestatus is already confirmed")
+	created_at = round(time.time()*1000)
+	size = 1000434 ##pull file size from S3 headers
+	nodeHierarchy.updateNode(id, created_at, size)
+	return {'status': 'Ok'}
+
+

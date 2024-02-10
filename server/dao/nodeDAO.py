@@ -16,7 +16,7 @@ class NodeHierarchy:
     def listNodes(self, parent_id):
         try:
             response = self.table.query(IndexName = "parent_id-created_at-index", 
-                KeyConditionExpression=Key("parent_id").eq(parent_id))
+                KeyConditionExpression=Key("parent_id").eq(parent_id)  & Key("created_at").gt(0))
         except ClientError as err:
             logger.error(
                 "Couldn't query for files. why: %s: %s",
@@ -52,6 +52,22 @@ class NodeHierarchy:
             'owner': user_id,
             'type': node._type
         })
+        except ClientError as err:
+            logger.error(
+                "Couldn't query for file. why: %s: %s",
+                err.response["Error"]["Code"],
+                err.response["Error"]["Message"],
+            )
+            raise
+
+    def updateNode(self, id, created_at, size):
+        try:
+            response = self.table.update_item(
+                    Key = {"id": id},
+                    UpdateExpression="set meta_data.size=:size, created_at=:created_at",
+                    ExpressionAttributeValues={":size": int(size), ":created_at": int(created_at)},
+                    ReturnValues= 'NONE'
+        )
         except ClientError as err:
             logger.error(
                 "Couldn't query for file. why: %s: %s",

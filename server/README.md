@@ -62,6 +62,23 @@ http://localhost:5000/initiate_upload
 curl --request PUT --upload-file ~/Downloads/bc4d975a-24d1-4a26-bc7c-afa4d9446e61.jpg 'https://user11344.s3.amazonaws.com/3e8a151b-c90a-421f-9928-e39345b5ce98%23xyz3.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIASNYF7R6RNW4757VS%2F20240210%2Fap-south-1%2Fs3%2Faws4_request&X-Amz-Date=20240210T080610Z&X-Amz-Expires=1000&X-Amz-SignedHeaders=host&X-Amz-Signature=e95a793ca95b951ab5d49858e551167b3a0c50ceac7d9fe5c298904eb0e59c81' 
 
 
+## Confirm upload status
+
+API to confirm status of a file once uploaded on signed url generated using "Intiate upload" API. API takes id of the file whose upload is completed and updates the created time and size of the file in the file node.
+
+### Request
+
+curl -H 'Content-Type: application/json' \
+-d '{"id":"77f05a5b-8ef5-4215-97b6-7eb50c01324f"}' \
+ -X POST \
+http://localhost:5000/confirm_upload_status
+
+
+### Response
+
+{
+  "status": "Ok"
+}
 
 
 

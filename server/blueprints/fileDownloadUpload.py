@@ -13,11 +13,9 @@ file_bp = Blueprint('file', __name__)
 @inject
 def download(s3Accessor: S3Accessor, nodeHierarchy: NodeHierarchy, id):
 	##authorize user
-	items = nodeHierarchy.getNode(id)
-	if(len(items) != 1):
-		raise Exception("no file found!!")
-	bucket = items[0]['meta_data']['bucket']
-	key = items[0]['meta_data']['key']
+	item = nodeHierarchy.getNode(id)
+	bucket = item['meta_data']['bucket']
+	key = item['meta_data']['key']
 	return s3Accessor.generate_presigned_url_download(bucket, key)
 
 
@@ -29,10 +27,8 @@ def initiate_upload(s3Accessor: S3Accessor, nodeHierarchy: NodeHierarchy):
 	parent_node_id = request.json.get("parent_node_id")
 	node_name = request.json.get("node_name")
 	node_type = request.json.get("node_type")
-	items = nodeHierarchy.getNode(parent_node_id)
-	if(len(items) != 1):
-		raise Exception("no file found!!")
-	parent_name = items[0]['child_name']
+	item = nodeHierarchy.getNode(parent_node_id)
+	parent_name = item['name']
 	bucket = user_id if (node_type == 'file') else ""
 	node_id = str(uuid.uuid4())
 	key = (str(node_id) + '#' + str(node_name)) if (node_type == 'file') else ""
@@ -42,9 +38,8 @@ def initiate_upload(s3Accessor: S3Accessor, nodeHierarchy: NodeHierarchy):
 			parent_id = parent_node_id,
 			parent_name = parent_name,
 			type = node_type,
-			size = 0,
-			bucket = bucket,
-			key = key
+			metadata = {'size': 0, 'bucket': bucket, 'key': key},
+			created_at = round(time.time()*1000)
 		))
 	return {'id': node_id, 'upload_url':s3Accessor.generate_presigned_url_upload(bucket, key)}
 

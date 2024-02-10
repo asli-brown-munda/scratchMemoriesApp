@@ -10,15 +10,16 @@ node_bp = Blueprint('node', __name__)
 @inject
 def listNodes(nodeHierarchy: NodeHierarchy, folder):
 	##authorize user
-	items = nodeHierarchy.listNodes("1234", folder)
+	items = nodeHierarchy.listNodes(folder)
 	nodes = []
 	for item in items:
 		nodes.append(Node(
-			id = item['child_id'], 
-			name = item['child_name'], 
+			id = item['id'], 
+			name = item['name'], 
 			parent_name = item['parent_name'],
-			parent_id = item['user_id#parent_id'], 
-			size = item['meta_data']['size'],
-			type = item['type']
+			parent_id = item['parent_id'], 
+			metadata = item['meta_data'],
+			type = item['type'],
+			created_at = item['created_at']
 			).to_json())
 	return nodes

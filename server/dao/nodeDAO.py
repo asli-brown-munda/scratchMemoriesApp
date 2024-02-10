@@ -10,12 +10,13 @@ logger = logging.getLogger(__name__)
 class NodeHierarchy:
 
     def __init__(self, dbResource):
-        self.table = dbResource.Table("FileInformation")
+        self.table = dbResource.Table("Node")
 
 
-    def listNodes(self, userId, folder):
+    def listNodes(self, parent_id):
         try:
-            response = self.table.query(KeyConditionExpression=Key("user_id#parent_id").eq(userId + "#" + folder))
+            response = self.table.query(IndexName = "parent_id-created_at-index", 
+                KeyConditionExpression=Key("parent_id").eq(parent_id))
         except ClientError as err:
             logger.error(
                 "Couldn't query for files. why: %s: %s",
@@ -26,10 +27,9 @@ class NodeHierarchy:
         else:
             return response["Items"]
 
-    def getNode(self, file_id):
+    def getNode(self, id):
         try:
-            response = self.table.query(IndexName = "child_id-index", 
-                KeyConditionExpression=Key("child_id").eq(file_id))
+            response = self.table.get_item(Key = {"id": id})
         except ClientError as err:
             logger.error(
                 "Couldn't query for file. why: %s: %s",
@@ -38,16 +38,18 @@ class NodeHierarchy:
             )
             raise
         else:
-            return response["Items"]
+            return response["Item"]
 
     def createNode(self, user_id, node):
         try:
             response = self.table.put_item(Item={
-            'child_id': node._id,
-            'child_name': node._name,
+            'id': node._id,
+            'name': node._name,
             'parent_name': node._parent_name,
-            'user_id#parent_id': user_id + "#" + node._parent_id,
-            'meta_data': {'bucket': node._bucket, 'key': node._key},
+            'parent_id': node._parent_id,
+            'meta_data': node._metadata,
+            'created_at': node._created_at,
+            'owner': user_id,
             'type': node._type
         })
         except ClientError as err:

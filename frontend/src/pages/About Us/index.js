@@ -50,10 +50,22 @@ function AboutUs() {
                 Memories
               </MKTypography>
 
-              <MKTypography variant="body2" color="white">
-                We want to make Cloud Storage accessible to everyone, so you can
-                stop worrying about using external drives or expensive
-                alternatives!
+              <MKTypography color="white">
+                Memories isn't just another storage solution, it's a digital
+                guardian, preserving your precious moments for generations to
+                come. We understand the frustration of juggling external drives,
+                battling cloud limitations, and worrying about data loss. That's
+                why we created Memories, a secure, affordable,
+                and easy-to-use platform specifically designed for creative
+                professionals and everyday storytellers like you.
+                <br></br><br></br>
+                Why Memories?
+                <ul>
+                  <li>Savings: 33% cheaper than other storage solutions. </li>
+                  <li>Security: Server-side encryption with client-side coming soon. </li>
+                  <li>Scalability: Grows with your needs, fits any library. </li>
+                  <li>Accessibility: Fast downloads, retrieve files anytime, anywhere. </li>
+                </ul>
               </MKTypography>
             </Grid>
           </Grid>

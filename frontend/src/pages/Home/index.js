@@ -15,8 +15,15 @@ import RotatingCardFront from "components/Cards/RotatingCard/RotatingCardFront.j
 import RotatingCardBack from "components/Cards/RotatingCard/RotatingCardBack.js";
 import routes from "routes";
 import BackgroundParticles from "components/Background/index";
+import { useNavigate } from "react-router-dom";
 
 function Home() {
+  const navigate = useNavigate();
+
+  const redirectToUrl = (url) => {
+    navigate(url);
+  };
+  
   return (
     <>
       <BackgroundParticles />
@@ -58,8 +65,8 @@ function Home() {
                 data.
               </MKTypography>
               <Stack direction="row" spacing={1} mt={3}>
-                <MKButton color="white" href="/sign_in">Login</MKButton>
-                <MKButton variant="text" color="white">
+                <MKButton color="white" onClick={() => redirectToUrl("/sign_in")} size="large">Login</MKButton>
+                <MKButton variant="text" color="white" onClick={() => redirectToUrl("/about_us")} size="large">
                   About us
                 </MKButton>
               </Stack>
@@ -81,11 +88,11 @@ function Home() {
               <RotatingCardFront
                 icon="security"
                 title={<>Security</>}
-                description="All Data uploaded is secured at your computer, ensuring no one else can access your data."
+                description="All Data uploaded is server side encrypted, ensuring no one else can access your data."
               />
               <RotatingCardBack
                 title="Details"
-                description="No one should have access to your data else than you. For this we use encryption: XXXX."
+                description="No one should have access to your data else than you. Coming Soon: Client Side Encryption."
                 action={{
                   type: "internal",
                   route: "/sign_in",
@@ -100,11 +107,11 @@ function Home() {
                 icon="content_copy"
                 title={<>Durability</>}
                 backgroundColor="info"
-                description="All Data uploaded is copied XXXX number of times, so be worry-free about your data."
+                description="All Data uploaded is copied a high number of times to get 99.999999999% Durability."
               />
               <RotatingCardBack
                 title="Details"
-                description="Making XXXX numer of copies allows us to retrieve data even with a high fault rate."
+                description="Making high numer of copies allows us to retrieve data even with a high fault rate."
                 action={{
                   type: "internal",
                   route: "/sign_in",
@@ -118,12 +125,12 @@ function Home() {
             <RotatingCard>
               <RotatingCardFront
                 icon="payments"
-                title={<>Savings</>}
+                title={<>Huge Savings</>}
                 description="Why pay more for precious data that you might not check frequently when you have us?"
               />
               <RotatingCardBack
                 title="Details"
-                description="Stop paying extra for the Precious Data that you visit only once in a while. Pay for what you use."
+                description="It is 33% cheaper to use our offering when compared to what exists in the market."
                 action={{
                   type: "internal",
                   route: "/sign_in",
@@ -137,5 +144,6 @@ function Home() {
     </>
   );
 }
+
 
 export default Home;

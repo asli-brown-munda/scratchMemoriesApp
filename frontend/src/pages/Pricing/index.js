@@ -101,7 +101,7 @@ function ActionButton(user, setUser, plan, navigate) {
       });
   if (user == null) {
     return (
-      <MKButton color="info" href="/sign_in">
+      <MKButton color="info" href="/sign_in" size="large">
         Sign In
       </MKButton>
     );
@@ -109,13 +109,13 @@ function ActionButton(user, setUser, plan, navigate) {
 
     if (plan["price"] > 0 && user.plan === 'FREE_PLAN') {
       return (
-        <MKButton color="info" onClick={makePurchase}>
+        <MKButton color="info" onClick={makePurchase} size="large">
           Purchase
         </MKButton>
       );
     } else {
       return (
-        <MKButton color="info" href="/dashboard">
+        <MKButton color="info" href="/dashboard" size="large">
           Continue to Dashboard
         </MKButton>
       );

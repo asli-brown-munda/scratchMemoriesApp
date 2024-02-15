@@ -11,6 +11,7 @@ import { FileUpload } from "primereact/fileupload";
 import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "primereact/resources/primereact.min.css";
 import { useRef } from "react";
+import { useNavigate } from 'react-router-dom';
 
 function FilesTable() {
   // Sets the path which in turn retrieves the data.

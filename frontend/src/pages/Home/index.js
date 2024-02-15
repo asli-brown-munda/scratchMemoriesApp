@@ -107,7 +107,7 @@ function Home() {
                 icon="content_copy"
                 title={<>Durability</>}
                 backgroundColor="info"
-                description="All Data uploaded is copied a high number of times to get 99.999999999% Durability."
+                description="All Data uploaded is replicated multiple number of times to get 11 9's of durability, ensuring data durability."
               />
               <RotatingCardBack
                 title="Details"

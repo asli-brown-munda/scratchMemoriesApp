@@ -170,7 +170,16 @@ function CurrentPathElement(currentPath, handlePathClick, data, selectedFiles) {
       }
     });
   };
-
+  const handleDeleteSelected = () => {
+    // Implement download logic for selected files
+    // Iterate through selectedFiles and initiate download for each file
+    selectedFiles.forEach((fileId) => {
+      const file = data.find((file) => file.id === fileId);
+      if (file && file.link && file.type !== "folder") {
+        console.log(file);
+      }
+    });
+  };
   const fileUploadRef = useRef(null);
 
   const customBase64Uploader = async (event) => {
@@ -220,6 +229,16 @@ function CurrentPathElement(currentPath, handlePathClick, data, selectedFiles) {
                 </span>
               </React.Fragment>
             ))}
+          </Grid>
+          <Grid item mr={2}>
+            <MKButton
+              variant="gradient"
+              color="info"
+              onClick={handleDeleteSelected}
+              size="small"
+            >
+              Delete Selected
+            </MKButton>
           </Grid>
           <Grid item>
             <MKButton

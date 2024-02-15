@@ -15,7 +15,7 @@ purchase_bp = Blueprint("purchase", __name__)
 
 @purchase_bp.route("/purhcase", methods=["POST"])
 @login_required
-def login_gmail_user():
+def make_purchase():
     try:
         planCode = request.json.get("planCode")
         try:

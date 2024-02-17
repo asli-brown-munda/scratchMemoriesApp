@@ -21,10 +21,6 @@ from flask_login import LoginManager
 
 __ENVIRONMENT = flags.DEFINE_enum('environment', 'dev', ['dev', 'prod'], 'specify which environment you are running the server on dev or prod', short_name='e')
 
-load_dotenv('./credentials.env')
-STORJ_ACCESS_KEY = os.environ.get('ACCESS_KEY')
-STORJ_SECRET_KEY = os.environ.get('SECRET_KEY')
-
 logger = logging.getLogger(__name__)
 login_manager = LoginManager()  # Login Manager Init.
 USER_DAO_SINGLETON = UserDao(boto3.resource("dynamodb", region_name="us-east-1"))
@@ -37,9 +33,10 @@ def configure(binder):
         to=NodeHierarchy(boto3.resource("dynamodb", region_name="ap-south-1")),
         scope=singleton,
     )
+    storj_secret = get_secret('prod/storj')
     binder.bind(
         S3Accessor,
-        to=S3Accessor(boto3.client("s3", aws_access_key_id=STORJ_ACCESS_KEY, aws_secret_access_key=STORJ_SECRET_KEY, endpoint_url = "https://gateway.storjshare.io", config=Config(signature_version='s3v4'))),
+        to=S3Accessor(boto3.client("s3", aws_access_key_id=storj_secret['ACCESS_KEY'], aws_secret_access_key=storj_secret['SECRET_KEY'], endpoint_url = "https://gateway.storjshare.io", config=Config(signature_version='s3v4'))),
         scope=singleton,
     )
     binder.bind(

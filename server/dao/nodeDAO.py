@@ -13,7 +13,9 @@ class NodeHierarchy:
         self.table = dbResource.Table("Node")
 
 
-    def listNodes(self, parent_id):
+    def listNodes(self, parent_id, user_id):
+        if(parent_id == 'root'):
+            parent_id = user_id + "#" + parent_id
         try:
             response = self.table.query(IndexName = "parent_id-created_at-index", 
                 KeyConditionExpression=Key("parent_id").eq(parent_id)  & Key("created_at").gt(0))

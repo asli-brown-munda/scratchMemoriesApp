@@ -32,12 +32,18 @@ export const getExtension = function (filename) {
   }
 };
 
+
 export const preProcessTableData = function (data) {
   var newArray = data.map((row) => {
-    let newRow = structuredClone(row);
-    newRow["size"] = niceBytes(row.size);
-    newRow["link"] = "https://download.com/" + row.id;
-    newRow["extension"] = getExtension(row.name);
+    let jsonRow = JSON.parse(row)
+    let newRow = {}
+    newRow["link"] = "https://download.com/" + jsonRow['id'];
+    newRow["id"] = jsonRow['id'];
+    newRow["name"] =  jsonRow['name'];
+    newRow["type"] = jsonRow['type'];
+    newRow["size"] = niceBytes(2048);
+    newRow["update_at"] = jsonRow['created_at'];
+    newRow["extension"] = getExtension(jsonRow['name'])
     return newRow;
   });
   return newArray;

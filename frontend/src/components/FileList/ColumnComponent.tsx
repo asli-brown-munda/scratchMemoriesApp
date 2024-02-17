@@ -9,10 +9,12 @@ export const NameComponent = ({ cell, row, handlePathClick, currentPath }) => {
   const handleClick = () => {
     if (isFolder) {
       const folderName = row.original.name;
+      const folderId = row.original.id;
+      const pathToIdMap = {}
       if (currentPath === "/") {
-        handlePathClick(`/${folderName}`);
+        handlePathClick(`/${folderName}`, `${folderId}`);
       } else {
-        handlePathClick(`${currentPath}/${folderName}`);
+        handlePathClick(`${currentPath}/${folderName}`, `${folderId}`);
       }
     }
     // Add handling for other types if needed

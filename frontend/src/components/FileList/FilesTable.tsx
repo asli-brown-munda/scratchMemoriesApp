@@ -1,6 +1,6 @@
 import "./FilesTable.css";
 import { useTable, useSortBy } from "react-table";
-import { fetchFiles } from "./FileFetcher.ts";
+
 import { NameComponent, LinkComponent } from "./ColumnComponent.tsx";
 import React from "react";
 import MKButton from "components/MKButton/index.js";
@@ -11,17 +11,35 @@ import { FileUpload } from "primereact/fileupload";
 import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "primereact/resources/primereact.min.css";
 import { useRef } from "react";
+import { preProcessTableData } from "./FilesTableUtil.ts";
+import { BACKEND_URL } from "config/app_config";
+import axios from "axios";
 
 function FilesTable() {
+
   // Sets the path which in turn retrieves the data.
   const [currentPath, setCurrentPath] = React.useState(() => "/");
-  const [data, setData] = React.useState(() => fetchFiles("/"));
+  const [data, setData] = React.useState([]);
   const [selectedFiles, setSelectedFiles] = React.useState([]);
   const [selectAllChecked, setSelectAllChecked] = React.useState(false);
+  const [folderMap, setFolderMap] = React.useState({"/": "root"});
 
   React.useEffect(() => {
-    setData(fetchFiles(currentPath));
-  }, [currentPath]);
+    const folderId = folderMap[currentPath];
+    fetchFileList(folderId)
+      .then(response => setData(response))
+      .catch(error => console.error('Error fetching file list:', error));
+  }, [currentPath, folderMap]);
+
+  const fetchFileList = async (folderId) => {
+    try {
+      const response = await axios.get(BACKEND_URL + '/list/' + folderId)
+                        .then(response => preProcessTableData(response.data))
+      return await response
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  };
 
   const handleCheckboxChange = (fileId) => {
     setSelectedFiles((prevSelectedFiles) => {
@@ -34,10 +52,13 @@ function FilesTable() {
       }
     });
   };
-  const handlePathClick = (clickedPath) => {
+
+  const handlePathClick = (clickedPath, folderId) => {
     setCurrentPath(clickedPath);
-    setData(fetchFiles(clickedPath));
     setSelectedFiles([]);
+    if (folderId !== undefined) {
+        setFolderMap(prevPathInfo => ({...prevPathInfo, [clickedPath]: folderId}));
+    }
     setSelectAllChecked(false);
   };
   const handleSelectAllChange = () => {
@@ -212,7 +233,6 @@ function CurrentPathElement(currentPath, handlePathClick, data, selectedFiles) {
           <Grid item md={10} marginLeft={2}>
             Current Path:
             <span className="path-link" onClick={() => handlePathClick("/")}>
-              root
             </span>
             {pathParts.map((part, index) => (
               <React.Fragment key={index}>

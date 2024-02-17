@@ -7,11 +7,14 @@ class User(UserMixin):
     """Class representing a user.
 
     Attributes:
-        _id (str): The id of the user.
-        _name (str): The name of the user.
-        _picture_url (str): The URL of the user's profile picture.
-        _locale (str): The locale setting of the user.
-        _email_id (str): The email address of the user.
+        id (str): The id of the user.
+        name (str): The name of the user.
+        picture_url (str): The URL of the user's profile picture.
+        locale (str): The locale setting of the user.
+        email_id (str): The email address of the user.
+        plan (str): The subscription plan of the user.
+        storage_used (int): The amount of storage used by the user.
+        download_used (int): The number of downloads used by the user.
     """
 
     def __init__(
@@ -28,11 +31,14 @@ class User(UserMixin):
         """Initialize a User object.
 
         Args:
-            _id (str): The id of the user.
+            id (str): The id of the user.
             name (str): The name of the user.
             picture_url (str): The URL of the user's profile picture.
             locale (str): The locale setting of the user.
             email_id (str): The email address of the user.
+            plan (str): The subscription plan of the user.
+            storage_used (int): The amount of storage used by the user.
+            download_used (int): The number of downloads used by the user.
         """
         self.name = name
         self.picture_url = picture_url
@@ -42,6 +48,19 @@ class User(UserMixin):
         self.plan = plan
         self.storage_used = storage_used
         self.download_used = download_used
+
+    def to_dict(self) -> dict:
+        """Convert the User object to a dictionary."""
+        return {
+            "id": self.id,
+            "name": self.name,
+            "picture_url": self.picture_url,
+            "locale": self.locale,
+            "email_id": self.email_id,
+            "plan": self.plan,
+            "storage_used": self.storage_used,
+            "download_used": self.download_used,
+        }
 
     def toJSON(self):
         return jsonpickle.encode(self, unpicklable=False)

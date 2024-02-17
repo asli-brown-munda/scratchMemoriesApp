@@ -103,5 +103,9 @@ http://localhost:5000/create_folder
 
 
 
-
-
+### Creating User Table
+aws dynamodb create-table --table-name User \
+    --attribute-definitions AttributeName=id,AttributeType=S AttributeName=email_id,AttributeType=S \
+    --key-schema AttributeName=id,KeyType=HASH \
+    --provisioned-throughput ReadCapacityUnits=5,WriteCapacityUnits=5 \
+    --global-secondary-indexes IndexName=email_id-index,KeySchema=["{AttributeName=email_id,KeyType=HASH}"],Projection="{ProjectionType=ALL}",ProvisionedThroughput="{ReadCapacityUnits=5,WriteCapacityUnits=5}"

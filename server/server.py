@@ -1,4 +1,6 @@
 import os
+from absl import app
+from absl import flags
 from flask import Flask
 from blueprints.auth import auth_bp
 from blueprints.purchase import purchase_bp
@@ -12,22 +14,13 @@ import boto3
 from dao.s3Accessor import S3Accessor
 from botocore.client import Config
 from dotenv import load_dotenv
+from dao.secretAccessor import get_secret
+
+__ENVIRONMENT = flags.DEFINE_enum('environment', 'dev', ['dev', 'prod'], 'specify which environment you are running the server on dev or prod', short_name='e')
 
 load_dotenv('./credentials.env')
 STORJ_ACCESS_KEY = os.environ.get('ACCESS_KEY')
 STORJ_SECRET_KEY = os.environ.get('SECRET_KEY')
-app = Flask("Memories")
-CORS(app, supports_credentials=True)
-
-# TODO: Read from configuration.
-app.secret_key = os.urandom(12)
-
-app.register_blueprint(auth_bp)
-app.register_blueprint(protected_area_bp)
-app.register_blueprint(purchase_bp)
-app.register_blueprint(node_bp)
-app.register_blueprint(file_bp)
-
 
 ##Move to config file
 def configure(binder):
@@ -43,7 +36,25 @@ def configure(binder):
         scope=singleton,
     )
 
-FlaskInjector(app=app, modules=[configure])
+def main(argv):
+    flask_app = Flask("Memories")
+    CORS(flask_app, supports_credentials=True)
+    if __ENVIRONMENT.value == 'dev':
+        flask_app.secret_key = os.urandom(12)
+    else:
+        flask_app.secret_key = get_secret('prod/appconfig')['flask_secret_key'].encode('utf-8')
+    flask_app.register_blueprint(auth_bp)
+    flask_app.register_blueprint(protected_area_bp)
+    flask_app.register_blueprint(purchase_bp)
+    flask_app.register_blueprint(node_bp)
+    flask_app.register_blueprint(file_bp)
+
+    FlaskInjector(app=flask_app, modules=[configure])
+
+    if __ENVIRONMENT.value == 'dev':
+        flask_app.run(debug=True)
+    else:
+        flask_app.run()
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(main)

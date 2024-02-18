@@ -26,7 +26,7 @@ const Login = function () {
       .then((response) => {
         console.log("Logged In User: ", response);
         setUser(response.data);
-        navigate("/pricing");
+        navigate("/coming_soon");
       });
   return (
     <MKBox
@@ -63,7 +63,7 @@ const Login = function () {
                 color="white"
                 mt={1}
               >
-                Sign in
+                Sign in to get notified!
               </MKTypography>
             </MKBox>
             <MKBox pb={3} px={3} sx={{ justifyContent: "center" }}>

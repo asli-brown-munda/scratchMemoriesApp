@@ -14,7 +14,6 @@ from dao.nodeDAO import NodeHierarchy
 import boto3
 from dao.s3Accessor import S3Accessor
 from botocore.client import Config
-from dotenv import load_dotenv
 from dao.secretAccessor import get_secret
 from dao.user_dao import UserDao
 from flask_login import LoginManager

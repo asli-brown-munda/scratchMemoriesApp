@@ -1,8 +1,7 @@
 from dao.user_dao import UserDao
 from flask import request, Blueprint, make_response, jsonify
-from flask_login import login_required, current_user, login_user
-from models.User import User
-from models.Plan import PlanEnum, Plan, parse_plan_enum
+from flask_login import login_required, current_user
+from models.Plan import parse_plan_enum
 
 ### BEGIN Constants ###
 ### END Constants ###

@@ -1,18 +1,19 @@
 
 from flask import request, Blueprint
 from models.Node import Node
-from flask_injector import FlaskInjector, inject, singleton
+from flask_injector import inject
 from dao.nodeDAO import NodeHierarchy
 import uuid
 import time
+from flask_login import login_required, current_user
 
 node_bp = Blueprint('node', __name__)
 
 @node_bp.route("/list/<folder>")
 @inject
+@login_required
 def listNodes(nodeHierarchy: NodeHierarchy, folder):
-	##authorize user
-	user_id = "user11344" ## TODO: pull it from auth
+	user_id = current_user.id
 	items = nodeHierarchy.listNodes(folder, user_id)
 	nodes = []
 	for item in items:
@@ -33,9 +34,10 @@ def listNodes(nodeHierarchy: NodeHierarchy, folder):
 
 @node_bp.route("/create_folder", methods=["POST"])
 @inject
+@login_required
 def createFolder(nodeHierarchy: NodeHierarchy):
 ##authorize user
-	user_id = "user11344" ## TODO: pull it from auth
+	user_id = current_user.id
 	parent_id = request.json.get("parent_id")
 	node_name = request.json.get("name")
 	item = nodeHierarchy.getNode(parent_id)

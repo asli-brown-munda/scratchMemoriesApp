@@ -1,10 +1,11 @@
 from flask import request, Blueprint
 from models.Node import Node
-from flask_injector import FlaskInjector, inject, singleton
+from flask_injector import inject
 from dao.s3Accessor import S3Accessor
 from dao.nodeDAO import NodeHierarchy
 import uuid
 import time
+from flask_login import login_required, current_user
 
 
 
@@ -12,8 +13,8 @@ file_bp = Blueprint('file', __name__)
 
 @file_bp.route("/download/<id>")
 @inject
+@login_required
 def download(s3Accessor: S3Accessor, nodeHierarchy: NodeHierarchy, id):
-	##authorize user
 	item = nodeHierarchy.getNode(id)
 	bucket = item['meta_data']['bucket']
 	key = item['meta_data']['key']
@@ -22,9 +23,9 @@ def download(s3Accessor: S3Accessor, nodeHierarchy: NodeHierarchy, id):
 
 @file_bp.route("/initiate_upload", methods=["POST"])
 @inject
+@login_required
 def initiate_upload(s3Accessor: S3Accessor, nodeHierarchy: NodeHierarchy):
-	##authorize user
-	user_id = "user11344" ## TODO: pull it from auth
+	user_id = current_user.id
 	parent_node_id = request.json.get("parent_node_id")
 	node_name = request.json.get("node_name")
 	item = nodeHierarchy.getNode(parent_node_id)
@@ -46,9 +47,9 @@ def initiate_upload(s3Accessor: S3Accessor, nodeHierarchy: NodeHierarchy):
 
 @file_bp.route("/confirm_upload_status", methods=["POST"])
 @inject
+@login_required
 def confirm_upload_status(s3Accessor: S3Accessor, nodeHierarchy: NodeHierarchy):
-	##authorize user
-	user_id = "user11344" ## TODO: pull it from auth
+	user_id = current_user.id
 	id = request.json.get("id")
 	item = nodeHierarchy.getNode(id)
 	if(item['created_at'] > 0):

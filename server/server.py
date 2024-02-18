@@ -30,7 +30,7 @@ def configure(binder):
 
     binder.bind(
         NodeHierarchy,
-        to=NodeHierarchy(boto3.resource("dynamodb", region_name="ap-south-1")),
+        to=NodeHierarchy(boto3.resource("dynamodb", region_name="us-east-1")),
         scope=singleton,
     )
     storj_secret = get_secret('prod/storj')

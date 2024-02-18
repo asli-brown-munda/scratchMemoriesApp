@@ -54,11 +54,11 @@ def main(argv):
     else:
         flask_app.secret_key = get_secret('prod/appconfig')['flask_secret_key'].encode('utf-8')
         logging.info("Secret Key pulled from Secrets.")
-    flask_app.register_blueprint(auth_bp)
-    flask_app.register_blueprint(protected_area_bp)
-    flask_app.register_blueprint(purchase_bp)
-    flask_app.register_blueprint(node_bp)
-    flask_app.register_blueprint(file_bp)
+    flask_app.register_blueprint(auth_bp, url_prefix='/api')
+    flask_app.register_blueprint(protected_area_bp, url_prefix='/api')
+    flask_app.register_blueprint(purchase_bp, url_prefix='/api')
+    flask_app.register_blueprint(node_bp, url_prefix='/api')
+    flask_app.register_blueprint(file_bp, url_prefix='/api')
 
     FlaskInjector(app=flask_app, modules=[configure])
     login_manager.init_app(flask_app)

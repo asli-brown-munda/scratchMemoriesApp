@@ -109,3 +109,18 @@ aws dynamodb create-table --table-name User \
     --key-schema AttributeName=id,KeyType=HASH \
     --provisioned-throughput ReadCapacityUnits=5,WriteCapacityUnits=5 \
     --global-secondary-indexes IndexName=email_id-index,KeySchema=["{AttributeName=email_id,KeyType=HASH}"],Projection="{ProjectionType=ALL}",ProvisionedThroughput="{ReadCapacityUnits=5,WriteCapacityUnits=5}"
+
+### Creating Node Table
+aws dynamodb create-table \
+    --table-name Node \
+    --attribute-definitions \
+        AttributeName=id,AttributeType=S \
+        AttributeName=parent_id,AttributeType=S \
+        AttributeName=created_at,AttributeType=N \
+    --key-schema \
+        AttributeName=id,KeyType=HASH \
+    --provisioned-throughput \
+        ReadCapacityUnits=5,WriteCapacityUnits=5 \
+    --global-secondary-indexes \
+        "IndexName=parent_id-created_at-index,KeySchema=[{AttributeName=parent_id,KeyType=HASH},{AttributeName=created_at,KeyType=RANGE}],Projection={ProjectionType=ALL},ProvisionedThroughput={ReadCapacityUnits=5,WriteCapacityUnits=5}" \
+    --region ap-south-1

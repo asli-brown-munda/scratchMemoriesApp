@@ -15,9 +15,12 @@ from flask_login import (
     logout_user,
 )
 from models.User import User
+from models.Node import Node
 import uuid
 import logging
 from flask import current_app
+from dao.nodeDAO import NodeHierarchy
+import time
 
 ### BEGIN Constants ###
 GOOGLE_CLIENT_ID = (
@@ -46,7 +49,7 @@ auth_bp = Blueprint("auth", __name__)
 
 @auth_bp.route("/login/google", methods=["POST"])
 @inject
-def login_gmail_user(user_dao: UserDao):
+def login_gmail_user(user_dao: UserDao, nodeHierarchy: NodeHierarchy):
     try:
         token = request.json.get("token")
         token_request = google.auth.transport.requests.Request()
@@ -56,7 +59,7 @@ def login_gmail_user(user_dao: UserDao):
         )
         logging.info("Received Google ID: %s", str(id_info))
         saved_user = user_dao.getUserByEmail(id_info.get("email"))
-        if (saved_user is None or len(saved_user) == 0):
+        if saved_user is None or len(saved_user) == 0:
             gmail_user = User(
                 id=str(uuid.uuid4()),
                 name=id_info.get("name"),
@@ -69,6 +72,19 @@ def login_gmail_user(user_dao: UserDao):
             )
             logging.info("Creating a new User: %s", gmail_user.toJSON())
             user_dao.createUser(gmail_user)
+
+            root_node = Node(
+                id=str(uuid.uuid4()),
+                name="root",
+                parent_id=gmail_user.id + "#root",
+                parent_name="",
+                type="folder",
+                metadata={"size": 0},
+                created_at=round(time.time() * 1000),
+            )
+            logging.info("Creating a default Root Node: %s", root_node.to_json())
+            nodeHierarchy.createNode(gmail_user.id, root_node)
+
             final_user = gmail_user
         else:
             final_user = saved_user[0]

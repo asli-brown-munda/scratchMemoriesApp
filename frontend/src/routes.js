@@ -44,7 +44,6 @@ import Home from "pages/Home/index";
 import Pricing from "pages/Pricing/index"
 import SignInBasic from "pages/SignIn/index";
 import AboutUs from "pages/About Us/index";
-import ComingSoon from "pages/Coming Soon";
 
 const routes = [
   {
@@ -81,13 +80,6 @@ const routes = [
     route: "about_us",
     key: "about_us",
     showOnHomeScreen: true
-  },
-  {
-    name: "Coming Soon",
-    component: <ComingSoon />,
-    route: "coming_soon",
-    key: "coming_soon",
-    showOnHomeScreen: false
   },
 ];
 

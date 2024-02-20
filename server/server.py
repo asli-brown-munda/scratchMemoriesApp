@@ -4,11 +4,12 @@ from absl import app
 from absl import flags
 from flask import Flask
 from blueprints.auth import auth_bp
+from blueprints.health_check import health_check
 from blueprints.purchase import purchase_bp
 from blueprints.test_protected_api import protected_area_bp
 from blueprints.node import node_bp
 from blueprints.fileDownloadUpload import file_bp
-from flask_injector import FlaskInjector, inject, singleton
+from flask_injector import FlaskInjector, singleton
 from flask_cors import CORS
 from dao.nodeDAO import NodeHierarchy
 import boto3
@@ -59,7 +60,7 @@ def main(argv):
     flask_app.register_blueprint(purchase_bp, url_prefix='/api')
     flask_app.register_blueprint(node_bp, url_prefix='/api')
     flask_app.register_blueprint(file_bp, url_prefix='/api')
-
+    flask_app.register_blueprint(health_check, url_prefix='/api')
     FlaskInjector(app=flask_app, modules=[configure])
     login_manager.init_app(flask_app)
 

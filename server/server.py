@@ -18,6 +18,7 @@ from dotenv import load_dotenv
 from dao.secretAccessor import get_secret
 from dao.user_dao import UserDao
 from flask_login import LoginManager
+from gevent.pywsgi import WSGIServer
 
 __ENVIRONMENT = flags.DEFINE_enum('environment', 'dev', ['dev', 'prod'], 'specify which environment you are running the server on dev or prod', short_name='e')
 
@@ -64,9 +65,10 @@ def main(argv):
     login_manager.init_app(flask_app)
 
     if __ENVIRONMENT.value == 'dev':
-        flask_app.run(debug=True)
-    else:
-        flask_app.run()
+        flask_app.debug = True
+
+    http_server = WSGIServer(('', 5000), flask_app)
+    http_server.serve_forever()
 
 @login_manager.user_loader
 def load_user(user_id):

@@ -6,8 +6,8 @@ const config = {
     googleClientId: "121036537289-qhgeejlfbbp3d177dm5l330crn1dn9ci.apps.googleusercontent.com"
   },
   prod: {
-    backendUrl: "undefined in app_config.js",
-    googleClientId: "undefined"
+    backendUrl: "https://memoriesmvp.com/api",
+    googleClientId: "121036537289-qhgeejlfbbp3d177dm5l330crn1dn9ci.apps.googleusercontent.com"
   },
 };
 

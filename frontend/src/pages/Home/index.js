@@ -75,15 +75,13 @@ function Home() {
         </MKBox>
         <Grid
           container
-          spacing={8}
+          spacing={4}
           flexDirection="row"
           justifyContent="center"
           pt={10}
-          sx={{
-            backgroundColor: "white",
-          }}
+
         >
-          <Grid item flexDirection="row" xl={2}>
+          <Grid item flexDirection="row" xl={3}>
             <RotatingCard>
               <RotatingCardFront
                 icon="security"
@@ -101,13 +99,13 @@ function Home() {
               />
             </RotatingCard>
           </Grid>
-          <Grid item flexDirection="row" xl={2}>
+          <Grid item flexDirection="row" xl={3}>
             <RotatingCard>
               <RotatingCardFront
                 icon="content_copy"
                 title={<>Durability</>}
                 backgroundColor="info"
-                description="All Data uploaded is replicated multiple number of times to get 11 9's of durability, ensuring data durability."
+                description="All Data uploaded is replicated to get 11 9's of durability, ensuring data durability."
               />
               <RotatingCardBack
                 title="Details"
@@ -121,7 +119,7 @@ function Home() {
             </RotatingCard>
           </Grid>
 
-          <Grid item flexDirection="row" xl={2}>
+          <Grid item flexDirection="row" xl={3}>
             <RotatingCard>
               <RotatingCardFront
                 icon="payments"

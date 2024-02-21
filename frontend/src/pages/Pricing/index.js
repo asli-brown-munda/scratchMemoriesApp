@@ -62,7 +62,7 @@ function DescriptionGenerator(points, price, originalPrice) {
   const priceElement =
     originalPrice > 0 ? (
       <>
-        Early Bird Price: <del>{originalPrice}</del> {price}$
+        Early Bird Price: <del>{originalPrice}</del> {price}$ anually
       </>
     ) : (
       <>

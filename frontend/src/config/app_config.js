@@ -11,7 +11,6 @@ const config = {
   },
 };
 
-const useProdConfig = false;
-
+const useProdConfig = process.env.NODE_ENV === 'production';
 export const BACKEND_URL = useProdConfig ? config.prod.backendUrl : config.dev.backendUrl;
 export const GOOGLE_OAUTH_CLIENT_ID = useProdConfig ? config.prod.googleClientId : config.dev.googleClientId;

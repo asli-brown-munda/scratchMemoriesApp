@@ -3,6 +3,7 @@ import { useTable, useSortBy } from "react-table";
 
 import { NameComponent, LinkComponent } from "./ColumnComponent.tsx";
 import React from "react";
+import MKInput from "components/MKInput";
 import MKButton from "components/MKButton/index.js";
 import MKBox from "components/MKBox/index.js";
 import Grid from "@mui/material/Grid";
@@ -13,6 +14,12 @@ import { useRef } from "react";
 import { preProcessTableData } from "./FilesTableUtil.ts";
 import { BACKEND_URL } from "config/app_config";
 import axios from "axios";
+
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogTitle from "@mui/material/DialogTitle";
 
 function FilesTable() {
   // Sets the path which in turn retrieves the data.
@@ -150,7 +157,9 @@ function FilesTable() {
         handlePathClick,
         data,
         selectedFiles,
-        setSelectedFiles
+        setSelectedFiles,
+        folderMap,
+        setFolderMap
       )}
 
       <table
@@ -186,7 +195,9 @@ function FilesTable() {
     currentPath,
     handlePathClick,
     data,
-    selectedFiles
+    selectedFiles,
+    folderMap,
+    setFolderMap
   ) {
     const pathParts = currentPath.split("/").filter(Boolean);
     const handleDownloadSelected = () => {
@@ -300,6 +311,9 @@ function FilesTable() {
           </Grid>
           <Grid container pt={2}>
             <Grid item>
+              <CreateFolder currentPath={currentPath} folderMap={folderMap} setFolderMap={setFolderMap} />
+            </Grid>
+            <Grid item ml={2}>
               <MKButton
                 variant="gradient"
                 color="info"
@@ -312,7 +326,7 @@ function FilesTable() {
             <Grid item ml={2}>
               <MKButton
                 variant="gradient"
-                color="info"
+                color="error"
                 onClick={handleDeleteSelected}
                 size="small"
               >
@@ -337,5 +351,78 @@ function FilesTable() {
     );
   }
 }
+function CreateFolder(currentPath, folderMap, setFolderMap) {
+  const [open, setOpen] = React.useState(false);
+  const [folderName, setFolderName] = React.useState(""); // Step 1: Define state for folder name
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    setFolderName("");
+  };
+
+  const handleCreateFolder = () => {
+    const folderId = folderMap[currentPath];
+    console.log(folderId);
+    console.log(folderName);
+    console.log(folderMap);
+    setOpen(false);
+
+    // const response = await axios.post(BACKEND_URL + "/create_folder", {
+    //   parent_id: folderId,
+    //   node_name: folderName, // Pass folder name to the API call
+    // });
+    // console.log(response);
+    // return response.data;
+  };
+
+  return (
+    <>
+      <MKButton
+        variant="gradient"
+        color="info"
+        onClick={handleClickOpen}
+        size="small"
+      >
+        Create Folder
+      </MKButton>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        PaperProps={{
+          component: "form",
+          onSubmit: (event) => {
+            event.preventDefault();
+            handleCreateFolder(); // Call handleCreateFolder when form is submitted
+            handleClose();
+          },
+        }}
+      >
+        <DialogContent>
+          <MKInput
+            variant="outlined"
+            label="Folder Name"
+            id="folder_name"
+            required
+            value={folderName} // Step 2: Bind folderName state to the MKInput value
+            onChange={(e) => setFolderName(e.target.value)} // Update folderName state when input changes
+          />
+        </DialogContent>
+        <DialogActions>
+          <MKButton onClick={handleClose} variant="text" color="info">
+            Cancel
+          </MKButton>
+          <MKButton variant="gradient" color="info" type="submit" size="small">
+            Submit
+          </MKButton>
+        </DialogActions>
+      </Dialog>
+    </>
+  );
+}
+
 
 export default FilesTable;

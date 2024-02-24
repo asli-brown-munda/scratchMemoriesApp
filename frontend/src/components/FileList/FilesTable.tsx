@@ -20,6 +20,7 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
+import DownloadIcon from "@mui/icons-material/Download";
 
 function FilesTable() {
   // Sets the path which in turn retrieves the data.
@@ -91,6 +92,21 @@ function FilesTable() {
     });
   };
 
+  const handleSingleDownload = async(cellValue) => {
+    setFileIds([cellValue]);
+  }
+
+  const LinkComponent = ({ cell, row }) => {
+    if (row.original.type !== "folder") {
+      return (
+        <MKButton variant="gradient" color="info" iconOnly onClick={() => handleSingleDownload(cell.value)}>
+          <DownloadIcon>download</DownloadIcon>
+        </MKButton>
+      );
+    }
+    return <></>;
+  };
+
   const columns = React.useMemo(
     () => [
       {
@@ -134,7 +150,7 @@ function FilesTable() {
       },
       {
         Header: "Download",
-        accessor: "link",
+        accessor: "file_reference",
         Cell: LinkComponent,
       },
     ],

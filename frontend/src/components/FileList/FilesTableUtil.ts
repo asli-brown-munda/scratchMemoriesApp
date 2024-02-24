@@ -37,7 +37,7 @@ export const preProcessTableData = function (data) {
   var newArray = data.map((row) => {
     let jsonRow = JSON.parse(row)
     let newRow = {}
-    newRow["link"] = "https://download.com/" + jsonRow['id'];
+    newRow["file_reference"] = jsonRow['id'];
     newRow["id"] = jsonRow['id'];
     newRow["name"] =  jsonRow['name'];
     newRow["type"] = jsonRow['type'];

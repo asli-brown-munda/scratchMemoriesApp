@@ -33,14 +33,3 @@ export const NameComponent = ({ cell, row, handlePathClick, currentPath }) => {
     </>
   );
 };
-
-export const LinkComponent = ({ cell, row }) => {
-  if (row.original.type !== "folder") {
-    return (
-      <MKButton variant="gradient" color="info" iconOnly href={cell.value}>
-        <DownloadIcon>download</DownloadIcon>
-      </MKButton>
-    );
-  }
-  return <></>;
-};

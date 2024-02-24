@@ -201,6 +201,7 @@ function FilesTable() {
     handlePathClick,
     data,
     selectedFiles,
+    setSelectedFiles,
     folderMap,
     setFolderMap
   ) {
@@ -320,6 +321,7 @@ function FilesTable() {
         fileUploadRef.current.clear();
       }
     };
+    console.log(folderMap);
 
     return (
       <>
@@ -350,7 +352,7 @@ function FilesTable() {
           </Grid>
           <Grid container pt={2}>
             <Grid item>
-              <CreateFolder currentPath={currentPath} folderMap={folderMap} setFolderMap={setFolderMap} />
+              {CreateFolder(currentPath, folderMap, setFolderMap)}
             </Grid>
             <Grid item ml={2}>
               <MKButton
@@ -389,79 +391,85 @@ function FilesTable() {
       </>
     );
   }
+
+  function CreateFolder(currentPath, folderMap, setFolderMap) {
+    const [open, setOpen] = React.useState(false);
+    const [folderName, setFolderName] = React.useState(""); // Step 1: Define state for folder name
+    const handleClickOpen = () => {
+      setOpen(true);
+    };
+
+    const handleClose = () => {
+      setOpen(false);
+      setFolderName("");
+    };
+
+    const handleCreateFolder = async () => {
+      const folderId = folderMap[currentPath];
+      console.log("Creating folder", folderName, " for ", folderId, ".");
+      const response = await axios.post(BACKEND_URL + "/create_folder", {
+        parent_id: folderId,
+        name: folderName, // Pass folder name to the API call
+      });
+      setOpen(false);
+      console.log("Received the following response: ", response.data);
+      if (response.data.id != null) {
+        setFolderMap((prevPathInfo) => ({
+          ...prevPathInfo,
+          [currentPath + "/" + folderName]: folderId,
+        }));
+      }
+    };
+
+    return (
+      <>
+        <MKButton
+          variant="gradient"
+          color="info"
+          onClick={handleClickOpen}
+          size="small"
+        >
+          Create Folder
+        </MKButton>
+        <Dialog
+          open={open}
+          onClose={handleClose}
+          PaperProps={{
+            component: "form",
+            onSubmit: (event) => {
+              event.preventDefault();
+              handleCreateFolder(); // Call handleCreateFolder when form is submitted
+              handleClose();
+            },
+          }}
+        >
+          <DialogContent>
+            <MKInput
+              variant="outlined"
+              label="Folder Name"
+              id="folder_name"
+              required
+              value={folderName} // Step 2: Bind folderName state to the MKInput value
+              onChange={(e) => setFolderName(e.target.value)} // Update folderName state when input changes
+            />
+          </DialogContent>
+          <DialogActions>
+            <MKButton onClick={handleClose} variant="text" color="info">
+              Cancel
+            </MKButton>
+            <MKButton
+              variant="gradient"
+              color="info"
+              type="submit"
+              size="small"
+            >
+              Submit
+            </MKButton>
+          </DialogActions>
+        </Dialog>
+      </>
+    );
+  }
 }
-function CreateFolder(currentPath, folderMap, setFolderMap) {
-  const [open, setOpen] = React.useState(false);
-  const [folderName, setFolderName] = React.useState(""); // Step 1: Define state for folder name
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-    setFolderName("");
-  };
-
-  const handleCreateFolder = () => {
-    const folderId = folderMap[currentPath];
-    console.log(folderId);
-    console.log(folderName);
-    console.log(folderMap);
-    setOpen(false);
-
-    // const response = await axios.post(BACKEND_URL + "/create_folder", {
-    //   parent_id: folderId,
-    //   node_name: folderName, // Pass folder name to the API call
-    // });
-    // console.log(response);
-    // return response.data;
-  };
-
-  return (
-    <>
-      <MKButton
-        variant="gradient"
-        color="info"
-        onClick={handleClickOpen}
-        size="small"
-      >
-        Create Folder
-      </MKButton>
-      <Dialog
-        open={open}
-        onClose={handleClose}
-        PaperProps={{
-          component: "form",
-          onSubmit: (event) => {
-            event.preventDefault();
-            handleCreateFolder(); // Call handleCreateFolder when form is submitted
-            handleClose();
-          },
-        }}
-      >
-        <DialogContent>
-          <MKInput
-            variant="outlined"
-            label="Folder Name"
-            id="folder_name"
-            required
-            value={folderName} // Step 2: Bind folderName state to the MKInput value
-            onChange={(e) => setFolderName(e.target.value)} // Update folderName state when input changes
-          />
-        </DialogContent>
-        <DialogActions>
-          <MKButton onClick={handleClose} variant="text" color="info">
-            Cancel
-          </MKButton>
-          <MKButton variant="gradient" color="info" type="submit" size="small">
-            Submit
-          </MKButton>
-        </DialogActions>
-      </Dialog>
-    </>
-  );
-}
-
 
 export default FilesTable;

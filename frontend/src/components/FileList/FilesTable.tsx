@@ -314,7 +314,6 @@ function FilesTable() {
             ref={fileUploadRef}
             name="Uploader"
             accept="*"
-            maxFileSize={1000000}
             customUpload
             uploadHandler={customBase64Uploader}
             multiple

@@ -23,8 +23,9 @@ def download(s3Accessor: S3Accessor, nodeHierarchy: NodeHierarchy, id):
 
 @file_bp.route("/delete/<id>", methods=["DELETE"])
 @inject
+@login_required
 def delete(s3Accessor: S3Accessor, nodeHierarchy: NodeHierarchy, id):
-	user_id = '33c541df-911e-4b4c-8df8-011499c4a605'
+	user_id = current_user.id
 	item = nodeHierarchy.getNode(id)
 	if(item['type'] == 'folder'):
 		items = nodeHierarchy.listNodes(id, user_id)

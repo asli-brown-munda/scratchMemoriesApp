@@ -100,6 +100,22 @@ http://localhost:5000/create_folder
   "id": "d00d3a90-fb7d-44cc-9015-3d5cc06c2169"
 }
 
+## delete node (file or folder)
+
+In case of folder deletion, it is only allowed to delete if it is empty
+In case of file deletion, it is deleted first from ddb and then from file store. Otherwise it would leave system in inconsistent state from user perspective - [need to make flow more relaible]
+
+### Request
+
+ curl --request DELETE http://localhost:5000/api/delete/018b27ad-227c-4e91-8ba3-e225610af348
+
+
+### Response
+
+{
+  "status": "Ok"
+}
+
 
 
 

@@ -8,20 +8,19 @@ import MKBox from "components/MKBox/index.js";
 import Grid from "@mui/material/Grid";
 import Checkbox from "@mui/material/Checkbox";
 import { FileUpload } from "primereact/fileupload";
-import { ProgressBar } from 'primereact/progressbar';
+import { ProgressBar } from "primereact/progressbar";
 import { useRef } from "react";
 import { preProcessTableData } from "./FilesTableUtil.ts";
 import { BACKEND_URL } from "config/app_config";
 import axios from "axios";
 
 function FilesTable() {
-
   // Sets the path which in turn retrieves the data.
   const [currentPath, setCurrentPath] = React.useState(() => "/");
   const [data, setData] = React.useState([]);
   const [selectedFiles, setSelectedFiles] = React.useState([]);
   const [selectAllChecked, setSelectAllChecked] = React.useState(false);
-  const [folderMap, setFolderMap] = React.useState({"/": "root"});
+  const [folderMap, setFolderMap] = React.useState({ "/": "root" });
 
   const [filesUploaded, setFilesUploaded] = React.useState(0);
   const [progress, setProgress] = React.useState(0);
@@ -30,15 +29,16 @@ function FilesTable() {
   React.useEffect(() => {
     const folderId = folderMap[currentPath];
     fetchFileList(folderId)
-      .then(response => setData(response))
-      .catch(error => console.error('Error fetching file list:', error));
+      .then((response) => setData(response))
+      .catch((error) => console.error("Error fetching file list:", error));
   }, [currentPath, folderMap, filesUploaded]);
 
   const fetchFileList = async (folderId) => {
     try {
-      const response = await axios.get(BACKEND_URL + '/list/' + folderId)
-                        .then(response => preProcessTableData(response.data))
-      return await response
+      const response = await axios
+        .get(BACKEND_URL + "/list/" + folderId)
+        .then((response) => preProcessTableData(response.data));
+      return await response;
     } catch (error) {
       throw new Error(error.message);
     }
@@ -60,7 +60,10 @@ function FilesTable() {
     setCurrentPath(clickedPath);
     setSelectedFiles([]);
     if (folderId !== undefined) {
-        setFolderMap(prevPathInfo => ({...prevPathInfo, [clickedPath]: folderId}));
+      setFolderMap((prevPathInfo) => ({
+        ...prevPathInfo,
+        [clickedPath]: folderId,
+      }));
     }
     setSelectAllChecked(false);
   };
@@ -179,8 +182,12 @@ function FilesTable() {
     </MKBox>
   );
 
-
-  function CurrentPathElement(currentPath, handlePathClick, data, selectedFiles) {
+  function CurrentPathElement(
+    currentPath,
+    handlePathClick,
+    data,
+    selectedFiles
+  ) {
     const pathParts = currentPath.split("/").filter(Boolean);
     const handleDownloadSelected = () => {
       // Implement download logic for selected files
@@ -211,26 +218,29 @@ function FilesTable() {
     const generateSignedUrl = async (name, folderId) => {
       try {
         const response = await axios.post(BACKEND_URL + "/initiate_upload", {
-          'parent_node_id': folderId,
-          'node_name': name,
+          parent_node_id: folderId,
+          node_name: name,
         });
-        console.log(response)
+        console.log(response);
         return await response.data;
       } catch (error) {
-        console.error('Error generating signed URL:', error);
+        console.error("Error generating signed URL:", error);
         return null;
       }
     };
 
     const confirmFileUpload = async (id) => {
       try {
-        const response = await axios.post(BACKEND_URL + "/confirm_upload_status", {
-          'id': id,
-        });
-        console.log(response)
+        const response = await axios.post(
+          BACKEND_URL + "/confirm_upload_status",
+          {
+            id: id,
+          }
+        );
+        console.log(response);
         return await response.data;
       } catch (error) {
-        console.error('Error confirming file status:', error);
+        console.error("Error confirming file status:", error);
         return null;
       }
     };
@@ -247,11 +257,10 @@ function FilesTable() {
 
         // generate signed url
         const uploadData = await generateSignedUrl(file.name, folderId);
-        console.log(uploadData)
-        const uploadResponse = await axios.put(uploadData.upload_url, file, {
-          });
+        console.log(uploadData);
+        const uploadResponse = await axios.put(uploadData.upload_url, file, {});
         const fileStatus = await confirmFileUpload(uploadData.id);
-        setProgress(((i*100)/event.files.length));
+        setProgress((i * 100) / event.files.length);
       }
 
       setUploading(false);
@@ -265,11 +274,13 @@ function FilesTable() {
     return (
       <>
         <MKBox>
-          <Grid container>
+          <Grid container pt={2}>
             <Grid item md={10} marginLeft={2}>
               Current Path:
-              <span className="path-link" onClick={() => handlePathClick("/")}>
-              </span>
+              <span
+                className="path-link"
+                onClick={() => handlePathClick("/")}
+              ></span>
               {pathParts.map((part, index) => (
                 <React.Fragment key={index}>
                   {" / "}
@@ -286,16 +297,8 @@ function FilesTable() {
                 </React.Fragment>
               ))}
             </Grid>
-            <Grid item mr={2}>
-              <MKButton
-                variant="gradient"
-                color="info"
-                onClick={handleDeleteSelected}
-                size="small"
-              >
-                Delete Selected
-              </MKButton>
-            </Grid>
+          </Grid>
+          <Grid container pt={2}>
             <Grid item>
               <MKButton
                 variant="gradient"
@@ -304,6 +307,16 @@ function FilesTable() {
                 size="small"
               >
                 Download Selected
+              </MKButton>
+            </Grid>
+            <Grid item ml={2}>
+              <MKButton
+                variant="gradient"
+                color="info"
+                onClick={handleDeleteSelected}
+                size="small"
+              >
+                Delete Selected
               </MKButton>
             </Grid>
           </Grid>

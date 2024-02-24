@@ -21,6 +21,25 @@ def download(s3Accessor: S3Accessor, nodeHierarchy: NodeHierarchy, id):
 	return s3Accessor.generate_presigned_url_download(bucket, key)
 
 
+@file_bp.route("/delete/<id>", methods=["DELETE"])
+@inject
+@login_required
+def delete(s3Accessor: S3Accessor, nodeHierarchy: NodeHierarchy, id):
+	user_id = '33c541df-911e-4b4c-8df8-011499c4a605'
+	item = nodeHierarchy.getNode(id)
+	if(item['type'] == 'folder'):
+		items = nodeHierarchy.listNodes(id, user_id)
+		if(len(items) > 0):
+			raise Exception("Cannot delete folder as it is not empty")
+		else:
+			nodeHierarchy.deleteNode(id)
+	else:		
+		bucket = item['meta_data']['bucket']
+		key = item['meta_data']['key']
+		#file logic
+	return {'status': 'Ok'}
+
+
 @file_bp.route("/initiate_upload", methods=["POST"])
 @inject
 @login_required

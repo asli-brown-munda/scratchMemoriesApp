@@ -42,6 +42,20 @@ class NodeHierarchy:
         else:
             return response["Item"]
 
+    def deleteNode(self, id):
+        try:
+            response = self.table.delete_item(
+                Key = {"id": id}
+            )
+        except Exception as e:
+            logger.error(
+                "Couldn't delete the file %s. why: %s: %s",
+                id,
+                err.response["Error"]["Code"],
+                err.response["Error"]["Message"],
+            )
+            raise
+
     def createNode(self, user_id, node):
         try:
             response = self.table.put_item(Item={

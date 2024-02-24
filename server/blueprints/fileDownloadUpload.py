@@ -23,7 +23,6 @@ def download(s3Accessor: S3Accessor, nodeHierarchy: NodeHierarchy, id):
 
 @file_bp.route("/delete/<id>", methods=["DELETE"])
 @inject
-@login_required
 def delete(s3Accessor: S3Accessor, nodeHierarchy: NodeHierarchy, id):
 	user_id = '33c541df-911e-4b4c-8df8-011499c4a605'
 	item = nodeHierarchy.getNode(id)
@@ -36,7 +35,8 @@ def delete(s3Accessor: S3Accessor, nodeHierarchy: NodeHierarchy, id):
 	else:		
 		bucket = item['meta_data']['bucket']
 		key = item['meta_data']['key']
-		#file logic
+		nodeHierarchy.deleteNode(id)
+		s3Accessor.delete_file(bucket, key)
 	return {'status': 'Ok'}
 
 

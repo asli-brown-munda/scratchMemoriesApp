@@ -30,6 +30,15 @@ class S3Accessor:
         )
         return url
 
+    def delete_file(self, bucket, key):
+        try:
+            response = self._s3_client.delete_object(Bucket=bucket, Key=key)
+        except Exception as e:
+            logger.exception(
+                "Couldn't delete the file %s '%s'.", key, client_method
+            )
+            raise
+
     def generate_presigned_url(self, client_method, method_parameters, expires_in):
         """
         Generate a presigned Amazon S3 URL that can be used to perform an action.

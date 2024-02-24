@@ -2,7 +2,7 @@
 
 const config = {
   dev: {
-    backendUrl: "http://127.0.0.1:5000/api",
+    backendUrl: "http://localhost:5000/api",
     googleClientId: "121036537289-qhgeejlfbbp3d177dm5l330crn1dn9ci.apps.googleusercontent.com"
   },
   prod: {

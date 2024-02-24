@@ -12,6 +12,7 @@ import { UserContext } from "context/UserContext";
 import theme from "assets/theme";
 import routes from "routes";
 import { BACKEND_URL } from "config/app_config";
+import Tailwind from 'primereact/passthrough/tailwind';
 
 axios.defaults.withCredentials = true;
 
@@ -37,7 +38,7 @@ function App() {
     });
   return (
     <ThemeProvider theme={theme}>
-      <PrimeReactProvider>
+      <PrimeReactProvider  value={{ unstyled: true , pt:Tailwind}}>
         <GoogleOAuthProvider clientId={GOOGLE_OAUTH_CLIENT_ID}>
           <UserContext.Provider value={{ user, setUser }}>
             <CssBaseline />

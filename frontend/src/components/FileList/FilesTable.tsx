@@ -9,8 +9,6 @@ import Grid from "@mui/material/Grid";
 import Checkbox from "@mui/material/Checkbox";
 import { FileUpload } from "primereact/fileupload";
 import { ProgressBar } from 'primereact/progressbar';
-import "primereact/resources/themes/lara-light-indigo/theme.css";
-import "primereact/resources/primereact.min.css";
 import { useRef } from "react";
 import { preProcessTableData } from "./FilesTableUtil.ts";
 import { BACKEND_URL } from "config/app_config";

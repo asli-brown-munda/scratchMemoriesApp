@@ -33,6 +33,11 @@ function FilesTable() {
   const [progress, setProgress] = React.useState(0);
   const [uploading, setUploading] = React.useState(false);
 
+  const [fileIds, setFileIds] = React.useState([]);
+  const [currentFileIndex, setCurrentFileIndex] = React.useState(0);
+  const [signedUrl, setSignedUrl] = React.useState(null);
+
+
   React.useEffect(() => {
     const folderId = folderMap[currentPath];
     fetchFileList(folderId)
@@ -200,19 +205,53 @@ function FilesTable() {
     setFolderMap
   ) {
     const pathParts = currentPath.split("/").filter(Boolean);
-    const handleDownloadSelected = () => {
+
+    React.useEffect(() => {
+      const handleDownload = () => {
+        if (signedUrl) {
+          const filename = (data.find((file) => file.id === fileIds[currentFileIndex])).name
+          const link = document.createElement('a');
+          link.href = signedUrl
+          link.download = filename
+          console.log(link)
+          link.click();
+          setTimeout(() => setCurrentFileIndex(currentFileIndex + 1), 1000);
+        }
+      }
+      const file = data.find((file) => file.id === fileIds[currentFileIndex]); 
+      console.log(file)
+      handleDownload()
+    }, [signedUrl]);
+
+    React.useEffect(() => {
+      const fetchNextSignedUrl = async () => {
+        console.log(" currentFileIndex " + currentFileIndex);
+        if (currentFileIndex < fileIds.length) {
+          const response = await axios.get(BACKEND_URL + "/download/" + fileIds[currentFileIndex])
+          console.log(response.data)
+          setSignedUrl(response.data);
+        } else {
+          setSignedUrl(null);
+        }
+      };
+      if (fileIds.length > currentFileIndex) {
+        fetchNextSignedUrl();
+      } else if(fileIds.length !== 0) {
+        setSignedUrl(null);
+        setFileIds([]);
+        setCurrentFileIndex(0);
+      }
+    }, [fileIds, currentFileIndex]);
+
+
+
+    const handleDownloadSelected = async() => {
       // Implement download logic for selected files
       // Iterate through selectedFiles and initiate download for each file
-      selectedFiles.forEach((fileId) => {
-        const file = data.find((file) => file.id === fileId);
-        if (file && file.link && file.type !== "folder") {
-          const downloadLink = document.createElement("a");
-          downloadLink.href = file.link;
-          downloadLink.download = file.name;
-          console.log(downloadLink);
-        }
-      });
-    };
+       console.log(selectedFiles)
+       setFileIds(selectedFiles);
+    }
+
 
     const handleDeleteSelected = () => {
       // Implement download logic for selected files

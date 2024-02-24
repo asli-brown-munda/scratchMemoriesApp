@@ -14,7 +14,7 @@ import { UserContext } from "context/UserContext";
 import { useContext } from "react";
 import axios from "axios";
 import { BACKEND_URL } from "config/app_config";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 function Pricing() {
   const { user, setUser } = useContext(UserContext);
@@ -86,10 +86,9 @@ function DescriptionGenerator(points, price, originalPrice) {
 }
 
 function ActionButton(user, setUser, plan, navigate) {
-  const makePurchase = () =>
+  const makeInterest = () =>
     axios
-      .post(BACKEND_URL + "/purhcase", {
-        planCode: plan["code"],
+      .post(BACKEND_URL + "/mark_interest", {
       })
       .then((response) => {
         console.log("Purchase Success: ", response);
@@ -101,16 +100,15 @@ function ActionButton(user, setUser, plan, navigate) {
       });
   if (user == null) {
     return (
-      <MKButton color="info" href="/sign_in" size="large">
+      <MKButton color="info" onClick={() => navigate("/sign_in")} size="large">
         Sign In
       </MKButton>
     );
   } else {
-
-    if (plan["price"] > 0 && user.plan === 'FREE_PLAN') {
+    if (plan["price"] > 0 && !user.has_interest_in_premium_plans) {
       return (
-        <MKButton color="info" onClick={makePurchase} size="large">
-          Purchase
+        <MKButton color="info" onClick={makeInterest} size="large">
+          Notify Me!
         </MKButton>
       );
     } else {

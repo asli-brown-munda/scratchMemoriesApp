@@ -11,9 +11,21 @@ from models.Plan import parse_plan_enum
 
 purchase_bp = Blueprint("purchase", __name__)
 
-
-@purchase_bp.route("/purhcase", methods=["POST"])
+@purchase_bp.route("/mark_interest", methods=["POST"])
 @login_required
+def make_purchase(user_dao: UserDao):
+    try:
+        user = user_dao.getUserById(current_user.id)
+        user.has_interest_in_premium_plans = current_user.has_interest_in_premium_plans = True
+        user_dao.createUser(user)
+        return make_response(user.toJSON(), 200)
+    except Exception as ex:
+        print(ex)
+        return make_response("", 501)
+
+
+#@purchase_bp.route("/purchase", methods=["POST"])
+#@login_required
 def make_purchase(user_dao: UserDao):
     try:
         planCode = request.json.get("planCode")

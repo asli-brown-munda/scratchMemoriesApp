@@ -15,6 +15,7 @@ class User(UserMixin):
         plan (str): The subscription plan of the user.
         storage_used (int): The amount of storage used by the user.
         download_used (int): The number of downloads used by the user.
+        has_interest_in_premium_plans (bool): Indicates if the user has interest in premium plans.
     """
 
     def __init__(
@@ -27,6 +28,7 @@ class User(UserMixin):
         plan: str,
         storage_used: int,
         download_used: int,
+        has_interest_in_premium_plans: bool = False,  # Default value is False
     ):
         """Initialize a User object.
 
@@ -39,6 +41,7 @@ class User(UserMixin):
             plan (str): The subscription plan of the user.
             storage_used (int): The amount of storage used by the user.
             download_used (int): The number of downloads used by the user.
+            has_interest_in_premium_plans (bool, optional): Indicates if the user has interest in premium plans. Defaults to False.
         """
         self.name = name
         self.picture_url = picture_url
@@ -48,6 +51,7 @@ class User(UserMixin):
         self.plan = plan
         self.storage_used = storage_used
         self.download_used = download_used
+        self.has_interest_in_premium_plans = has_interest_in_premium_plans
 
     def to_dict(self) -> dict:
         """Convert the User object to a dictionary."""
@@ -60,6 +64,7 @@ class User(UserMixin):
             "plan": self.plan,
             "storage_used": self.storage_used,
             "download_used": self.download_used,
+            "has_interest_in_premium_plans": self.has_interest_in_premium_plans,
         }
 
     def toJSON(self):

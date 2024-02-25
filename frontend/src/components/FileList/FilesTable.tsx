@@ -225,6 +225,19 @@ function FilesTable() {
   ) {
     const pathParts = currentPath.split("/").filter(Boolean);
     
+    const { user, setUser } = useContext(UserContext);
+
+    const refresh_user_object = () => {
+      axios
+      .post(BACKEND_URL + "/protected_area")
+      .then((response) => {
+        console.log("Session Still exists for the user", response.data);
+        if (response.data !== user) {
+          setUser(response.data);
+        }
+      })
+    };
+
     React.useEffect(() => {
       const handleDownload = () => {
         if (signedUrl) {
@@ -260,20 +273,9 @@ function FilesTable() {
         setFileIds([]);
         setCurrentFileIndex(0);
       }
+      refresh_user_object();
     }, [fileIds, currentFileIndex]);
 
-    const { user, setUser } = useContext(UserContext);
-
-    const refresh_user_object = () => {
-      axios
-      .post(BACKEND_URL + "/protected_area")
-      .then((response) => {
-        console.log("Session Still exists for the user", response.data);
-        if (response.data !== user) {
-          setUser(response.data);
-        }
-      })
-    };
 
     const handleDownloadSelected = async() => {
       // Implement download logic for selected files

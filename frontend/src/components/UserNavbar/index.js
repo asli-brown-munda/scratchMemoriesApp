@@ -36,12 +36,12 @@ function LoggedInUserNavbar() {
         <Grid container justifyContent="right">
           <Grid item pr={4} pt={0.75}>
             <MKTypography color="white">
-              Storage Usage: {user.storage_used / 1000} GB
+              Storage Usage: {user.storage_used / 1000000000} GB
             </MKTypography>
           </Grid>
           <Grid item pr={4} pt={0.75}>
             <MKTypography color="white">
-              Download Usage: {user.download_used / 1000} GB
+              Download Usage: {user.download_used / 1000000000} GB
             </MKTypography>
           </Grid>
           <Grid item pr={2} pt={0.75}>

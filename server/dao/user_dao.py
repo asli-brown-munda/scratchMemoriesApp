@@ -56,6 +56,57 @@ class UserDao:
             items = response.get("Items")
             return [User(**item) for item in items] if items else []
 
+    def addStorageUsage(self, user_id, storage_increment):
+        try:
+            response = self.table.update_item(
+                Key={"id": user_id},
+                UpdateExpression="SET storage_used = storage_used + :storage_increment",
+                ExpressionAttributeValues={":storage_increment": storage_increment},
+                ReturnValues="UPDATED_NEW"
+            )
+            logging.info("Update Storage Usage Successful %s", response)
+        except ClientError as err:
+            logger.error(
+                "Couldn't update storage usage. Error: %s: %s",
+                err.response["Error"]["Code"],
+                err.response["Error"]["Message"],
+            )
+            raise
+
+    def addDownloadUsage(self, user_id, download_increment):
+        try:
+            response = self.table.update_item(
+                Key={"id": user_id},
+                UpdateExpression="SET download_used = download_used + :download_increment",
+                ExpressionAttributeValues={":download_increment": download_increment},
+                ReturnValues="UPDATED_NEW"
+            )
+            logging.info("Update Download Usage Successful %s", response)
+        except ClientError as err:
+            logger.error(
+                "Couldn't update download usage. Error: %s: %s",
+                err.response["Error"]["Code"],
+                err.response["Error"]["Message"],
+            )
+            raise
+
+    def updateStorageUsedToValue(self, user_id, new_storage_used):
+        try:
+            response = self.table.update_item(
+                Key={"id": user_id},
+                UpdateExpression="SET storage_used = :new_storage_used",
+                ExpressionAttributeValues={":new_storage_used": new_storage_used},
+                ReturnValues="UPDATED_NEW"
+            )
+            logging.info("Update Storage Used Successful %s", response)
+        except ClientError as err:
+            logger.error(
+                "Couldn't update storage used. Error: %s: %s",
+                err.response["Error"]["Code"],
+                err.response["Error"]["Message"],
+            )
+            raise
+
 if __name__ == "__main__":
     try:
         userInformation = UserDao(boto3.resource("dynamodb", region_name="us-east-1"))

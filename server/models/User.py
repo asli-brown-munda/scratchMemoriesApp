@@ -1,7 +1,8 @@
 import json
 from flask_login import UserMixin
 import jsonpickle
-
+from decimal import Decimal
+from typing import Union
 
 class User(UserMixin):
     """Class representing a user.
@@ -26,8 +27,8 @@ class User(UserMixin):
         locale: str,
         email_id: str,
         plan: str,
-        storage_used: int,
-        download_used: int,
+        storage_used: Union[int, Decimal],  # Accepts int or Decimal
+        download_used: Union[int, Decimal],  # Accepts int or Decimal
         has_interest_in_premium_plans: bool = False,  # Default value is False
     ):
         """Initialize a User object.
@@ -49,8 +50,8 @@ class User(UserMixin):
         self.email_id = email_id
         self.id = id
         self.plan = plan
-        self.storage_used = storage_used
-        self.download_used = download_used
+        self.storage_used = int(storage_used)
+        self.download_used = int(download_used)
         self.has_interest_in_premium_plans = has_interest_in_premium_plans
 
     def to_dict(self) -> dict:

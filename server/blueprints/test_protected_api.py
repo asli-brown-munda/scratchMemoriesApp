@@ -11,4 +11,4 @@ protected_area_bp = Blueprint("protected_area", __name__)
 @protected_area_bp.route("/protected_area", methods=["POST"])
 @login_required
 def protected_area():
-    return make_response({"success": True}, 200)
+    return make_response(current_user.toJSON(), 200)

@@ -11,8 +11,8 @@
         "title": "Starter Plan",
         "code": "STARTER_PLAN",
         "description": ["100 GB Storage", "200 GB Download", "Client Side Encryption", "Durable Storage"],
-        "original_price": 15,
-        "price": 10,
+        "original_price": 20,
+        "price": 15,
         "currency": "$"
     },
     {

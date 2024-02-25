@@ -63,9 +63,12 @@ function PerformUserManagement(user, setUser) {
     // Check session validity using your authentication mechanism
     axios
       .post(BACKEND_URL + "/protected_area")
-      .then((response) =>
-        console.log("Session Still exists for the user", response.data)
-      )
+      .then((response) => {
+        console.log("Session Still exists for the user", response.data);
+        if (response.data !== user) {
+          setUser(response.data);
+        }
+      })
       .catch((error) => {
         localStorage.removeItem("user");
         setUser(null);

@@ -21,6 +21,8 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import DownloadIcon from "@mui/icons-material/Download";
+import { useContext } from "react";
+import { UserContext } from "context/UserContext";
 
 function FilesTable() {
   // Sets the path which in turn retrieves the data.
@@ -222,7 +224,7 @@ function FilesTable() {
     setFolderMap
   ) {
     const pathParts = currentPath.split("/").filter(Boolean);
-
+    
     React.useEffect(() => {
       const handleDownload = () => {
         if (signedUrl) {
@@ -260,7 +262,18 @@ function FilesTable() {
       }
     }, [fileIds, currentFileIndex]);
 
+    const { user, setUser } = useContext(UserContext);
 
+    const refresh_user_object = () => {
+      axios
+      .post(BACKEND_URL + "/protected_area")
+      .then((response) => {
+        console.log("Session Still exists for the user", response.data);
+        if (response.data !== user) {
+          setUser(response.data);
+        }
+      })
+    };
 
     const handleDownloadSelected = async() => {
       // Implement download logic for selected files
@@ -333,6 +346,7 @@ function FilesTable() {
       setUploading(false);
       setFilesUploaded(event.files.length);
       setProgress(0);
+      refresh_user_object();
       if (fileUploadRef.current) {
         fileUploadRef.current.clear();
       }

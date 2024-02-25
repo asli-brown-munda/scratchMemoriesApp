@@ -1,4 +1,4 @@
-from flask import request, Blueprint
+from flask import request, Blueprint, make_response
 from models.Node import Node
 from flask_injector import inject
 from dao.s3Accessor import S3Accessor
@@ -6,25 +6,39 @@ from dao.nodeDAO import NodeHierarchy
 import uuid
 import time
 from flask_login import login_required, current_user
+from dao.user_dao import UserDao
+import logging
+
+logger = logging.getLogger(__name__)
 
 
+BASE_PLAN_CONSTANT_BYTES = 10**9 # 10 GB
 
 file_bp = Blueprint('file', __name__)
 
 @file_bp.route("/download/<id>")
 @inject
 @login_required
-def download(s3Accessor: S3Accessor, nodeHierarchy: NodeHierarchy, id):
+def download(s3Accessor: S3Accessor, nodeHierarchy: NodeHierarchy, user_dao: UserDao, id):
 	item = nodeHierarchy.getNode(id)
 	bucket = item['meta_data']['bucket']
 	key = item['meta_data']['key']
+	download_bytes = s3Accessor.get_file_size(bucket, key) 
+	if (current_user.download_used + download_bytes > 2 * BASE_PLAN_CONSTANT_BYTES):
+		logging.info(
+			"Current User Exceeds the Download Limits. Current User Bytes: %s, Size of File %s, Max Bytes in Plan %s", 
+			current_user.download_used, 
+			download_bytes, 
+			BASE_PLAN_CONSTANT_BYTES * 2)
+		return make_response("", 422)
+	user_dao.addDownloadUsage(current_user.id, download_bytes)
 	return s3Accessor.generate_presigned_url_download(bucket, key)
 
 
 @file_bp.route("/delete/<id>", methods=["DELETE"])
 @inject
 @login_required
-def delete(s3Accessor: S3Accessor, nodeHierarchy: NodeHierarchy, id):
+def delete(s3Accessor: S3Accessor, nodeHierarchy: NodeHierarchy, user_dao: UserDao, id):
 	user_id = current_user.id
 	item = nodeHierarchy.getNode(id)
 	if(item['type'] == 'folder'):
@@ -37,7 +51,9 @@ def delete(s3Accessor: S3Accessor, nodeHierarchy: NodeHierarchy, id):
 		bucket = item['meta_data']['bucket']
 		key = item['meta_data']['key']
 		nodeHierarchy.deleteNode(id)
+		deleted_bytes = s3Accessor.get_file_size(bucket, key)
 		s3Accessor.delete_file(bucket, key)
+		user_dao.addDownloadUsage(user_id, -deleted_bytes)
 	return {'status': 'Ok'}
 
 
@@ -68,7 +84,7 @@ def initiate_upload(s3Accessor: S3Accessor, nodeHierarchy: NodeHierarchy):
 @file_bp.route("/confirm_upload_status", methods=["POST"])
 @inject
 @login_required
-def confirm_upload_status(s3Accessor: S3Accessor, nodeHierarchy: NodeHierarchy):
+def confirm_upload_status(s3Accessor: S3Accessor, nodeHierarchy: NodeHierarchy, user_dao: UserDao):
 	user_id = current_user.id
 	id = request.json.get("id")
 	item = nodeHierarchy.getNode(id)
@@ -78,6 +94,14 @@ def confirm_upload_status(s3Accessor: S3Accessor, nodeHierarchy: NodeHierarchy):
 	bucket = user_id
 	created_at = round(time.time()*1000)
 	size = s3Accessor.get_file_size(bucket, key)
+	user_dao.addStorageUsage(user_id, size)
+	if (current_user.storage_used + size > BASE_PLAN_CONSTANT_BYTES):
+		logging.info(
+			"Current User Exceeds the Upload Limits. Current User Bytes: %s, Size of File %s, Max Bytes in Plan %s", 
+			current_user.storage_used, 
+			size, 
+			BASE_PLAN_CONSTANT_BYTES)
+		return make_response("", 422)
 	nodeHierarchy.updateNode(id, created_at, size)
 	return {'status': 'Ok'}
 

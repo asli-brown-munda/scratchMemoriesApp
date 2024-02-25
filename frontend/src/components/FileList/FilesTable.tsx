@@ -32,7 +32,6 @@ function FilesTable() {
   const [selectAllChecked, setSelectAllChecked] = React.useState(false);
   const [folderMap, setFolderMap] = React.useState({ "/": "root" });
 
-  const [filesUploaded, setFilesUploaded] = React.useState(0);
   const [progress, setProgress] = React.useState(0);
   const [uploading, setUploading] = React.useState(false);
 
@@ -40,13 +39,16 @@ function FilesTable() {
   const [currentFileIndex, setCurrentFileIndex] = React.useState(0);
   const [signedUrl, setSignedUrl] = React.useState(null);
 
+  const [isDeleting, setIsDeleting] = React.useState(false);
+  const [deletionProgress, setDeletionProgress] = React.useState(0);
+
 
   React.useEffect(() => {
     const folderId = folderMap[currentPath];
     fetchFileList(folderId)
       .then((response) => setData(response))
       .catch((error) => console.error("Error fetching file list:", error));
-  }, [currentPath, folderMap, filesUploaded]);
+  }, [currentPath, folderMap, uploading, isDeleting]);
 
   const fetchFileList = async (folderId) => {
     try {
@@ -284,17 +286,22 @@ function FilesTable() {
        setFileIds(selectedFiles);
     }
 
-
-    const handleDeleteSelected = () => {
-      // Implement download logic for selected files
-      // Iterate through selectedFiles and initiate download for each file
-      selectedFiles.forEach((fileId) => {
-        const file = data.find((file) => file.id === fileId);
-        if (file && file.link && file.type !== "folder") {
-          console.log(file);
-        }
-      });
+    const handleDeleteSelected = async() => {
+      var totalFile = selectedFiles.length
+      var deletedFiles = 0
+      setIsDeleting(true)
+      for (let i = 0; i < selectedFiles.length; ++i) {
+        const fileId = selectedFiles[i]
+        const response = await axios.delete(BACKEND_URL + "/delete/" + fileId)
+        const status = await response.data
+        console.log(status)
+        deletedFiles += 1;
+        setDeletionProgress((deletedFiles* 100) / totalFile);
+        console.log(deletionProgress)
+      };
+      setIsDeleting(false)
     };
+
     const fileUploadRef = useRef(null);
 
     const generateSignedUrl = async (name, folderId) => {
@@ -348,12 +355,11 @@ function FilesTable() {
         const uploadResponse = await axios.put(uploadData.upload_url, file, {});
         const fileStatus = await confirmFileUpload(uploadData.id);
         uploadedSize += event.files[i].size;
-        console.log("uploadedSize: " + uploadedSize + "totalSize: " + totalSize)
+        console.log("uploadedSize: " + uploadedSize + " totalSize: " + totalSize)
         setProgress((uploadedSize* 100) / totalSize);
       }
 
       setUploading(false);
-      setFilesUploaded(event.files.length);
       setProgress(0);
       refresh_user_object();
       if (fileUploadRef.current) {
@@ -409,9 +415,11 @@ function FilesTable() {
                 color="error"
                 onClick={handleDeleteSelected}
                 size="small"
+                disabled={isDeleting} // Disable button while deleting
               >
-                Delete Selected
+                {isDeleting ? 'Deleting...' : 'Delete Selected'}
               </MKButton>
+              {isDeleting && <ProgressBar value={deletionProgress} style={{ height: '3px' }} variant="determinate" bg="red" />}
             </Grid>
           </Grid>
           <br></br>

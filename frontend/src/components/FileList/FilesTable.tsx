@@ -397,7 +397,7 @@ function FilesTable() {
           </Grid>
           <Grid container pt={2}>
             <Grid item>
-              {CreateFolder(currentPath, folderMap, setFolderMap)}
+              {CreateFolder(currentPath, folderMap, setFolderMap, data)}
             </Grid>
             <Grid item ml={2}>
               <MKButton
@@ -439,9 +439,11 @@ function FilesTable() {
     );
   }
 
-  function CreateFolder(currentPath, folderMap, setFolderMap) {
+  function CreateFolder(currentPath, folderMap, setFolderMap, data) {
     const [open, setOpen] = React.useState(false);
-    const [folderName, setFolderName] = React.useState(""); // Step 1: Define state for folder name
+    const [folderName, setFolderName] = React.useState("");
+    const [error, setError] = React.useState("");
+
     const handleClickOpen = () => {
       setOpen(true);
     };
@@ -449,16 +451,40 @@ function FilesTable() {
     const handleClose = () => {
       setOpen(false);
       setFolderName("");
+      setError("");
+    };
+
+    const validateFolderName = (name) => {
+      if (name.trim() === "") {
+        setError("Folder name cannot be empty");
+        return;
+      }
+      if (data != null) {
+        var found = false;
+        data.forEach(item => {
+          if (item.name === name && item.type === "folder") {
+            found = true;
+          }
+        });
+        if (found) {
+          setError("Folder name already exists");
+          return;
+        }
+      }
+      setError("");
     };
 
     const handleCreateFolder = async () => {
+      if (!!error) {
+        return ;
+      }
       const folderId = folderMap[currentPath];
       console.log("Creating folder", folderName, " for ", folderId, ".");
       const response = await axios.post(BACKEND_URL + "/create_folder", {
         parent_id: folderId,
         name: folderName, // Pass folder name to the API call
       });
-      setOpen(false);
+      handleClose();
       console.log("Received the following response: ", response.data);
       if (response.data.id != null) {
         setFolderMap((prevPathInfo) => ({
@@ -485,8 +511,7 @@ function FilesTable() {
             component: "form",
             onSubmit: (event) => {
               event.preventDefault();
-              handleCreateFolder(); // Call handleCreateFolder when form is submitted
-              handleClose();
+              handleCreateFolder();
             },
           }}
         >
@@ -496,8 +521,13 @@ function FilesTable() {
               label="Folder Name"
               id="folder_name"
               required
-              value={folderName} // Step 2: Bind folderName state to the MKInput value
-              onChange={(e) => setFolderName(e.target.value)} // Update folderName state when input changes
+              value={folderName}
+              onChange={(e) => {
+                setFolderName(e.target.value);
+                validateFolderName(e.target.value);
+              }}
+              error={!!error} // Pass error state to MKInput for error display
+              helperText={error} // Display error message
             />
           </DialogContent>
           <DialogActions>

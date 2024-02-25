@@ -29,6 +29,9 @@ function LoggedInUserNavbar() {
         navigate("/");
       });
   };
+  const sendFeedback = () => {
+    window.location.href = "mailto:shubham@memoriesmvp.com";
+  };
 
   return (
     <AppBar color="info" position="static">
@@ -43,6 +46,15 @@ function LoggedInUserNavbar() {
             <MKTypography color="white">
               Download Usage: {user.download_used / 1000000000} GB
             </MKTypography>
+          </Grid>
+          <Grid item pr={2} pt={0.75}>
+            <MKButton
+              sx={{ color: "#1a73e8" }}
+              onClick={sendFeedback}
+              size="small"
+            >
+              Send Feedback
+            </MKButton>
           </Grid>
           <Grid item pr={2} pt={0.75}>
             <MKButton

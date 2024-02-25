@@ -334,6 +334,11 @@ function FilesTable() {
       console.log(event);
       console.log(folderId);
       // convert file to base64 encoded
+      var totalSize = 0;
+      var uploadedSize = 0;
+      for (let i = 0; i < event.files.length; ++i) { 
+        totalSize += event.files[i].size;
+      }
       for (let i = 0; i < event.files.length; ++i) {
         const file = event.files[i]; // Use 'i' to iterate through all files
 
@@ -342,7 +347,9 @@ function FilesTable() {
         console.log(uploadData);
         const uploadResponse = await axios.put(uploadData.upload_url, file, {});
         const fileStatus = await confirmFileUpload(uploadData.id);
-        setProgress((i * 100) / event.files.length);
+        uploadedSize += event.files[i].size;
+        console.log("uploadedSize: " + uploadedSize + "totalSize: " + totalSize)
+        setProgress((uploadedSize* 100) / totalSize);
       }
 
       setUploading(false);
@@ -417,8 +424,8 @@ function FilesTable() {
             customUpload
             uploadHandler={customBase64Uploader}
             multiple
+            progressBarTemplate={uploading && <ProgressBar mode="determinate" value={progress} />}
           />
-          {uploading && <ProgressBar mode="determinate" value={progress} />}
         </MKBox>
       </>
     );

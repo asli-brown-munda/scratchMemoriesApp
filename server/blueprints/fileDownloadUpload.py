@@ -61,6 +61,12 @@ def delete(s3Accessor: S3Accessor, nodeHierarchy: NodeHierarchy, user_dao: UserD
 @inject
 @login_required
 def initiate_upload(s3Accessor: S3Accessor, nodeHierarchy: NodeHierarchy):
+	if (current_user.storage_used > BASE_PLAN_CONSTANT_BYTES):
+		logging.info(
+			"Current User Exceeds the Storage Limits. Current User Bytes: %s, Max Bytes in Plan %s", 
+			current_user.storage_used, 
+			BASE_PLAN_CONSTANT_BYTES)
+		return make_response("", 422)
 	user_id = current_user.id
 	parent_node_id = request.json.get("parent_node_id")
 	node_name = request.json.get("node_name")
@@ -97,7 +103,7 @@ def confirm_upload_status(s3Accessor: S3Accessor, nodeHierarchy: NodeHierarchy, 
 	user_dao.addStorageUsage(user_id, size)
 	if (current_user.storage_used + size > BASE_PLAN_CONSTANT_BYTES):
 		logging.info(
-			"Current User Exceeds the Upload Limits. Current User Bytes: %s, Size of File %s, Max Bytes in Plan %s", 
+			"Current User Exceeds the Storage Limits. Current User Bytes: %s, Size of File %s, Max Bytes in Plan %s", 
 			current_user.storage_used, 
 			size, 
 			BASE_PLAN_CONSTANT_BYTES)

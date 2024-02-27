@@ -226,9 +226,15 @@ function FilesTable() {
     setFolderMap
   ) {
     const pathParts = currentPath.split("/").filter(Boolean);
-    
+    const [isDialogOpen, setIsDialogOpen] = React.useState(false);
     const { user, setUser } = useContext(UserContext);
-
+    const openDialog = () => {
+      setIsDialogOpen(true);
+    };
+    const closeDialog = () => {
+      setIsDialogOpen(false);
+      
+    };
     const refresh_user_object = () => {
       axios
       .post(BACKEND_URL + "/protected_area")
@@ -362,6 +368,7 @@ function FilesTable() {
       setUploading(false);
       setProgress(0);
       refresh_user_object();
+      closeDialog();
       if (fileUploadRef.current) {
         fileUploadRef.current.clear();
       }
@@ -403,6 +410,16 @@ function FilesTable() {
               <MKButton
                 variant="gradient"
                 color="info"
+                onClick={openDialog}
+                size="small"
+              >
+                Upload Files
+              </MKButton>
+            </Grid>
+            <Grid item ml={2}>
+              <MKButton
+                variant="gradient"
+                color="info"
                 onClick={handleDownloadSelected}
                 size="small"
               >
@@ -424,17 +441,17 @@ function FilesTable() {
           </Grid>
           <br></br>
         </MKBox>
-        <MKBox>
-          <FileUpload
-            ref={fileUploadRef}
-            name="Uploader"
-            accept="*"
-            customUpload
-            uploadHandler={customBase64Uploader}
-            multiple
-            progressBarTemplate={uploading && <ProgressBar mode="determinate" value={progress} />}
-          />
-        </MKBox>
+        <Dialog  open={isDialogOpen} onClose={closeDialog} maxWidth={"xl"}>
+            <FileUpload
+              ref={fileUploadRef}
+              name="Uploader"
+              accept="*"
+              customUpload
+              uploadHandler={customBase64Uploader}
+              multiple
+              progressBarTemplate={uploading && <ProgressBar mode="determinate" value={progress} />}
+            />
+        </Dialog>
       </>
     );
   }

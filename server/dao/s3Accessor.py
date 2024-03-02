@@ -10,29 +10,30 @@ class S3Accessor:
 
     def __init__(self, s3_client):
         self._s3_client = s3_client
+        self._bucket = 'memories'
 
-    def get_file_size(self, bucket, key):
-        response = self._s3_client.head_object(Bucket= bucket, Key= key)
+    def get_file_size(self, root_folder, key):
+        response = self._s3_client.head_object(Bucket= self._bucket, Key= root_folder + '/' + key)
         file_size = response['ContentLength']
         return file_size
 
-    def generate_presigned_url_upload(self, bucket, key):
+    def generate_presigned_url_upload(self, root_folder, key):
         client_action = "put_object"
         url = self.generate_presigned_url(
-            client_action, {"Bucket": bucket, "Key": key}, 1000
+            client_action, {"Bucket": self._bucket, "Key": root_folder + '/' + key}, 1000
         )
         return url
 
-    def generate_presigned_url_download(self, bucket, key):
+    def generate_presigned_url_download(self, root_folder, key):
         client_action = "get_object" 
         url = self.generate_presigned_url(
-            client_action, {"Bucket": bucket, "Key": key}, 1000
+            client_action, {"Bucket": self._bucket, "Key": root_folder + '/' + key}, 1000
         )
         return url
 
-    def delete_file(self, bucket, key):
+    def delete_file(self, root_folder, key):
         try:
-            response = self._s3_client.delete_object(Bucket=bucket, Key=key)
+            response = self._s3_client.delete_object(Bucket=self._bucket, Key=root_folder + '/' + key)
         except Exception as e:
             logger.exception(
                 "Couldn't delete the file %s '%s'.", key, client_method

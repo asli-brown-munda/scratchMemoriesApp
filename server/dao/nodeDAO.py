@@ -17,8 +17,8 @@ class NodeHierarchy:
         if(parent_id == 'root'):
             parent_id = user_id + "#" + parent_id
         try:
-            response = self.table.query(IndexName = "parent_id-created_at-index", 
-                KeyConditionExpression=Key("parent_id").eq(parent_id)  & Key("created_at").gt(0))
+            response = self.table.query(IndexName = "parent_id-type_created_at-index", 
+                KeyConditionExpression=Key("parent_id").eq(parent_id)  & Key("type_created_at").gt("file#0"), ScanIndexForward=False)
         except ClientError as err:
             logger.error(
                 "Couldn't query for files. why: %s: %s",
@@ -66,7 +66,8 @@ class NodeHierarchy:
             'meta_data': node._metadata,
             'created_at': node._created_at,
             'owner': user_id,
-            'type': node._type
+            'type': node._type,
+            'type_created_at': node._type + "#" + str(node._created_at)
         })
         except ClientError as err:
             logger.error(
@@ -76,12 +77,12 @@ class NodeHierarchy:
             )
             raise
 
-    def updateNode(self, id, created_at, size):
+    def updateNode(self, id, type, created_at, size):
         try:
             response = self.table.update_item(
                     Key = {"id": id},
-                    UpdateExpression="set meta_data.size=:size, created_at=:created_at",
-                    ExpressionAttributeValues={":size": int(size), ":created_at": int(created_at)},
+                    UpdateExpression="set meta_data.size=:size, created_at=:created_at, type_created_at=:type_created_at",
+                    ExpressionAttributeValues={":size": int(size), ":created_at": int(created_at), ":type_created_at":type + "#" + str(created_at)},
                     ReturnValues= 'NONE'
         )
         except ClientError as err:

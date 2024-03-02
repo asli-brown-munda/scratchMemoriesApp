@@ -19,6 +19,16 @@ class NodeHierarchy:
         try:
             response = self.table.query(IndexName = "parent_id-type_created_at-index", 
                 KeyConditionExpression=Key("parent_id").eq(parent_id)  & Key("type_created_at").gt("file#0"), ScanIndexForward=False)
+            items = response['Items'] 
+            while 'LastEvaluatedKey' in response:
+                last_key = response['LastEvaluatedKey']
+                response = self.table.query(
+                    IndexName="parent_id-type_created_at-index",
+                    KeyConditionExpression=Key("parent_id").eq(parent_id) & Key("type_created_at").gt("file#0"),
+                    ScanIndexForward=False, 
+                    ExclusiveStartKey=last_key
+                )
+                items.extend(response['Items'])  # Append items from subsequent pages to the list
         except ClientError as err:
             logger.error(
                 "Couldn't query for files. why: %s: %s",

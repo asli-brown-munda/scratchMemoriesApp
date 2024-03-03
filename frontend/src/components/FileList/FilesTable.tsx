@@ -305,7 +305,8 @@ function FilesTable() {
         setDeletionProgress((deletedFiles* 100) / totalFile);
         console.log(deletionProgress)
       };
-      setIsDeleting(false)
+      setIsDeleting(false);
+      refresh_user_object();
     };
 
     const fileUploadRef = useRef(null);

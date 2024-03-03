@@ -40,6 +40,19 @@ class S3Accessor:
             )
             raise
 
+    def get_s3_folder_size(self, root_folder):
+        total_size = 0
+
+        paginator = self._s3_client.get_paginator('list_objects_v2')
+        page_iterator = paginator.paginate(Bucket=self._bucket, Prefix=root_folder)
+
+        for page in page_iterator:
+            if 'Contents' in page:
+                for obj in page['Contents']:
+                    total_size += obj['Size']
+
+        return total_size
+        
     def generate_presigned_url(self, client_method, method_parameters, expires_in):
         """
         Generate a presigned Amazon S3 URL that can be used to perform an action.

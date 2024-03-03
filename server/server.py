@@ -48,8 +48,8 @@ def configure(binder):
 
 def main(argv):
     flask_app = Flask("Memories")
-    CORS(flask_app, supports_credentials=True)
     if __ENVIRONMENT.value == 'dev':
+        CORS(flask_app, supports_credentials=True, origins=["http://localhost:3000"])
         flask_app.secret_key = os.urandom(12)
         logging.info("Setting the Secret Key to a Random Key, Detected Environment Dev")
     else:

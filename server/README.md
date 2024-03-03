@@ -132,11 +132,11 @@ aws dynamodb create-table \
     --attribute-definitions \
         AttributeName=id,AttributeType=S \
         AttributeName=parent_id,AttributeType=S \
-        AttributeName=created_at,AttributeType=N \
+        AttributeName=type_created_at,AttributeType=S \
     --key-schema \
         AttributeName=id,KeyType=HASH \
     --provisioned-throughput \
         ReadCapacityUnits=5,WriteCapacityUnits=5 \
     --global-secondary-indexes \
-        "IndexName=parent_id-created_at-index,KeySchema=[{AttributeName=parent_id,KeyType=HASH},{AttributeName=created_at,KeyType=RANGE}],Projection={ProjectionType=ALL},ProvisionedThroughput={ReadCapacityUnits=5,WriteCapacityUnits=5}" \
+        "IndexName=parent_id-type_created_at-index,KeySchema=[{AttributeName=parent_id,KeyType=HASH},{AttributeName=type_created_at,KeyType=RANGE}],Projection={ProjectionType=ALL},ProvisionedThroughput={ReadCapacityUnits=5,WriteCapacityUnits=5}" \
     --region ap-south-1

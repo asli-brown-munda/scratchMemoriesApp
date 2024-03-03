@@ -53,7 +53,7 @@ def delete(s3Accessor: S3Accessor, nodeHierarchy: NodeHierarchy, user_dao: UserD
 		nodeHierarchy.deleteNode(id)
 		deleted_bytes = s3Accessor.get_file_size(root_folder, key)
 		s3Accessor.delete_file(root_folder, key)
-		user_dao.addDownloadUsage(user_id, -deleted_bytes)
+		user_dao.addStorageUsage(user_id, -deleted_bytes)
 	return {'status': 'Ok'}
 
 

@@ -11,6 +11,9 @@ import axios from "axios";
 import { BACKEND_URL } from "config/app_config";
 import { useNavigate } from "react-router-dom";
 import MKTypography from "components/MKTypography";
+import CircularProgress from "@mui/material/CircularProgress";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
 
 function LoggedInUserNavbar() {
   const { user, setUser } = useContext(UserContext);
@@ -37,15 +40,18 @@ function LoggedInUserNavbar() {
     <AppBar color="info" position="static">
       <Toolbar>
         <Grid container justifyContent="right">
-          <Grid item pr={4} pt={0.75}>
-            <MKTypography color="white">
-              Storage Usage: {user.storage_used / 1000000000} GB
-            </MKTypography>
+          <Grid item pt={0.75} pr={1}>
+            <MKTypography color="white">Storage Usage:</MKTypography>
           </Grid>
-          <Grid item pr={4} pt={0.75}>
-            <MKTypography color="white">
-              Download Usage: {user.download_used / 1000000000} GB
-            </MKTypography>
+          <Grid item pr={4}>
+            <CircularProgressWithLabel value={user.storage_used / 100000000} />
+          </Grid>
+          
+          <Grid item pt={0.75} pr={1}>
+            <MKTypography color="white">Download Usage:</MKTypography>
+          </Grid>
+          <Grid item pr={4}>
+            <CircularProgressWithLabel value={user.download_used / 200000000} />
           </Grid>
           <Grid item pr={2} pt={0.75}>
             <MKButton
@@ -80,6 +86,37 @@ function LoggedInUserNavbar() {
         </Grid>
       </Toolbar>
     </AppBar>
+  );
+}
+
+function CircularProgressWithLabel(props) {
+  return (
+    <Box sx={{ position: "relative", display: "inline-flex" }}>
+      <CircularProgress
+        variant="determinate"
+        color="inherit" // Set the color to inherit
+        sx={{
+          color: "white",
+        }}
+        {...props}
+      />
+      <Box
+        sx={{
+          top: 0,
+          left: 0,
+          bottom: 0,
+          right: 0,
+          position: "absolute",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <Typography variant="button" component="div" color="white">
+          {`${Math.round(props.value)}%`}
+        </Typography>
+      </Box>
+    </Box>
   );
 }
 

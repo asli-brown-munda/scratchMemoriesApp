@@ -12,7 +12,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-BASE_PLAN_CONSTANT_BYTES = 10**9 # 10 GB
+BASE_PLAN_CONSTANT_BYTES = 10**10 # 10 GB
 
 file_bp = Blueprint('file', __name__)
 

@@ -450,7 +450,7 @@ function FilesTable() {
               customUpload
               uploadHandler={customBase64Uploader}
               multiple
-              progressBarTemplate={uploading && <ProgressBar mode="determinate" value={progress} />}
+              progressBarTemplate={uploading && <ProgressBar mode="determinate" value={Math.round(progress)} />}
             />
         </Dialog>
       </>

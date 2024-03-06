@@ -19,10 +19,10 @@ import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
-import DialogTitle from "@mui/material/DialogTitle";
 import DownloadIcon from "@mui/icons-material/Download";
 import { useContext } from "react";
 import { UserContext } from "context/UserContext";
+import MKTypography from "components/MKTypography";
 
 function FilesTable() {
   // Sets the path which in turn retrieves the data.
@@ -41,7 +41,6 @@ function FilesTable() {
 
   const [isDeleting, setIsDeleting] = React.useState(false);
   const [deletionProgress, setDeletionProgress] = React.useState(0);
-
 
   React.useEffect(() => {
     const folderId = folderMap[currentPath];
@@ -96,14 +95,19 @@ function FilesTable() {
     });
   };
 
-  const handleSingleDownload = async(cellValue) => {
+  const handleSingleDownload = async (cellValue) => {
     setFileIds([cellValue]);
-  }
+  };
 
   const LinkComponent = ({ cell, row }) => {
     if (row.original.type !== "folder") {
       return (
-        <MKButton variant="gradient" color="info" iconOnly onClick={() => handleSingleDownload(cell.value)}>
+        <MKButton
+          variant="gradient"
+          color="info"
+          iconOnly
+          onClick={() => handleSingleDownload(cell.value)}
+        >
           <DownloadIcon>download</DownloadIcon>
         </MKButton>
       );
@@ -233,42 +237,43 @@ function FilesTable() {
     };
     const closeDialog = () => {
       setIsDialogOpen(false);
-      
     };
     const refresh_user_object = () => {
-      axios
-      .post(BACKEND_URL + "/protected_area")
-      .then((response) => {
+      axios.post(BACKEND_URL + "/protected_area").then((response) => {
         console.log("Session Still exists for the user", response.data);
         if (response.data !== user) {
           setUser(response.data);
         }
-      })
+      });
     };
 
     React.useEffect(() => {
       const handleDownload = () => {
         if (signedUrl) {
-          const filename = (data.find((file) => file.id === fileIds[currentFileIndex])).name
-          const link = document.createElement('a');
-          link.href = signedUrl
-          link.download = filename
-          console.log(link)
+          const filename = data.find(
+            (file) => file.id === fileIds[currentFileIndex]
+          ).name;
+          const link = document.createElement("a");
+          link.href = signedUrl;
+          link.download = filename;
+          console.log(link);
           link.click();
           setTimeout(() => setCurrentFileIndex(currentFileIndex + 1), 1000);
         }
-      }
-      const file = data.find((file) => file.id === fileIds[currentFileIndex]); 
-      console.log(file)
-      handleDownload()
+      };
+      const file = data.find((file) => file.id === fileIds[currentFileIndex]);
+      console.log(file);
+      handleDownload();
     }, [signedUrl]);
 
     React.useEffect(() => {
       const fetchNextSignedUrl = async () => {
         console.log(" currentFileIndex " + currentFileIndex);
         if (currentFileIndex < fileIds.length) {
-          const response = await axios.get(BACKEND_URL + "/download/" + fileIds[currentFileIndex])
-          console.log(response.data)
+          const response = await axios.get(
+            BACKEND_URL + "/download/" + fileIds[currentFileIndex]
+          );
+          console.log(response.data);
           setSignedUrl(response.data);
         } else {
           setSignedUrl(null);
@@ -276,7 +281,7 @@ function FilesTable() {
       };
       if (fileIds.length > currentFileIndex) {
         fetchNextSignedUrl();
-      } else if(fileIds.length !== 0) {
+      } else if (fileIds.length !== 0) {
         setSignedUrl(null);
         setFileIds([]);
         setCurrentFileIndex(0);
@@ -284,27 +289,26 @@ function FilesTable() {
       refresh_user_object();
     }, [fileIds, currentFileIndex]);
 
-
-    const handleDownloadSelected = async() => {
+    const handleDownloadSelected = async () => {
       // Implement download logic for selected files
       // Iterate through selectedFiles and initiate download for each file
-       console.log(selectedFiles)
-       setFileIds(selectedFiles);
-    }
+      console.log(selectedFiles);
+      setFileIds(selectedFiles);
+    };
 
-    const handleDeleteSelected = async() => {
-      var totalFile = selectedFiles.length
-      var deletedFiles = 0
-      setIsDeleting(true)
+    const handleDeleteSelected = async () => {
+      var totalFile = selectedFiles.length;
+      var deletedFiles = 0;
+      setIsDeleting(true);
       for (let i = 0; i < selectedFiles.length; ++i) {
-        const fileId = selectedFiles[i]
-        const response = await axios.delete(BACKEND_URL + "/delete/" + fileId)
-        const status = await response.data
-        console.log(status)
+        const fileId = selectedFiles[i];
+        const response = await axios.delete(BACKEND_URL + "/delete/" + fileId);
+        const status = await response.data;
+        console.log(status);
         deletedFiles += 1;
-        setDeletionProgress((deletedFiles* 100) / totalFile);
-        console.log(deletionProgress)
-      };
+        setDeletionProgress((deletedFiles * 100) / totalFile);
+        console.log(deletionProgress);
+      }
       setIsDeleting(false);
       refresh_user_object();
     };
@@ -350,7 +354,7 @@ function FilesTable() {
       // convert file to base64 encoded
       var totalSize = 0;
       var uploadedSize = 0;
-      for (let i = 0; i < event.files.length; ++i) { 
+      for (let i = 0; i < event.files.length; ++i) {
         totalSize += event.files[i].size;
       }
       for (let i = 0; i < event.files.length; ++i) {
@@ -362,8 +366,10 @@ function FilesTable() {
         const uploadResponse = await axios.put(uploadData.upload_url, file, {});
         const fileStatus = await confirmFileUpload(uploadData.id);
         uploadedSize += event.files[i].size;
-        console.log("uploadedSize: " + uploadedSize + " totalSize: " + totalSize)
-        setProgress((uploadedSize* 100) / totalSize);
+        console.log(
+          "uploadedSize: " + uploadedSize + " totalSize: " + totalSize
+        );
+        setProgress((uploadedSize * 100) / totalSize);
       }
 
       setUploading(false);
@@ -379,31 +385,7 @@ function FilesTable() {
     return (
       <>
         <MKBox>
-          <Grid container pt={2}>
-            <Grid item md={10} marginLeft={2}>
-              Current Path:
-              <span
-                className="path-link"
-                onClick={() => handlePathClick("/")}
-              ></span>
-              {pathParts.map((part, index) => (
-                <React.Fragment key={index}>
-                  {" / "}
-                  <span
-                    className="path-link"
-                    onClick={() =>
-                      handlePathClick(
-                        `/${pathParts.slice(0, index + 1).join("/")}`
-                      )
-                    }
-                  >
-                    {part}
-                  </span>
-                </React.Fragment>
-              ))}
-            </Grid>
-          </Grid>
-          <Grid container pt={2}>
+          <Grid container pt={4}>
             <Grid item>
               {CreateFolder(currentPath, folderMap, setFolderMap, data)}
             </Grid>
@@ -435,23 +417,73 @@ function FilesTable() {
                 size="small"
                 disabled={isDeleting} // Disable button while deleting
               >
-                {isDeleting ? 'Deleting...' : 'Delete Selected'}
+                {isDeleting ? "Deleting..." : "Delete Selected"}
               </MKButton>
-              {isDeleting && <ProgressBar value={deletionProgress} style={{ height: '3px' }} variant="determinate" bg="red" />}
+              {isDeleting && (
+                <ProgressBar
+                  value={deletionProgress}
+                  style={{ height: "3px" }}
+                  variant="determinate"
+                  bg="red"
+                />
+              )}
             </Grid>
           </Grid>
           <br></br>
+          <MKBox
+            color="black"
+            bgColor="text.disabled"
+            variant="gradient"
+            borderRadius="lg"
+            shadow="lg"
+            opacity={1}
+            p={2}
+            sx={{backgroundColor: "#f8f9fa", borderBottom: 1, borderColor: "#c6c7c8"}}
+          >
+            <Grid container>
+              <Grid item pl={0.5} >
+                <MKButton variant="outlined" color="info" size="small">
+                  Current Path:{" "}
+                </MKButton>
+              </Grid>
+              {pathParts.map((part, index) => (
+                <>
+                  <Grid item key={index} pl={0.5}>
+                    <MKButton
+                      color="info"
+                      size="small"
+                      onClick={() =>
+                        handlePathClick(
+                          `/${pathParts.slice(0, index + 1).join("/")}`
+                        )
+                      }
+                    >
+                      {part}
+                    </MKButton>
+                    <MKTypography color="info" variant="button" >
+                      {" "}
+                      {index < pathParts.length - 1 && " > "}{" "}
+                    </MKTypography>
+                  </Grid>
+                </>
+              ))}
+            </Grid>
+          </MKBox>
         </MKBox>
-        <Dialog  open={isDialogOpen} onClose={closeDialog} maxWidth={"xl"}>
-            <FileUpload
-              ref={fileUploadRef}
-              name="Uploader"
-              accept="*"
-              customUpload
-              uploadHandler={customBase64Uploader}
-              multiple
-              progressBarTemplate={uploading && <ProgressBar mode="determinate" value={Math.round(progress)} />}
-            />
+        <Dialog open={isDialogOpen} onClose={closeDialog} maxWidth={"xl"}>
+          <FileUpload
+            ref={fileUploadRef}
+            name="Uploader"
+            accept="*"
+            customUpload
+            uploadHandler={customBase64Uploader}
+            multiple
+            progressBarTemplate={
+              uploading && (
+                <ProgressBar mode="determinate" value={Math.round(progress)} />
+              )
+            }
+          />
         </Dialog>
       </>
     );
@@ -479,7 +511,7 @@ function FilesTable() {
       }
       if (data != null) {
         var found = false;
-        data.forEach(item => {
+        data.forEach((item) => {
           if (item.name === name && item.type === "folder") {
             found = true;
           }
@@ -494,7 +526,7 @@ function FilesTable() {
 
     const handleCreateFolder = async () => {
       if (!!error) {
-        return ;
+        return;
       }
       const folderId = folderMap[currentPath];
       console.log("Creating folder", folderName, " for ", folderId, ".");

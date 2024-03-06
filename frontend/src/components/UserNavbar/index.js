@@ -43,14 +43,14 @@ function LoggedInUserNavbar() {
           <Grid item pt={0.75} pr={1}>
             <MKTypography color="white">Storage Usage:</MKTypography>
           </Grid>
-          <Grid item pr={4}>
+          <Grid item pr={4} pt={0.5}>
             <CircularProgressWithLabel value={user.storage_used / 100000000} />
           </Grid>
           
           <Grid item pt={0.75} pr={1}>
             <MKTypography color="white">Download Usage:</MKTypography>
           </Grid>
-          <Grid item pr={4}>
+          <Grid item pr={4} pt={0.5}>
             <CircularProgressWithLabel value={user.download_used / 200000000} />
           </Grid>
           <Grid item pr={2} pt={0.75}>

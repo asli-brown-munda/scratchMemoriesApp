@@ -23,7 +23,7 @@ function Home() {
   const redirectToUrl = (url) => {
     navigate(url);
   };
-  
+
   return (
     <>
       <BackgroundParticles />
@@ -31,20 +31,13 @@ function Home() {
 
       <MKBox component="header" position="relative">
         <MKBox display="flex" alignItems="center" minHeight="40vh">
-          <Container>
-            <Grid
-              container
-              item
-              xs={12}
-              md={7}
-              lg={6}
-              flexDirection="column"
-              justifyContent="center"
-            >
+          <Grid container justifyContent="center">
+            <Grid item xs={12} md={7} lg={6} flexDirection="column">
               <MKTypography
                 variant="h1"
                 color="white"
                 mb={3}
+                align="center"
                 sx={({ breakpoints, typography: { size } }) => ({
                   [breakpoints.down("md")]: {
                     fontSize: size["3xl"],
@@ -57,21 +50,38 @@ function Home() {
               <MKTypography
                 variant="body1"
                 color="white"
-                pr={6}
-                mr={6}
+                align="center"
                 fontSize={25}
               >
-                A cheaper, durable and secure storage for your precious
-                data.
+                A cheaper, durable and secure storage for your precious data.
               </MKTypography>
-              <Stack direction="row" spacing={1} mt={3}>
-                <MKButton color="white" onClick={() => redirectToUrl("/sign_in")} size="large">Login</MKButton>
-                <MKButton variant="text" color="white" onClick={() => redirectToUrl("/about_us")} size="large">
+              <MKTypography
+                variant="body1"
+                color="white"
+                align="center"
+                fontSize={18}
+              >
+                Built by Engineers of Google, Amazon, Microsoft.
+              </MKTypography>
+              <Grid container justifyContent="center" direction="row" spacing={1} mt={3} alignItems="center">
+                <MKButton
+                  color="white"
+                  onClick={() => redirectToUrl("/sign_in")}
+                  size="large"
+                >
+                  Login
+                </MKButton>
+                <MKButton
+                  variant="text"
+                  color="white"
+                  onClick={() => redirectToUrl("/about_us")}
+                  size="large"
+                >
                   About us
                 </MKButton>
-              </Stack>
+              </Grid>
             </Grid>
-          </Container>
+          </Grid>
         </MKBox>
         <Grid
           container
@@ -79,7 +89,6 @@ function Home() {
           flexDirection="row"
           justifyContent="center"
           pt={10}
-
         >
           <Grid item flexDirection="row" xl={3}>
             <RotatingCard>
@@ -142,6 +151,5 @@ function Home() {
     </>
   );
 }
-
 
 export default Home;

@@ -61,7 +61,7 @@ function Home() {
                 align="center"
                 fontSize={18}
               >
-                Built by Engineers of Google, Amazon, Microsoft.
+                Built by ex-Engineers of Google, Uber Amazon, Microsoft.
               </MKTypography>
               <Grid container justifyContent="center" direction="row" spacing={1} mt={3} alignItems="center">
                 <MKButton

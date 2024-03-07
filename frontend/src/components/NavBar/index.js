@@ -6,19 +6,21 @@ const Navbar = function ({ routes }) {
   return (
     <>
       <BootstrapNavbar bg="#0D47A1" data-bs-theme="dark" shadow="1px">
-        <BootstrapContainer>
-          <Nav className="me-auto">
+        <BootstrapContainer className="text-center">
+          <Nav className="mx-auto">
             {routes.map((route) => {
               if (route.showOnHomeScreen !== false) {
                 return (
-                  <>
-                    <Nav.Link href={route.route} fontWeight="regular">
-                      {route.name}
-                    </Nav.Link>
-                  </>
+                  <Nav.Link
+                    href={route.route}
+                    fontWeight="regular"
+                    className="me-3"
+                  >
+                    {route.name}
+                  </Nav.Link>
                 );
               } else {
-                return <></>;
+                return null;
               }
             })}
           </Nav>

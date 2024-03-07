@@ -49,23 +49,35 @@ function AboutUs() {
               <MKTypography variant="h3" color="white">
                 Memories
               </MKTypography>
-
               <MKTypography color="white">
                 Memories isn't just another storage solution, it's a digital
                 guardian, preserving your precious moments for generations to
                 come. We understand the frustration of juggling external drives,
                 battling cloud limitations, and worrying about data loss. That's
-                why we created Memories, a secure, affordable,
-                and easy-to-use platform specifically designed for creative
-                professionals and everyday storytellers like you.
-                <br></br><br></br>
+                why we created Memories, a secure, affordable, and easy-to-use
+                platform specifically designed for creative professionals and
+                everyday storytellers like you.
+              </MKTypography>
+              <br></br>
+              <MKTypography variant="h3" color="white">
                 Why Memories?
-                <ul>
-                  <li>Savings: 33% cheaper than other storage solutions. </li>
-                  <li>Security: Server-side encryption with client-side coming soon. </li>
-                  <li>Scalability: Grows with your needs, fits any library. </li>
-                  <li>Accessibility: Fast downloads, retrieve files anytime, anywhere. </li>
-                </ul>
+              </MKTypography>
+
+              <MKTypography color="white">
+                <ol>
+                  <li><b>1. Savings</b>: 33% cheaper than other storage solutions. </li>
+                  <li>
+                    <b>2. Security</b>: Server-side encryption with client-side coming
+                    soon.{" "}
+                  </li>
+                  <li>
+                    <b>3. Scalability</b>: Grows with your needs, fits any library.{" "}
+                  </li>
+                  <li>
+                    <b>4. Accessibility</b>: Fast downloads, retrieve files anytime,
+                    anywhere.{" "}
+                  </li>
+                </ol>
               </MKTypography>
             </Grid>
           </Grid>

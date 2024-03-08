@@ -69,9 +69,13 @@ def initiate_upload(s3Accessor: S3Accessor, nodeHierarchy: NodeHierarchy):
 		return make_response("", 422)
 	user_id = current_user.id
 	parent_node_id = request.json.get("parent_node_id")
+	if (parent_node_id == 'root'):
+		parent_name = ""
+		parent_node_id = user_id + "#" + "root"
+	else:
+		item = nodeHierarchy.getNode(parent_node_id)
+		parent_name = item['name']
 	node_name = request.json.get("node_name")
-	item = nodeHierarchy.getNode(parent_node_id)
-	parent_name = item['name']
 	root_folder = user_id 
 	node_id = str(uuid.uuid4())
 	key = str(node_id) + '#' + str(node_name)

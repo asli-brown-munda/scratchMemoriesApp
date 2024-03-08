@@ -73,18 +73,6 @@ def login_gmail_user(user_dao: UserDao, nodeHierarchy: NodeHierarchy):
             logging.info("Creating a new User: %s", gmail_user.toJSON())
             user_dao.createUser(gmail_user)
 
-            root_node = Node(
-                id=str(uuid.uuid4()),
-                name="root",
-                parent_id=gmail_user.id + "#root",
-                parent_name="",
-                type="folder",
-                metadata={"size": 0},
-                created_at=round(time.time() * 1000),
-            )
-            logging.info("Creating a default Root Node: %s", root_node.to_json())
-            nodeHierarchy.createNode(gmail_user.id, root_node)
-
             final_user = gmail_user
         else:
             final_user = saved_user[0]

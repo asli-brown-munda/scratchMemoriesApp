@@ -38,15 +38,20 @@ def listNodes(nodeHierarchy: NodeHierarchy, folder):
 def createFolder(nodeHierarchy: NodeHierarchy):
 ##authorize user
 	user_id = current_user.id
-	parent_id = request.json.get("parent_id")
+	parent_node_id = request.json.get("parent_id")
+	if (parent_node_id == 'root'):
+		parent_name = ""
+		parent_node_id = user_id + "#" + "root"
+	else:
+		item = nodeHierarchy.getNode(parent_node_id)
+		parent_name = item['name']
+	
 	node_name = request.json.get("name")
-	item = nodeHierarchy.getNode(parent_id)
-	parent_name = item['name']
 	node_id = str(uuid.uuid4())
 	nodeHierarchy.createNode(user_id, Node(
 			id = str(node_id),
 			name = node_name,
-			parent_id = parent_id,
+			parent_id = parent_node_id,
 			parent_name = parent_name,
 			type = 'folder',
 			metadata = {},

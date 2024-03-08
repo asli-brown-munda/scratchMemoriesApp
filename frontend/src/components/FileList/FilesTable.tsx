@@ -26,11 +26,11 @@ import MKTypography from "components/MKTypography";
 
 function FilesTable() {
   // Sets the path which in turn retrieves the data.
-  const [currentPath, setCurrentPath] = React.useState(() => "/");
+  const [currentPath, setCurrentPath] = React.useState(() => "/root");
   const [data, setData] = React.useState([]);
   const [selectedFiles, setSelectedFiles] = React.useState([]);
   const [selectAllChecked, setSelectAllChecked] = React.useState(false);
-  const [folderMap, setFolderMap] = React.useState({ "/": "root" });
+  const [folderMap, setFolderMap] = React.useState({ "/root": "root" });
 
   const [progress, setProgress] = React.useState(0);
   const [uploading, setUploading] = React.useState(false);

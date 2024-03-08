@@ -352,8 +352,8 @@ function FilesTable() {
       console.log(event);
       console.log(folderId);
       // convert file to base64 encoded
-      var totalSize = 0;
-      var uploadedSize = 0;
+      let totalSize = 0;
+      let uploadedSize = 0;
       for (let i = 0; i < event.files.length; ++i) {
         totalSize += event.files[i].size;
       }
@@ -363,13 +363,18 @@ function FilesTable() {
         // generate signed url
         const uploadData = await generateSignedUrl(file.name, folderId);
         console.log(uploadData);
-        const uploadResponse = await axios.put(uploadData.upload_url, file, {});
+
+        const uploadResponse = await axios.put(uploadData.upload_url, file, {
+          onUploadProgress: (progressEvent) => {
+            const progress = Math.round(
+              (progressEvent.loaded * 100) / progressEvent.total
+            );
+            setProgress(((uploadedSize + progressEvent.loaded) * 100) / totalSize);
+          },
+        });
+        uploadedSize += file.size;
         const fileStatus = await confirmFileUpload(uploadData.id);
-        uploadedSize += event.files[i].size;
-        console.log(
-          "uploadedSize: " + uploadedSize + " totalSize: " + totalSize
-        );
-        setProgress((uploadedSize * 100) / totalSize);
+        console.log("uploadedSize: " + uploadedSize + " totalSize: " + totalSize);
       }
 
       setUploading(false);

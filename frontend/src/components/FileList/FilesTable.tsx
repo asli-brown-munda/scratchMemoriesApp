@@ -72,6 +72,12 @@ function FilesTable() {
     });
   };
 
+  const handleFolderDelete = async(folderId) => {
+    const response = await axios.delete(BACKEND_URL + "/delete/" + folderId);
+    const status = await response.data;
+    console.log(status);
+  }
+
   const handlePathClick = (clickedPath, folderId) => {
     setCurrentPath(clickedPath);
     setSelectedFiles([]);
@@ -145,6 +151,7 @@ function FilesTable() {
             row={row}
             handlePathClick={handlePathClick}
             currentPath={currentPath}
+            handleFolderDelete={handleFolderDelete}
           />
         ),
       },

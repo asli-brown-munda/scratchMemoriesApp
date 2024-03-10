@@ -53,7 +53,7 @@ function Home() {
                 align="center"
                 fontSize={25}
               >
-                A cheaper, durable and secure storage for your precious data.
+                <b>33% cheaper</b>, durable and secure storage for your precious data.
               </MKTypography>
               <MKTypography
                 variant="body1"

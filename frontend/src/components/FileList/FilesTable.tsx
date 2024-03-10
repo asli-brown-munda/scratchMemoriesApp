@@ -94,7 +94,7 @@ function FilesTable() {
     setSelectAllChecked((prevSelectAllChecked) => !prevSelectAllChecked);
     setSelectedFiles((prevSelectedFiles) => {
       if (!selectAllChecked) {
-        return data.map((file) => file.id);
+        return data.filter((file) => file.type == 'file').map((file) => file.id);
       } else {
         return [];
       }

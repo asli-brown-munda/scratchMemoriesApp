@@ -46,7 +46,7 @@ const Team = function () {
               image={akshay}
               name="Akshay Arora"
               position={{ color: "info", label: "Co-Founder" }}
-              description="Experienced Software Engineer who has worked at big companies: Uber & Amazon. Keeping a mystry about me."
+              description="Experienced Software Engineer who has worked at big tech companies: Uber & Amazon. Passionate about solving problems."
               email="akshay@memoriesmvp.com"
             />
           </MKBox>

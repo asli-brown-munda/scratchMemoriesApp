@@ -1,6 +1,6 @@
 import "bootstrap/dist/css/bootstrap.css";
 import { ThemeProvider } from "@mui/material/styles";
-import { PrimeReactProvider, PrimeReactContext } from "primereact/api";
+import { PrimeReactProvider } from "primereact/api";
 import CssBaseline from "@mui/material/CssBaseline";
 import { useEffect, useState } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
@@ -12,7 +12,7 @@ import { UserContext } from "context/UserContext";
 import theme from "assets/theme";
 import routes from "routes";
 import { BACKEND_URL } from "config/app_config";
-import Tailwind from 'primereact/passthrough/tailwind';
+import Tailwind from "primereact/passthrough/tailwind";
 
 axios.defaults.withCredentials = true;
 
@@ -21,8 +21,20 @@ function App() {
   const [user, setUser] = useState(initialState);
   PerformUserManagement(user, setUser);
 
-  const getRoutes = (allRoutes) =>
-    allRoutes.map((route) => {
+  const getRoutes = (allRoutes) => {
+    var routeToBeAdded = [];
+    if (user && user.has_interest_in_premium_plans) {
+      routeToBeAdded = (
+        <Route exact path="/" element={<Navigate to="/dashboard" />} />
+      );
+    } else if (user != null) {
+      routeToBeAdded = (
+        <Route exact path="/" element={<Navigate to="/pricing" />} />
+      );
+    } else {
+      routeToBeAdded = <Route path="/" element={<Navigate to="/home" />} />;
+    }
+    const otherRoutes = allRoutes.map((route) => {
       if (route.route) {
         return (
           <Route
@@ -33,19 +45,18 @@ function App() {
           />
         );
       }
-
       return null;
     });
+    return [routeToBeAdded, ...otherRoutes];
+  };
+
   return (
     <ThemeProvider theme={theme}>
-      <PrimeReactProvider  value={{ unstyled: true , pt:Tailwind}}>
+      <PrimeReactProvider value={{ unstyled: true, pt: Tailwind }}>
         <GoogleOAuthProvider clientId={GOOGLE_OAUTH_CLIENT_ID}>
           <UserContext.Provider value={{ user, setUser }}>
             <CssBaseline />
-            <Routes>
-              {getRoutes(routes)}
-              <Route path="/" element={<Navigate to="/home" />} />
-            </Routes>
+            <Routes>{getRoutes(routes)}</Routes>
           </UserContext.Provider>
         </GoogleOAuthProvider>
       </PrimeReactProvider>

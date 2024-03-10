@@ -84,8 +84,8 @@ function FilledInfoCard({ variant, color, icon, title, description, action }) {
         >
           {title}
         </MKTypography>
-        {description}
-        {action}
+        <MKTypography style={{ height: "200px" }}>{description}</MKTypography>
+        <MKBox pb={2}> {action}</MKBox>
       </MKBox>
     </MKBox>
   );

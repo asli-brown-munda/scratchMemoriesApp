@@ -42,11 +42,8 @@ def delete(s3Accessor: S3Accessor, nodeHierarchy: NodeHierarchy, user_dao: UserD
 	user_id = current_user.id
 	item = nodeHierarchy.getNode(id)
 	if(item['type'] == 'folder'):
-		items = nodeHierarchy.listNodes(id, user_id)
-		if(len(items) > 0):
-			raise Exception("Cannot delete folder as it is not empty")
-		else:
-			nodeHierarchy.deleteNode(id)
+		##delete folder irrespective of data it contains - child nodes will be orphaned
+		nodeHierarchy.deleteNode(id)
 	else:		
 		root_folder = item['meta_data']['root_folder']
 		key = item['meta_data']['key']

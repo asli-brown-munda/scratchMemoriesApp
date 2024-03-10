@@ -69,7 +69,7 @@ function Home() {
                   onClick={() => redirectToUrl("/sign_in")}
                   size="large"
                 >
-                  Login
+                  Get Started!
                 </MKButton>
                 <MKButton
                   variant="text"

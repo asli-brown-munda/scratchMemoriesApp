@@ -40,7 +40,14 @@ function Pricing() {
             <Grid item flexDirection="row" xl={3}>
               <FilledInfoCard
                 icon="person"
-                title={plan["title"]}
+                title={
+                  plan["title"] +
+                  (plan["title"] != "Free Plan" &&
+                  user &&
+                  user.has_interest_in_premium_plans
+                    ? " (Waitlisted) "
+                    : "")
+                }
                 description={DescriptionGenerator(
                   plan["description"],
                   plan["price"],
@@ -65,9 +72,7 @@ function DescriptionGenerator(points, price, originalPrice) {
         Early Bird Price: <del>{originalPrice}</del> {price}$ anually
       </>
     ) : (
-      <>
-        <br></br>
-      </>
+      <></>
     );
   return (
     <>
@@ -88,8 +93,7 @@ function DescriptionGenerator(points, price, originalPrice) {
 function ActionButton(user, setUser, plan, navigate) {
   const makeInterest = () =>
     axios
-      .post(BACKEND_URL + "/mark_interest", {
-      })
+      .post(BACKEND_URL + "/mark_interest", {})
       .then((response) => {
         console.log("Purchase Success: ", response);
         setUser(response.data);
@@ -99,16 +103,32 @@ function ActionButton(user, setUser, plan, navigate) {
         console.error("Purchase Error: ", error);
       });
   if (user == null) {
-    return (
-      <MKButton color="info" onClick={() => navigate("/sign_in")} size="large">
-        Sign In
-      </MKButton>
-    );
+    if (plan["price"] > 0) {
+      return (
+        <MKButton
+          color="info"
+          onClick={() => navigate("/sign_in")}
+          size="large"
+        >
+          Join Waitlist!
+        </MKButton>
+      );
+    } else {
+      return (
+        <MKButton
+          color="info"
+          onClick={() => navigate("/sign_in")}
+          size="large"
+        >
+          Start Uploading!
+        </MKButton>
+      );
+    }
   } else {
     if (plan["price"] > 0 && !user.has_interest_in_premium_plans) {
       return (
         <MKButton color="info" onClick={makeInterest} size="large">
-          Notify Me!
+          Join Waitlist!
         </MKButton>
       );
     } else {

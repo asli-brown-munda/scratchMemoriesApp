@@ -63,7 +63,7 @@ const Login = function () {
                 color="white"
                 mt={1}
               >
-                Sign in
+                Magic is one click away!
               </MKTypography>
             </MKBox>
             <MKBox pb={3} px={3} sx={{ justifyContent: "center" }}>

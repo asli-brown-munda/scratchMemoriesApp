@@ -8,7 +8,7 @@ import MKTypography from "components/MKTypography";
 // Material Kit 2 React examples
 import HorizontalTeamCard from "components/Cards/TeamCards/HorizontalTeamCard/index";
 
-import shubhsha from "assets/images/shubhsha.jpeg";
+import shubhsha from "assets/images/shubhsha.jpg";
 import akshay from "assets/images/akshay.jpeg";
 
 const Team = function () {

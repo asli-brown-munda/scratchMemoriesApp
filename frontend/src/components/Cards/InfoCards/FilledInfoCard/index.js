@@ -62,6 +62,7 @@ function FilledInfoCard({ variant, color, icon, title, description, action }) {
       pt={3.5}
       pb={3}
       px={3}
+      style={{ height: "350px" }}
     >
       <MKTypography
         display="block"
@@ -84,8 +85,8 @@ function FilledInfoCard({ variant, color, icon, title, description, action }) {
         >
           {title}
         </MKTypography>
-        <MKTypography style={{ height: "200px" }}>{description}</MKTypography>
-        <MKBox pb={2}> {action}</MKBox>
+        <MKTypography alignItems="center" style={{ height: "200px" }}>{description}</MKTypography>
+        <MKBox pb={2} > {action}</MKBox>
       </MKBox>
     </MKBox>
   );

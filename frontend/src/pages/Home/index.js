@@ -16,6 +16,7 @@ import RotatingCardBack from "components/Cards/RotatingCard/RotatingCardBack.js"
 import routes from "routes";
 import BackgroundParticles from "components/Background/index";
 import { useNavigate } from "react-router-dom";
+import { styled } from "@mui/system";
 
 function Home() {
   const navigate = useNavigate();
@@ -53,23 +54,32 @@ function Home() {
                 align="center"
                 fontSize={25}
               >
-                <b>33% cheaper</b>, durable and secure storage for your precious data.
+                <b>33%</b> cheaper, durable and secure storage for your precious
+                data.
               </MKTypography>
               <MKTypography
                 variant="body1"
                 color="white"
                 align="center"
                 fontSize={18}
+                sx={{ fontStyle: "oblique" }}
               >
-                Built by ex-Engineers of Google, Uber Amazon, Microsoft.
+                (Built by ex-Engineers of Google, Uber, Amazon & Microsoft.)
               </MKTypography>
-              <Grid container justifyContent="center" direction="row" spacing={1} mt={3} alignItems="center">
+              <Grid
+                container
+                justifyContent="center"
+                direction="row"
+                spacing={1}
+                mt={3}
+                alignItems="center"
+              >
                 <MKButton
                   color="white"
                   onClick={() => redirectToUrl("/sign_in")}
                   size="large"
                 >
-                  Get Started!
+                  Get Free Storage
                 </MKButton>
                 <MKButton
                   variant="text"
@@ -114,7 +124,7 @@ function Home() {
                 icon="content_copy"
                 title={<>Durability</>}
                 backgroundColor="info"
-                description="All Data uploaded is replicated to get 11 9's of durability, ensuring data durability."
+                description="All Data uploaded is replicated to get 11 9's of durability, ensuring data is never lost."
               />
               <RotatingCardBack
                 title="Details"

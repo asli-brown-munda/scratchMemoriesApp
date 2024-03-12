@@ -42,7 +42,7 @@ function Pricing() {
                 icon="person"
                 title={
                   plan["title"] +
-                  (plan["title"] != "Free Plan" &&
+                  (plan["title"] !== "Free Plan" &&
                   user &&
                   user.has_interest_in_premium_plans
                     ? " (Waitlisted) "

@@ -71,7 +71,7 @@ function AboutUs() {
                     soon.{" "}
                   </li>
                   <li>
-                    <b>3. Scalability</b>: Grows with your needs, fits any library.{" "}
+                    <b>3. Scalability</b>: Grows with your needs, fits any photo library.
                   </li>
                   <li>
                     <b>4. Accessibility</b>: Fast downloads, retrieve files anytime,

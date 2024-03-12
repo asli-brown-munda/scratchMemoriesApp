@@ -105,7 +105,7 @@ function Home() {
               <RotatingCardFront
                 icon="security"
                 title={<>Security</>}
-                description="All Data uploaded is server side encrypted, ensuring no one else can access your data."
+                description="All data uploaded is server side encrypted, ensuring no one else can access your data."
               />
               <RotatingCardBack
                 title="Details"

@@ -92,7 +92,6 @@ function FilesTable() {
 
   const handleSelectAllChange = () => {
     setSelectAllChecked((prevSelectAllChecked) => {
-      console.log(prevSelectAllChecked);
       return !prevSelectAllChecked;
     });
   };
@@ -100,7 +99,6 @@ function FilesTable() {
   React.useEffect(() => {
     setSelectedFiles((prevSelectedFiles) => {
       if (selectAllChecked) {
-        console.log(selectAllChecked, data);
         return data.filter((file) => file.type === 'file').map((file) => file.id);
       } else {
         return [];

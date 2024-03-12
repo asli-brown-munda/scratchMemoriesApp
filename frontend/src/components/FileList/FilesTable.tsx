@@ -91,15 +91,22 @@ function FilesTable() {
   };
 
   const handleSelectAllChange = () => {
-    setSelectAllChecked((prevSelectAllChecked) => !prevSelectAllChecked);
+    setSelectAllChecked((prevSelectAllChecked) => {
+      console.log(prevSelectAllChecked);
+      return !prevSelectAllChecked;
+    });
+  };
+
+  React.useEffect(() => {
     setSelectedFiles((prevSelectedFiles) => {
-      if (!selectAllChecked) {
-        return data.filter((file) => file.type == 'file').map((file) => file.id);
+      if (selectAllChecked) {
+        console.log(selectAllChecked, data);
+        return data.filter((file) => file.type === 'file').map((file) => file.id);
       } else {
         return [];
       }
     });
-  };
+  }, [selectAllChecked]);
 
   const handleSingleDownload = async (cellValue) => {
     setFileIds([cellValue]);

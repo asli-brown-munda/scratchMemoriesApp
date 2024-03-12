@@ -43,7 +43,15 @@ def delete(s3Accessor: S3Accessor, nodeHierarchy: NodeHierarchy, user_dao: UserD
 	item = nodeHierarchy.getNode(id)
 	if(item['type'] == 'folder'):
 		##delete folder irrespective of data it contains - child nodes will be orphaned
+		deleted_bytes = 0;
+		items = nodeHierarchy.listNodes(id, user_id)
+		for item in items:
+			if(item['type'] == 'file'):
+				root_folder = item['meta_data']['root_folder']
+				key = item['meta_data']['key']
+				deleted_bytes += s3Accessor.get_file_size(root_folder, key)
 		nodeHierarchy.deleteNode(id)
+		user_dao.addStorageUsage(user_id, -deleted_bytes)
 	else:		
 		root_folder = item['meta_data']['root_folder']
 		key = item['meta_data']['key']

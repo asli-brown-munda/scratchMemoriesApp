@@ -2,7 +2,7 @@
     {
         "title": "Free Plan",
         "code": "FREE_PLAN",
-        "description": ["5 GB Storage", "10 GB Download", "Client Side Encryption", "Durable Storage"],
+        "description": ["10 GB Storage", "20 GB Download", "Client Side Encryption", "Durable Storage"],
         "original_price": 0,
         "price": 0,
         "currency": "$"

@@ -73,9 +73,11 @@ function FilesTable() {
   };
 
   const handleFolderDelete = async(folderId) => {
+    setIsDeleting(true);
     const response = await axios.delete(BACKEND_URL + "/delete/" + folderId);
     const status = await response.data;
     console.log(status);
+    setIsDeleting(false);
   }
 
   const handlePathClick = (clickedPath, folderId) => {
